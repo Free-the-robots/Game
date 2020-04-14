@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SpaceshipController : MonoBehaviour
+public class PlayerSpaceship : Spaceship
 {
     public PlayerData playerData;
     private Plane plane;
-
-    public List<Weapon.Turret> weapon = new List<Weapon.Turret>();
 
     public GameEvent playerHealthUpdate;
     public GameEvent hitEvent;
     public GameEventInt changeWeapon;
     public GameEvent newWeaponEvent;
 
-    private Rigidbody rbody;
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Setup()
     {
-        weapon.AddRange(GetComponentsInChildren<Weapon.Turret>().ToList());
         plane = new Plane(Vector3.up, Vector3.zero);
-
-        rbody = GetComponent<Rigidbody>();
     }
 
 
     private float t = 0f;
     // Update is called once per frame
-    void Update()
+    protected override void Behaviour()
     {
         t += Time.deltaTime;
 
@@ -46,7 +39,7 @@ public class SpaceshipController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    protected override void FixedBehaviour()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         float distance;

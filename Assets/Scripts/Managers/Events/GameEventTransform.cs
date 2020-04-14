@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "EventTransform", menuName = "Event/EventTransform", order = 1)]
 public class GameEventTransform : ScriptableObject
 {
 	private List<GameEventManagerTransform> listeners =

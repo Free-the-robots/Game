@@ -6,7 +6,7 @@ using System.IO;
 
 namespace NEAT
 {
-    [System.Serializable, CreateAssetMenu(fileName = "Person", menuName = "NEAT/Person", order = 1)]
+    [System.Serializable, CreateAssetMenu(fileName = "Person", menuName = "NEAT/Person", order = 0)]
     public class Person : ScriptableObject
     {
         public List<GENES.Nodes> node_gene = new List<GENES.Nodes>();

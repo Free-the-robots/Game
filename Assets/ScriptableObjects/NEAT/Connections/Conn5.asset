@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inNode: 4
   outNode: 7
-  w: 0.6
+  w: 3
   enabled: 1
   innov: 5

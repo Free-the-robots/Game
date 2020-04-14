@@ -7,7 +7,7 @@ namespace NEAT
 {
     namespace GENES
     {
-        [System.Serializable, CreateAssetMenu(fileName = "Connection", menuName = "NEAT/Connection", order = 1)]
+        [System.Serializable, CreateAssetMenu(fileName = "Connection", menuName = "NEAT/Connection", order = 2)]
         public class Connection : ScriptableObject
         {
             public static int global_innov = 0;

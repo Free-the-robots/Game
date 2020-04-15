@@ -21,7 +21,11 @@ namespace Weapon
 
         public virtual void Fire()
         {
-            ParticlePooling.Instance.instantiate(this.tag, transform, chosenW);
+            string parentTag = this.GetComponentInParent<Spaceship>().tag;
+            int layer = 15;
+            if (parentTag.Equals("Player"))
+                layer = 16;
+            ParticlePooling.Instance.instantiate(parentTag, transform, chosenW, layer);
         }
     }
 }

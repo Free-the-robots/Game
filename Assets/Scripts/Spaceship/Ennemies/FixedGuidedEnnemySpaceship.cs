@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FixedGuidedEnnemySpaceship : EnnemyAISpaceship
 {
-    public float freq = 10f;
 
     protected override void Setup()
     {
@@ -22,7 +21,7 @@ public class FixedGuidedEnnemySpaceship : EnnemyAISpaceship
             Vector3 dir = target.position - transform.position;
             dir.y = 0f;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            if (t > 1F / freq)
+            if (t > 1F / spaceshipData.freq)
             {
                 for (int i = 0; i < weapon.Count; ++i)
                 {

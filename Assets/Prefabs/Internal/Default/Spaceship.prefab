@@ -126,11 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf62eeeac515740ef92ec0d39ec08143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spaceshipData: {fileID: 11400000, guid: a08b98653e8b340828fdc2c1e3df1db4, type: 2}
   weapon:
   - {fileID: 5265238769962952608}
   - {fileID: 40427787033582373}
   - {fileID: 3653561207412978022}
-  playerData: {fileID: 11400000, guid: a08b98653e8b340828fdc2c1e3df1db4, type: 2}
   playerHealthUpdate: {fileID: 0}
   hitEvent: {fileID: 0}
   changeWeapon: {fileID: 0}

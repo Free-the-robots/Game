@@ -9,12 +9,22 @@ public class EnnemyAISpaceship : Spaceship
     public float lookRadius = 10f;
     protected Transform target;
 
+    public GameEvent ennemyDead;
+
     protected override void Setup()
     {
         base.Setup();
 
+        spaceshipData = spaceshipData.Clone();
+
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+    }
+
+    public override void Death()
+    {
+        ennemyDead.Raise();
+        GameObject.Destroy(this.gameObject);
     }
 
 

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 308a22279508742e080583c90460ae8e, type: 3}
-  m_Name: PData
+  m_Name: EnnemyPatrolData
   m_EditorClassIdentifier: 
-  life: 940
-  lifeMax: 1000
+  life: 100
+  lifeMax: 100
   speed: 10
   freq: 10

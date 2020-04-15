@@ -38,7 +38,7 @@ public class ParticlePooling : MonoBehaviour
         }
     }
 
-    public GameObject instantiate(string tag, Transform transform, NEAT.Person part)
+    public GameObject instantiate(string tag, Transform transform, NEAT.Person part, int layer)
     {
         GameObject res = null;
         if(pool.Count > 0)
@@ -54,6 +54,8 @@ public class ParticlePooling : MonoBehaviour
             res.GetComponent<Particle>().shooterTag = tag;
 
             res.GetComponent<Particle>().enabled = true;
+
+            res.layer = layer;
             res.SetActive(true);
         }
         return res;

@@ -43,14 +43,9 @@ public class Particle : MonoBehaviour
     {
         if (other.transform.tag != shooterTag)
         {
-            if (other.transform.tag.Equals("Player"))
+            if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
             {
-                //other.transform.GetComponent<PlayerController>().loseHealth(10);
-                GameObject.Destroy(this.gameObject);
-            }
-            else if (other.transform.tag.Equals("Ennemy"))
-            {
-                //other.transform.GetComponent<EnemyController>().loseHealth(10);
+                other.transform.GetComponent<Spaceship>().loseHealth(10);
                 GameObject.Destroy(this.gameObject);
             }
 

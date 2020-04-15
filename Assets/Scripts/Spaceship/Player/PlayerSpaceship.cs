@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class PlayerSpaceship : Spaceship
 {
-    public PlayerData playerData;
     private Plane plane;
 
-    public GameEvent playerHealthUpdate;
-    public GameEvent hitEvent;
-    public GameEventInt changeWeapon;
-    public GameEvent newWeaponEvent;
+    //public GameEvent playerHealthUpdate;
+    //public GameEvent hitEvent;
+    //public GameEventInt changeWeapon;
+    //public GameEvent newWeaponEvent;
 
     // Start is called before the first frame update
     protected override void Setup()
@@ -28,7 +27,7 @@ public class PlayerSpaceship : Spaceship
 
         if (Input.GetMouseButton(0))
         {
-            if (t > 1F / playerData.freq)
+            if (t > 1F / spaceshipData.freq)
             {
                 for(int i = 0; i < weapon.Count(); ++i)
                 {
@@ -51,36 +50,36 @@ public class PlayerSpaceship : Spaceship
             Vector3 forward = (hitPoint - transform.position).normalized;
             forward.Scale(new Vector3(1f, 0f, 1f));
             transform.forward = forward.normalized;
-            //transform.position = Vector3.MoveTowards(player.transform.position, hitPoint, Time.deltaTime * playerData.speed);
+            //transform.position = Vector3.MoveTowards(player.transform.position, hitPoint, Time.deltaTime * spaceshipData.speed);
         }
 
         Vector3 dir = new Vector3(-Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
-        rbody.velocity = dir*playerData.speed;
+        rbody.velocity = dir*spaceshipData.speed;
     }
 
-    public void loseHealth(int health)
+    public override void loseHealth(int health)
     {
-        playerData.life -= health;
+        spaceshipData.life -= health;
 
-        if (playerData.life <= 0)
-            playerData.life = 0;
+        if (spaceshipData.life <= 0)
+            spaceshipData.life = 0;
 
-        playerHealthUpdate.Raise();
+        //playerHealthUpdate.Raise();
     }
 
     public void addHealth(int health)
     {
-        playerData.life += health;
+        spaceshipData.life += health;
 
-        if (playerData.life > playerData.lifeMax)
-            playerData.life = playerData.lifeMax;
+        if (spaceshipData.life > spaceshipData.lifeMax)
+            spaceshipData.life = spaceshipData.lifeMax;
 
-        playerHealthUpdate.Raise();
+        //playerHealthUpdate.Raise();
     }
 
     public void newWeapon(NEAT.Person weaponC)
     {
 
-        newWeaponEvent.Raise();
+        //newWeaponEvent.Raise();
     }
 }

@@ -20,11 +20,11 @@ TagManager:
   - PPVolume
   - Particle
   - Obstacles
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Spaceship
+  - SpaceshipEnemy
+  - Trigger
+  - ParticleEnemy
+  - ParticlePlayer
   - 
   - 
   - 

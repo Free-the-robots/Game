@@ -5,11 +5,16 @@ using UnityEngine.AI;
 
 public class EnnemyAISpaceship : Spaceship
 {
-    protected NavMeshAgent agent = null;
-    public float lookRadius = 10f;
-    protected Transform target;
+    public enum TriggerVision { NONE, SPHERE, CHILDTRIGGER };
+    public TriggerVision style;
+    public float triggerSize = 10f;
 
     public GameEvent ennemyDead;
+
+    protected NavMeshAgent agent = null;
+    protected Transform target;
+
+    protected bool triggered = false;
 
     protected override void Setup()
     {
@@ -31,6 +36,26 @@ public class EnnemyAISpaceship : Spaceship
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
+        switch (style)
+        {
+            case TriggerVision.SPHERE:
+                Gizmos.DrawWireSphere(transform.position, triggerSize);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public virtual void Triggered()
+    {
+        triggered = true;
+    }
+
+    protected virtual bool CheckTrigger()
+    {
+        if (style == TriggerVision.SPHERE)
+            return (Vector3.Distance(target.position, transform.position) < triggerSize);
+        else
+            return (triggered);
     }
 }

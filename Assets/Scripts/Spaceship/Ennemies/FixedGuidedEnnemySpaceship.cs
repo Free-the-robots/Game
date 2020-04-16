@@ -16,7 +16,7 @@ public class FixedGuidedEnnemySpaceship : EnnemyAISpaceship
         t += Time.deltaTime;
         base.Behaviour();
 
-        if (Vector3.Distance(target.position, transform.position) < lookRadius)
+        if (Vector3.Distance(target.position, transform.position) < triggerSize)
         {
             Vector3 dir = target.position - transform.position;
             dir.y = 0f;

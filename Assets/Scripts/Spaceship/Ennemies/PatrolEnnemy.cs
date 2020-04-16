@@ -40,7 +40,7 @@ public class PatrolEnnemy : EnnemyAISpaceship
             }
         }
 
-        if (Vector3.Distance(target.position, transform.position) < lookRadius)
+        if (CheckTrigger() || !patrol)
         {
             if (patrol)
             {

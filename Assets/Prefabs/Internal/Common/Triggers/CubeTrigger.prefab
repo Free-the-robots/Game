@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7342145699102406943}
   - component: {fileID: 1422269352738626365}
   - component: {fileID: 7941627843807714901}
-  m_Layer: 0
-  m_Name: PlaneTrigger
+  m_Layer: 14
+  m_Name: CubeTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

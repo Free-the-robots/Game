@@ -39,15 +39,31 @@ public class Particle : MonoBehaviour
         apply(vel);
     }
 
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag != shooterTag)
+        {
+            if (other.transform.tag.Equals("Player"))
+            {
+                other.transform.GetComponent<SpaceshipHeart>().loseHealth(10);
+                ParticlePooling.Instance.destroy(this.gameObject);
+            }else if (other.transform.tag.Equals("Enemy"))
+            {
+                other.transform.GetComponent<Spaceship>().loseHealth(10);
+                ParticlePooling.Instance.destroy(this.gameObject);
+            }
+        }
+    }
+
     protected virtual void OnCollisionEnter(Collision other)
     {
         if (other.transform.tag != shooterTag)
         {
-            if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
-            {
-                other.transform.GetComponent<Spaceship>().loseHealth(10);
-                GameObject.Destroy(this.gameObject);
-            }
+            //if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
+            //{
+            //    other.transform.GetComponent<Spaceship>().loseHealth(10);
+            //    GameObject.Destroy(this.gameObject);
+            //}
 
             if (other.transform.tag.Equals("Obstacles"))
             {

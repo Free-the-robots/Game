@@ -55,7 +55,6 @@ public class Spaceship : MonoBehaviour
             spaceshipData.life -= damage;
             if (spaceshipData.life <= 0)
             {
-                alive = false;
                 Death();
             }
         }
@@ -63,6 +62,7 @@ public class Spaceship : MonoBehaviour
 
     public virtual void Death()
     {
+        alive = false;
         GameObject.Destroy(this.gameObject);
     }
 }

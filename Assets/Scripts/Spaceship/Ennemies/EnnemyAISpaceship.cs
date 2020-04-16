@@ -9,12 +9,17 @@ public class EnnemyAISpaceship : Spaceship
     public TriggerVision style;
     public float triggerSize = 10f;
 
+    public enum AIBehaviour { NONE, ANIMATION, FOLLOWPLAYER };
+    public AIBehaviour aiBehaviour;
+
     public GameEvent ennemyDead;
 
     protected NavMeshAgent agent = null;
     protected Transform target;
 
     protected bool triggered = false;
+
+    protected ShootBehaviour.ShootingBehaviour shootingBehaviour = null;
 
     protected override void Setup()
     {
@@ -24,14 +29,25 @@ public class EnnemyAISpaceship : Spaceship
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+
+        switch (aiBehaviour)
+        {
+            case AIBehaviour.ANIMATION:
+                shootingBehaviour = new ShootBehaviour.AnimationBehaviour(GetComponent<Animator>());
+                break;
+            case AIBehaviour.FOLLOWPLAYER:
+                shootingBehaviour = new ShootBehaviour.FollowBehaviour(target);
+                break;
+            default:
+                break;
+        }
     }
 
     public override void Death()
     {
         ennemyDead.Raise();
-        GameObject.Destroy(this.gameObject);
+        base.Death();
     }
-
 
     private void OnDrawGizmosSelected()
     {
@@ -57,5 +73,24 @@ public class EnnemyAISpaceship : Spaceship
             return (Vector3.Distance(target.position, transform.position) < triggerSize);
         else
             return (triggered);
+    }
+
+    protected virtual void ShootingBehaviour(ref float t)
+    {
+        if(shootingBehaviour == null)
+        {
+            if (t > 1F / spaceshipData.freq)
+            {
+                for (int i = 0; i < weapon.Count; ++i)
+                {
+                    weapon[i].Fire();
+                }
+                t = 0f;
+            }
+        }
+        else
+        {
+            shootingBehaviour.ShootBehaviour(transform, spaceshipData, weapon, ref t);
+        }
     }
 }

@@ -7,6 +7,8 @@ public class PlayerSpaceship : Spaceship
 {
     private Plane plane;
 
+    public List<Weapon.Abilities> abilities = new List<Weapon.Abilities>();
+
     //public GameEvent playerHealthUpdate;
     //public GameEvent hitEvent;
     //public GameEventInt changeWeapon;
@@ -16,6 +18,7 @@ public class PlayerSpaceship : Spaceship
     protected override void Setup()
     {
         plane = new Plane(Vector3.up, Vector3.zero);
+        abilities.Add(new Weapon.CircleDeath());
     }
 
 
@@ -34,6 +37,14 @@ public class PlayerSpaceship : Spaceship
                     weapon[i].Fire();
                 }
                 t = 0f;
+            }
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            if(abilities.Count > 0)
+            {
+                abilities[0].RunAbility(transform);
             }
         }
     }

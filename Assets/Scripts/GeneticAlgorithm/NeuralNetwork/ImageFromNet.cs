@@ -69,8 +69,8 @@ namespace NN
         {
             List<Vector3> path = simulateNet(net);
 
-            Texture2D imageRes = new Texture2D(128, 128, TextureFormat.RGBA32, false);
-            imageRes.alphaIsTransparency = true;
+            Texture2D imageRes = new Texture2D(128, 128, TextureFormat.Alpha8, false);
+            //imageRes.alphaIsTransparency = true;
 
             float scale = 5.0f;
             Vector2 zeroPoint = new Vector2(64, 64);

@@ -9,6 +9,29 @@ public class PlayerSpaceship : Spaceship
 
     public List<Weapon.Abilities> abilities = new List<Weapon.Abilities>();
 
+
+    /// <summary>
+    /// Movement script from POC
+    /// </summary>
+    [SerializeField]
+    private FloatingJoystick JoystickMoving;
+    private Vector2 mInformationFromJoystickMoving;
+
+    [SerializeField]
+    private FloatingJoystick JoystickRotate;
+    private Vector2 mInformationFromJoystickRotate;
+
+    [SerializeField]
+    private GameObject CharacterToMove;
+
+    private Vector3 mRotation;
+    private float mRotationSpeed;
+
+    private float mAngleHeadingChar;
+
+    private float mMaxSpeed = 5F;
+    private Vector3 mNormalizedDirection;
+
     //public GameEvent playerHealthUpdate;
     //public GameEvent hitEvent;
     //public GameEventInt changeWeapon;
@@ -19,6 +42,8 @@ public class PlayerSpaceship : Spaceship
     {
         plane = new Plane(Vector3.up, Vector3.zero);
         abilities.Add(new Weapon.CircleDeath());
+        JoystickRotate.OnActiveJoystick += Rotate;
+        mRotationSpeed = 20F;
     }
 
 
@@ -26,46 +51,58 @@ public class PlayerSpaceship : Spaceship
     // Update is called once per frame
     protected override void Behaviour()
     {
-        t += Time.deltaTime;
+        //t += Time.deltaTime;
 
-        if (Input.GetMouseButton(0))
+        //if (Input.GetMouseButton(0))
+        //{
+        //    if (t > 1F / spaceshipData.freq)
+        //    {
+        //        for(int i = 0; i < weapon.Count(); ++i)
+        //        {
+        //            weapon[i].Fire();
+        //        }
+        //        t = 0f;
+        //    }
+        //}
+
+        //if (Input.GetMouseButton(1))
+        //{
+        //    if(abilities.Count > 0)
+        //    {
+        //        abilities[0].RunAbility(transform);
+        //    }
+        //}
+        if (JoystickMoving.IsJoystickActive)
+            MoveCharacter();
+        else
         {
-            if (t > 1F / spaceshipData.freq)
-            {
-                for(int i = 0; i < weapon.Count(); ++i)
-                {
-                    weapon[i].Fire();
-                }
-                t = 0f;
-            }
+
+        }
+        for (int i = 0; i < weapon.Count(); ++i)
+        {
+            weapon[i].Fire();
         }
 
-        if (Input.GetMouseButton(1))
-        {
-            if(abilities.Count > 0)
-            {
-                abilities[0].RunAbility(transform);
-            }
-        }
+
     }
 
     protected override void FixedBehaviour()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        float distance;
-        if (plane.Raycast(ray, out distance))
-        {
-            // some point of the plane was hit - get its coordinates
-            Vector3 hitPoint = ray.GetPoint(distance);
-            // use the hitPoint to aim your cannon
-            Vector3 forward = (hitPoint - transform.position).normalized;
-            forward.Scale(new Vector3(1f, 0f, 1f));
-            transform.forward = forward.normalized;
-            //transform.position = Vector3.MoveTowards(player.transform.position, hitPoint, Time.deltaTime * spaceshipData.speed);
-        }
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //float distance;
+        //if (plane.Raycast(ray, out distance))
+        //{
+        //    // some point of the plane was hit - get its coordinates
+        //    Vector3 hitPoint = ray.GetPoint(distance);
+        //    // use the hitPoint to aim your cannon
+        //    Vector3 forward = (hitPoint - transform.position).normalized;
+        //    forward.Scale(new Vector3(1f, 0f, 1f));
+        //    transform.forward = forward.normalized;
+        //    //transform.position = Vector3.MoveTowards(player.transform.position, hitPoint, Time.deltaTime * spaceshipData.speed);
+        //}
 
-        Vector3 dir = new Vector3(-Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
-        rbody.velocity = dir*spaceshipData.speed;
+        //Vector3 dir = new Vector3(-Input.GetAxis("Vertical"), 0f, Input.GetAxis("Horizontal"));
+        //rbody.velocity = dir*spaceshipData.speed;
     }
 
     public override void loseHealth(int health)
@@ -92,5 +129,29 @@ public class PlayerSpaceship : Spaceship
     {
 
         //newWeaponEvent.Raise();
+    }
+
+    private void Rotate()
+    {
+        mAngleHeadingChar = Mathf.Atan2(JoystickRotate.Direction.x, JoystickRotate.Direction.y);
+        CharacterToMove.transform.rotation = Quaternion.Euler(0F, mAngleHeadingChar * Mathf.Rad2Deg, 0F);
+    }
+
+    private void MoveCharacter()
+    {
+        mNormalizedDirection.x = JoystickMoving.Direction.x;
+        mNormalizedDirection.y = 0F;
+        mNormalizedDirection.z = JoystickMoving.Direction.y;
+        Debug.Log("mNormalizedDirection : " +(int) mNormalizedDirection.x*10 + " " + (int)mNormalizedDirection.y*10 + " " + (int)mNormalizedDirection.z*10);
+        CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+    }
+    
+    private void StopMoving()
+    {
+        mNormalizedDirection.x = 0F;
+        mNormalizedDirection.y = 0F;
+        mNormalizedDirection.z = 0F;
+        CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+
     }
 }

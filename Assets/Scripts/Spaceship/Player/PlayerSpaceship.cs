@@ -29,7 +29,7 @@ public class PlayerSpaceship : Spaceship
 
     private float mAngleHeadingChar;
 
-    private float mMaxSpeed = 5F;
+    private float mMaxSpeed = 100F;
     private Vector3 mNormalizedDirection;
 
     //public GameEvent playerHealthUpdate;
@@ -76,11 +76,14 @@ public class PlayerSpaceship : Spaceship
             MoveCharacter();
         else
         {
-
+            StopMoving();
         }
-        for (int i = 0; i < weapon.Count(); ++i)
+        if (JoystickRotate.IsJoystickActive)
         {
-            weapon[i].Fire();
+            for (int i = 0; i < weapon.Count(); ++i)
+            {
+                weapon[i].Fire();
+            }
         }
 
 
@@ -133,25 +136,26 @@ public class PlayerSpaceship : Spaceship
 
     private void Rotate()
     {
-        mAngleHeadingChar = Mathf.Atan2(JoystickRotate.Direction.x, JoystickRotate.Direction.y);
+        mAngleHeadingChar = Mathf.Atan2(JoystickRotate.Direction.x, JoystickRotate.Direction.y)-Mathf.PI/2f;
         CharacterToMove.transform.rotation = Quaternion.Euler(0F, mAngleHeadingChar * Mathf.Rad2Deg, 0F);
     }
 
     private void MoveCharacter()
     {
-        mNormalizedDirection.x = JoystickMoving.Direction.x;
+        mNormalizedDirection.x = -JoystickMoving.Direction.y;
         mNormalizedDirection.y = 0F;
-        mNormalizedDirection.z = JoystickMoving.Direction.y;
+        mNormalizedDirection.z = JoystickMoving.Direction.x;
         Debug.Log("mNormalizedDirection : " +(int) mNormalizedDirection.x*10 + " " + (int)mNormalizedDirection.y*10 + " " + (int)mNormalizedDirection.z*10);
-        CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+        //CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+        rbody.velocity = mNormalizedDirection * mMaxSpeed * Time.deltaTime;
     }
     
     private void StopMoving()
     {
-        mNormalizedDirection.x = 0F;
-        mNormalizedDirection.y = 0F;
-        mNormalizedDirection.z = 0F;
-        CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
-
+        //mNormalizedDirection.x = 0F;
+        //mNormalizedDirection.y = 0F;
+        //mNormalizedDirection.z = 0F;
+        //CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+        rbody.velocity = Vector3.zero;
     }
 }

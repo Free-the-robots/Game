@@ -82,6 +82,15 @@ public class PlayerSpaceship : Spaceship
         {
             for (int i = 0; i < weapon.Count(); ++i)
             {
+                if(weapon[i].projectileData is Projectiles.ProjectileGuidedData)
+                {
+                    ((Projectiles.ProjectileGuidedData)weapon[i].projectileData).target = GameObject.FindGameObjectWithTag("Enemy").transform;
+                }
+                if(weapon[i] is Weapon.TurretGuided)
+                {
+                    ((Weapon.TurretGuided)weapon[i]).target = GameObject.FindGameObjectWithTag("Enemy").transform;
+                }
+                weapon[i].UpdateRotation();
                 weapon[i].Fire();
             }
         }

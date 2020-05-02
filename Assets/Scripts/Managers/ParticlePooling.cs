@@ -42,7 +42,6 @@ public class ParticlePooling : MonoBehaviour
 
         DontDestroyOnLoad(this);
 
-
         typeInstantiateMap[typeof(ProjectileData)] = particleInstantiate;
         typeInstantiateMap[typeof(ProjectileEvolutiveData)] = particleInstantiateEvolutive;
         typeInstantiateMap[typeof(ProjectileGuidedData)] = particleInstantiateHoming;
@@ -125,9 +124,9 @@ public class ParticlePooling : MonoBehaviour
     public GameObject particleInstantiateHoming(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
-        if (poolEvolutive.Count > 0)
+        if (poolHoming.Count > 0)
         {
-            res = particleInstantiateCommon(poolEvolutive, activesTransform, transform, tag, layer);
+            res = particleInstantiateCommon(poolHoming, activesTransform, transform, tag, layer);
             res.GetComponent<Particle>().data = part;
         }
         return res;

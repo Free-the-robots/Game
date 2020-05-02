@@ -18,6 +18,7 @@ namespace Projectiles
     public class ProjectileGuidedData : ProjectileData
     {
         public float forceAmount = 1f;
+        public Transform target = null;
     }
 
     [CreateAssetMenu(fileName = "Laser", menuName = "Projectiles/Laser", order = 2)]

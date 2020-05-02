@@ -29,9 +29,9 @@ namespace Weapon
             }
         }
 
-        public virtual void UpdateRotation(Quaternion rotation)
+        public virtual void UpdateRotation()
         {
-            transform.rotation = rotation;
+            //transform.rotation = rotation;
         }
     }
 }

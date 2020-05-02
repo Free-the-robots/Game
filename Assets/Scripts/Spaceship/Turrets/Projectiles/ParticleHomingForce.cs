@@ -6,11 +6,10 @@ namespace Projectiles
 {
     public class ParticleHomingForce : ParticleForce
     {
-        public Transform target;
-
         protected override void FixedUpdate()
         {
-            force = (target.position - transform.position).normalized * ((ProjectileGuidedData)data).forceAmount;
+            Vector3 enemyPos = ((ProjectileGuidedData)data).target.position;
+            force = (transform.InverseTransformPoint(enemyPos) - transform.localPosition).normalized * ((ProjectileGuidedData)data).forceAmount;
             apply(new Vector3(0f, 0f, 1f));
         }
     }

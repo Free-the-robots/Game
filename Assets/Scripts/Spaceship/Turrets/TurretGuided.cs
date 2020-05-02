@@ -8,7 +8,7 @@ namespace Weapon
     {
         public Transform target;
 
-        public override void UpdateRotation(Quaternion rotation)
+        public override void UpdateRotation()
         {
             Vector3 dir = (target.position - transform.position).normalized;
             dir.y = 0f;

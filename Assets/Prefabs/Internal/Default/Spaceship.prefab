@@ -86,7 +86,7 @@ MonoBehaviour:
   - {fileID: 3653561207412978022}
   JoystickMoving: {fileID: 0}
   JoystickRotate: {fileID: 0}
-  CharacterToMove: {fileID: 0}
+  CharacterToMove: {fileID: 1377771205222697139}
 --- !u!1 &1955662656083711367
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
+  projectileData: {fileID: 11400000, guid: dfaa7b296e4084494b436061abc17302, type: 2}
 --- !u!1 &5554758774648723172
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
+  projectileData: {fileID: 11400000, guid: dfaa7b296e4084494b436061abc17302, type: 2}
 --- !u!1 &5946657824109530112
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,4 +592,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
+  projectileData: {fileID: 11400000, guid: dfaa7b296e4084494b436061abc17302, type: 2}

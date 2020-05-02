@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5335967647135444898}
   m_Layer: 0
   m_Name: Spaceship
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,6 +84,9 @@ MonoBehaviour:
   - {fileID: 5265238769962952608}
   - {fileID: 40427787033582373}
   - {fileID: 3653561207412978022}
+  JoystickMoving: {fileID: 0}
+  JoystickRotate: {fileID: 0}
+  CharacterToMove: {fileID: 0}
 --- !u!1 &1955662656083711367
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +102,7 @@ GameObject:
   - component: {fileID: 40427787033582373}
   m_Layer: 0
   m_Name: Turret2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -190,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chosenW: {fileID: 11400000, guid: b7ab3a16063624e80aac8615c87ba5af, type: 2}
+  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
 --- !u!1 &5554758774648723172
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +288,7 @@ GameObject:
   - component: {fileID: 5265238769962952608}
   m_Layer: 0
   m_Name: Turret1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -376,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chosenW: {fileID: 11400000, guid: fce96a238a48c4368b52c793f70a303a, type: 2}
+  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
 --- !u!1 &5946657824109530112
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +501,7 @@ GameObject:
   - component: {fileID: 3653561207412978022}
   m_Layer: 0
   m_Name: Turret3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -589,4 +592,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f9ef06374e843c8b2b02f9b3534019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chosenW: {fileID: 11400000, guid: fce96a238a48c4368b52c793f70a303a, type: 2}
+  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}

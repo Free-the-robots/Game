@@ -2,33 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleHomingForce : ParticleForce
+namespace Projectiles
 {
-    public Transform target;
-    public float forceScale = 50f;
-    // Start is called before the first frame update
-    protected override void OnEnable()
+    public class ParticleHomingForce : ParticleForce
     {
-        base.OnEnable();
-    }
+        public Transform target;
 
-    // Update is called once per frame
-    protected override void FixedUpdate()
-    {
-        evaluate();
-
-        List<float> res = weapon.evaluate(inputs);
-        if(target != null)
+        protected override void FixedUpdate()
         {
-            forceFront = (target.position - transform.position).normalized;
+            force = (target.position - transform.position).normalized * ((ProjectileGuidedData)data).forceAmount;
+            apply(new Vector3(0f, 0f, 1f));
         }
-        Vector3 vel = (new Vector3(res[1], 0f, res[0]) + forceFront) * forceScale;
-
-        apply(vel);
-    }
-
-    protected override void OnCollisionEnter(Collision other)
-    {
-        base.OnCollisionEnter(other);
     }
 }

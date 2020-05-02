@@ -6,26 +6,32 @@ namespace Weapon
 {
     public class Turret : MonoBehaviour
     {
-        public NEAT.Person chosenW = null;
-        // Start is called before the first frame update
-        void Start()
+        public Projectiles.ProjectileData projectileData = null;
+
+        private float freqT = 0f;
+
+        private void Update()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            freqT += Time.deltaTime;
         }
 
         public virtual void Fire()
         {
-            string parentTag = this.GetComponentInParent<Spaceship>().tag;
-            int layer = 15;
-            if (parentTag.Equals("Player"))
-                layer = 16;
-            ParticlePooling.Instance.instantiate(parentTag, transform, chosenW, layer);
+            if(freqT > 1/projectileData.frequency)
+            {
+                string parentTag = this.GetComponentInParent<Spaceship>().tag;
+                int layer = 15;
+                if (parentTag.Equals("Player"))
+                    layer = 16;
+                ParticlePooling.Instance.instantiate(parentTag, transform, projectileData, layer);
+
+                freqT = 0f;
+            }
+        }
+
+        public virtual void UpdateRotation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
         }
     }
 }

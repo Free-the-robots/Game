@@ -2,92 +2,76 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Particle : MonoBehaviour
+namespace Projectiles
 {
-    public NN.Net weapon;
-    public string shooterTag = "";
-    protected Rigidbody body;
-    protected List<float> inputs = new List<float>(4) { 0f, 0f, 0f, 1f };
-
-    protected Vector3 initPos;
-    public float lifeTime = 1f;
-
-
-    protected float t = 0f;
-    // Start is called before the first frame update
-    protected virtual void OnEnable()
+    public class Particle : MonoBehaviour
     {
-        body = GetComponent<Rigidbody>();
+        public ProjectileData data;
 
-        initPos = transform.position;
+        public string shooterTag = "";
+        protected Rigidbody body;
 
-        inputs[0] = 0f;
-        inputs[1] = 0f;
-        inputs[2] = Vector3.Distance(initPos, transform.position);
-        inputs[3] = 1f;
-
-        t = 0f;
-    }
-    // Update is called once per frame
-    protected virtual void FixedUpdate()
-    {
-        evaluate();
-
-        List<float> res = weapon.evaluate(inputs);
-        Vector3 vel = new Vector3(res[1], 0f, res[0]) * 50f;
-
-        apply(vel);
-    }
-
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.tag != shooterTag)
+        protected float t = 0f;
+        protected virtual void OnEnable()
         {
-            if (other.transform.tag.Equals("Player"))
+            body = GetComponent<Rigidbody>();
+
+            t = 0f;
+        }
+
+        protected virtual void Update()
+        {
+            t += Time.deltaTime;
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            apply(new Vector3(0f, 0f, 1f));
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+            if (other.transform.tag != shooterTag)
             {
-                other.transform.GetComponent<SpaceshipHeart>().loseHealth(10);
-                ParticlePooling.Instance.destroy(this.gameObject);
-            }else if (other.transform.tag.Equals("Enemy"))
-            {
-                other.transform.GetComponent<Spaceship>().loseHealth(10);
-                ParticlePooling.Instance.destroy(this.gameObject);
+                if (other.transform.tag.Equals("Player"))
+                {
+                    other.transform.GetComponent<SpaceshipHeart>().loseHealth(10);
+                    ParticlePooling.Instance.destroy(this.gameObject);
+                }
+                else if (other.transform.tag.Equals("Enemy"))
+                {
+                    other.transform.GetComponent<Spaceship>().loseHealth(10);
+                    ParticlePooling.Instance.destroy(this.gameObject);
+                }
             }
         }
-    }
 
-    protected virtual void OnCollisionEnter(Collision other)
-    {
-        if (other.transform.tag != shooterTag)
+        protected virtual void OnCollisionEnter(Collision other)
         {
-            //if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
-            //{
-            //    other.transform.GetComponent<Spaceship>().loseHealth(10);
-            //    GameObject.Destroy(this.gameObject);
-            //}
-
-            if (other.transform.tag.Equals("Obstacles"))
+            if (other.transform.tag != shooterTag)
             {
-                transform.forward = Vector3.Reflect(transform.forward,other.GetContact(0).normal);
+                //if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
+                //{
+                //    other.transform.GetComponent<Spaceship>().loseHealth(10);
+                //    GameObject.Destroy(this.gameObject);
+                //}
+
+                if (other.transform.tag.Equals("Obstacles"))
+                {
+                    transform.forward = Vector3.Reflect(transform.forward, other.GetContact(0).normal);
+                }
             }
         }
-    }
 
-    protected virtual void evaluate()
-    {
-        t += Time.deltaTime;
-        Vector3 pos = transform.InverseTransformDirection(transform.position - initPos);
-        inputs[0] = pos.z * 1f;
-        inputs[1] = pos.x * 1f;
-        inputs[2] = (Vector3.Distance(initPos, transform.position));
-    }
-
-    protected virtual void apply(Vector3 vel)
-    {
-        body.velocity = transform.TransformDirection(vel);
-
-        if (t > lifeTime)
+        protected virtual void apply(Vector3 vel)
         {
-            ParticlePooling.Instance.destroy(this.gameObject);
+            body.velocity = transform.TransformDirection(vel.normalized * data.velocity);
+
+            if (t > data.lifeTime)
+            {
+                t = 0f;
+                ParticlePooling.Instance.destroy(this.gameObject);
+            }
         }
     }
 }

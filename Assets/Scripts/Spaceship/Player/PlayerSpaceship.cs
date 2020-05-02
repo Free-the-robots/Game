@@ -14,18 +14,18 @@ public class PlayerSpaceship : Spaceship
     /// Movement script from POC
     /// </summary>
     [SerializeField]
-    private FloatingJoystick JoystickMoving;
+    private FloatingJoystick JoystickMoving = null;
     private Vector2 mInformationFromJoystickMoving;
 
     [SerializeField]
-    private FloatingJoystick JoystickRotate;
+    private FloatingJoystick JoystickRotate = null;
     private Vector2 mInformationFromJoystickRotate;
 
     [SerializeField]
-    private GameObject CharacterToMove;
+    private GameObject CharacterToMove = null;
 
     private Vector3 mRotation;
-    private float mRotationSpeed;
+    //private float mRotationSpeed;
 
     private float mAngleHeadingChar;
 
@@ -43,11 +43,11 @@ public class PlayerSpaceship : Spaceship
         plane = new Plane(Vector3.up, Vector3.zero);
         abilities.Add(new Weapon.CircleDeath());
         JoystickRotate.OnActiveJoystick += Rotate;
-        mRotationSpeed = 20F;
+        //mRotationSpeed = 20F;
     }
 
 
-    private float t = 0f;
+    //private float t = 0f;
     // Update is called once per frame
     protected override void Behaviour()
     {
@@ -136,8 +136,9 @@ public class PlayerSpaceship : Spaceship
 
     private void Rotate()
     {
-        mAngleHeadingChar = Mathf.Atan2(JoystickRotate.Direction.x, JoystickRotate.Direction.y)-Mathf.PI/2f;
-        CharacterToMove.transform.rotation = Quaternion.Euler(0F, mAngleHeadingChar * Mathf.Rad2Deg, 0F);
+        mAngleHeadingChar = Mathf.Atan2(JoystickRotate.Direction.x, JoystickRotate.Direction.y) - Mathf.PI / 2f;
+        if(CharacterToMove != null)
+            CharacterToMove.transform.rotation = Quaternion.Euler(0F, mAngleHeadingChar * Mathf.Rad2Deg, 0F);
     }
 
     private void MoveCharacter()
@@ -145,11 +146,11 @@ public class PlayerSpaceship : Spaceship
         mNormalizedDirection.x = -JoystickMoving.Direction.y;
         mNormalizedDirection.y = 0F;
         mNormalizedDirection.z = JoystickMoving.Direction.x;
-        Debug.Log("mNormalizedDirection : " +(int) mNormalizedDirection.x*10 + " " + (int)mNormalizedDirection.y*10 + " " + (int)mNormalizedDirection.z*10);
+        Debug.Log("mNormalizedDirection : " + (int)mNormalizedDirection.x * 10 + " " + (int)mNormalizedDirection.y * 10 + " " + (int)mNormalizedDirection.z * 10);
         //CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
         rbody.velocity = mNormalizedDirection * mMaxSpeed * Time.deltaTime;
     }
-    
+
     private void StopMoving()
     {
         //mNormalizedDirection.x = 0F;

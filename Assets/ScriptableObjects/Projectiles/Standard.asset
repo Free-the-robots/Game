@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skin: {fileID: 0}
   velocity: 5
-  frequency: 1
-  lifeTime: 2
+  frequency: 10
+  lifeTime: 1
   damage: 0

@@ -70,6 +70,8 @@ namespace Projectiles
             if (t > data.lifeTime)
             {
                 t = 0f;
+                body.velocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
                 ParticlePooling.Instance.destroy(this.gameObject);
             }
         }

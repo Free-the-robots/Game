@@ -17,6 +17,8 @@ namespace NEAT
 
         public List<float> evaluate(List<float> inputs)
         {
+            if (network == null)
+                buildModel();
             int inNodesN = node_gene.Where(node => node.property == GENES.NODE.IN).Count();
 
             if (inputs.Count != inNodesN)

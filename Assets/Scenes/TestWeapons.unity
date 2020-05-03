@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16a98ac888542c4940d82d674a54d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
+  projectileData: {fileID: 11400000, guid: 8681d67eb8abf4629bd7db214e5489e2, type: 2}
   target: {fileID: 0}
 --- !u!1001 &413948716
 PrefabInstance:
@@ -273,6 +273,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 6414824573621468831, guid: 780ea1ed3d1d64ecaad4190402b5357f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780ea1ed3d1d64ecaad4190402b5357f, type: 3}
 --- !u!1 &655203451 stripped
@@ -293,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16a98ac888542c4940d82d674a54d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileData: {fileID: 11400000, guid: dfe5ccc8c415047f9b70a6774e3ba62f, type: 2}
+  projectileData: {fileID: 11400000, guid: 8681d67eb8abf4629bd7db214e5489e2, type: 2}
   target: {fileID: 0}
 --- !u!114 &868750405 stripped
 MonoBehaviour:
@@ -598,7 +603,7 @@ PrefabInstance:
         type: 3}
       propertyPath: projectileData
       value: 
-      objectReference: {fileID: 11400000, guid: dfaa7b296e4084494b436061abc17302,
+      objectReference: {fileID: 11400000, guid: 844251d76dd3747ed88410f8d621f353,
         type: 2}
     - target: {fileID: 40427787033582373, guid: fb6fc9dc2c3af43269ae161b17e14a7a,
         type: 3}
@@ -609,6 +614,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spaceship
+      objectReference: {fileID: 0}
+    - target: {fileID: 1377771205222697139, guid: fb6fc9dc2c3af43269ae161b17e14a7a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1377771205222697143, guid: fb6fc9dc2c3af43269ae161b17e14a7a,
         type: 3}
@@ -713,6 +723,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParticlePooling
       objectReference: {fileID: 0}
+    - target: {fileID: 1002771175256036108, guid: a713d83a1f8a346cb839ca36fa6f7cf7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002771175256036109, guid: a713d83a1f8a346cb839ca36fa6f7cf7,
+        type: 3}
+      propertyPath: particle
+      value: 
+      objectReference: {fileID: 8588834022480376716, guid: 6369b5cf1947b4a46ae38bd6576b5892,
+        type: 3}
     - target: {fileID: 1002771175256036146, guid: a713d83a1f8a346cb839ca36fa6f7cf7,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -17,7 +17,7 @@ namespace Projectiles
         {
             evaluate();
 
-            List<float> res = weapon.evaluate(inputs);
+            List<float> res = ((ProjectileEvolutiveData)data).behaviour.evaluate(inputs);
             Vector3 vel = new Vector3(res[1] * 50f, 0f, ((res[0] + 1f) / 2f) * 50f);
 
             apply(vel);

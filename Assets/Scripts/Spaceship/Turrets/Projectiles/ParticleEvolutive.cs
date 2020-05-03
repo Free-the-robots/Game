@@ -6,7 +6,6 @@ namespace Projectiles
 {
     public class ParticleEvolutive : Particle
     {
-        public NN.Net weapon;
         protected List<float> inputs = new List<float>(4) { 0f, 0f, 0f, 1f };
 
         protected Vector3 initPos;
@@ -28,18 +27,17 @@ namespace Projectiles
         {
             evaluate();
 
-            List<float> res = weapon.evaluate(inputs);
-            Vector3 vel = new Vector3(res[1], 0f, res[0]);
+            List<float> res = ((ProjectileEvolutiveData)data).behaviour.evaluate(inputs);
+            Vector3 vel = (new Vector3(res[1], 0f, res[0]) + Vector3.forward).normalized;
 
             apply(vel);
         }
 
         protected virtual void evaluate()
         {
-            t += Time.deltaTime;
             Vector3 pos = transform.InverseTransformDirection(transform.position - initPos);
-            inputs[0] = pos.z * 1f;
-            inputs[1] = pos.x * 1f;
+            inputs[0] = pos.z;
+            inputs[1] = pos.x;
             inputs[2] = (Vector3.Distance(initPos, transform.position));
         }
     }

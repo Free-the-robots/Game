@@ -13,12 +13,12 @@ Properties
     {
         Tags
         { 
-            "Queue"="Geometry"
-            "SortingLayer"="Resources_Sprites" 
+            "Queue"="Geometry+1"
             "IgnoreProjector"="True" 
             "RenderType"="Opaque" 
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"
+            "ForceNoShadowCasting" = "True"
         }
  
         Cull Off
@@ -93,23 +93,15 @@ Properties
                 OUT.texcoord = IN.texcoord.xy;
                 OUT.color = IN.color * _Color;
 
+/*
                 // The world position of the center of the object
                 float3 worldPos = mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
  
                 // Distance between the camera and the center
                 float3 dist = _WorldSpaceCameraPos - worldPos;
  
-                // atan2(dist.x, dist.z) = atan (dist.x / dist.z)
                 // With atan the tree inverts when the camera has the same z position`
                 float angle = atan2(dist.x, dist.z);
-                float3x3 rotMatrixX;
-                float cosinusX = cos(1.57);
-                float sinusX = sin(1.57);
-       
-                // Rotation matrix in Y
-                rotMatrixX[0].xyz = float3(1, 0, 0);
-                rotMatrixX[1].xyz = float3(0, cosinusX, sinusX);
-                rotMatrixX[2].xyz = float3(0, - sinusX, cosinusX);
  
                 float3x3 rotMatrix;
                 float cosinus = cos(angle);
@@ -121,9 +113,30 @@ Properties
                 rotMatrix[2].xyz = float3(- sinus, 0, cosinus);
  
                 // The position of the vertex after the rotation
-                float4 newPos = float4(mul(rotMatrix, mul(IN.vertex * float4(_ScaleX, _ScaleY, 0, 0),RotationMatrix(_Rotation.xyz))), 1);
- 
-                OUT.vertex = mul(UNITY_MATRIX_VP, mul(unity_ObjectToWorld, newPos));
+
+                float3 mPos = mul(RotationMatrix(_Rotation.xyz),IN.vertex.xyz * float3(_ScaleX, _ScaleY, 0));
+                float4 newPos = float4(mul(rotMatrix, mPos),1);
+                OUT.vertex = mul(UNITY_MATRIX_VP, mul(unity_ObjectToWorld, newPos));//mul(unity_ObjectToWorld, newPos));
+*/
+
+                float4x4 modelView = UNITY_MATRIX_MV;
+                // Column 0:
+                modelView[0][0] = 1;
+                modelView[0][1] = 0;
+                modelView[0][2] = 0;
+
+                // Column 1:
+                modelView[1][0] = 0;
+                modelView[1][1] = 1;
+                modelView[1][2] = 0;
+
+                // Column 2:
+                modelView[2][0] = 0;
+                modelView[2][1] = 0;
+                modelView[2][2] = 1;
+
+                float3 mPos = mul(RotationMatrix(_Rotation.xyz),IN.vertex.xyz * float3(_ScaleX, _ScaleY, 0));
+                OUT.vertex = mul(UNITY_MATRIX_P,mul(modelView,float4(mPos,1)));
 
                 return OUT;
             }

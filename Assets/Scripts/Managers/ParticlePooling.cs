@@ -200,6 +200,8 @@ public class ParticlePooling : MonoBehaviour
 
         res.GetComponent<Particle>().shooterTag = tagShip;
 
+        res.GetComponent<TrailRenderer>().Clear();
+
         //res.GetComponent<Particle>().enabled = true;
 
         res.layer = layer;

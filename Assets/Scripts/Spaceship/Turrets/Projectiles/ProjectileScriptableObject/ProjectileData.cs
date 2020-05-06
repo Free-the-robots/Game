@@ -11,6 +11,8 @@ namespace Projectiles
         public float velocity = 1f;
         public float frequency = 1f;
         public float lifeTime = 1f;
-        public float damage = 0f;
+        public int damage = 0;
+
+        public ProjectilesSpecials.SPECIAL special = ProjectilesSpecials.SPECIAL.NONE;
     }
 }

@@ -53,14 +53,16 @@ public class ParticlePooling : MonoBehaviour
         typeInstantiateMap[typeof(ProjectileData)] = particleInstantiate;
         typeInstantiateMap[typeof(ProjectileEvolutiveData)] = particleInstantiateEvolutive;
         typeInstantiateMap[typeof(ProjectileGuidedData)] = particleInstantiateHoming;
+        typeInstantiateMap[typeof(ProjectileConeData)] = particleInstantiateCone;
         typeInstantiateMap[typeof(LaserData)] = particleInstantiateLaser;
         typeInstantiateMap[typeof(LaserEvolutiveData)] = particleInstantiateLaserEvo;
 
-        typeKillMap[typeof(ProjectileData)] = destroyParticle;
-        typeKillMap[typeof(ProjectileEvolutiveData)] = destroyEvolutive;
-        typeKillMap[typeof(ProjectileGuidedData)] = destroyHoming;
-        typeKillMap[typeof(LaserData)] = destroyLaser;
-        typeKillMap[typeof(LaserEvolutiveData)] = destroyLaserEvo;
+        typeKillMap[typeof(ProjectileData)] = destroyCommon;
+        typeKillMap[typeof(ProjectileEvolutiveData)] = destroyCommon;
+        typeKillMap[typeof(ProjectileGuidedData)] = destroyCommon;
+        typeKillMap[typeof(ProjectileConeData)] = destroyCommon;
+        typeKillMap[typeof(LaserData)] = destroyCommon;
+        typeKillMap[typeof(LaserEvolutiveData)] = destroyCommon;
     }
 
     // Start is called before the first frame update
@@ -122,28 +124,24 @@ public class ParticlePooling : MonoBehaviour
 
 
     //**************************MAPPING**********************/////
-    public GameObject particleInstantiate(string tag, Transform transform, ProjectileData part, int layer)
+    private GameObject particleInstantiate(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(pool, activesTransform, transform, tag, layer);
-            res.GetComponent<ParticleChooser>().particle.data = part;
-            res.GetComponent<ParticleChooser>().active = res.GetComponent<ParticleChooser>().particle;
-            res.GetComponent<ParticleChooser>().active.enabled = true;
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particle, part);
         }
         return res;
     }
 
-    public GameObject particleInstantiateEvolutive(string tag, Transform transform, ProjectileData part, int layer)
+    private GameObject particleInstantiateEvolutive(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(pool, activesTransform, transform, tag, layer);
-            res.GetComponent<ParticleChooser>().particleEvo.data = part;
-            res.GetComponent<ParticleChooser>().active = res.GetComponent<ParticleChooser>().particleEvo;
-            res.GetComponent<ParticleChooser>().active.enabled = true;
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleEvo, part);
 
             if (((ProjectileEvolutiveData)part).behaviour.network == null)
                 ((ProjectileEvolutiveData)part).behaviour.buildModel();
@@ -151,50 +149,65 @@ public class ParticlePooling : MonoBehaviour
         return res;
     }
 
-    public GameObject particleInstantiateHoming(string tag, Transform transform, ProjectileData part, int layer)
+    private GameObject particleInstantiateHoming(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(pool, activesTransform, transform, tag, layer);
-            res.GetComponent<ParticleChooser>().particleHoming.data = part;
-            res.GetComponent<ParticleChooser>().active = res.GetComponent<ParticleChooser>().particleHoming;
-            res.GetComponent<ParticleChooser>().active.enabled = true;
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleHoming, part);
         }
         return res;
     }
 
-    public GameObject particleInstantiateLaser(string tag, Transform transform, ProjectileData part, int layer)
+    private GameObject particleInstantiateCone(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(pool, activesTransform, transform, tag, layer);
-            res.GetComponent<ParticleChooser>().laser.data = part;
-            res.GetComponent<ParticleChooser>().active = res.GetComponent<ParticleChooser>().laser;
-            res.GetComponent<ParticleChooser>().active.enabled = true;
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleCone, part);
         }
         return res;
     }
 
-    public GameObject particleInstantiateLaserEvo(string tag, Transform transform, ProjectileData part, int layer)
+    private GameObject particleInstantiateLaser(string tag, Transform transform, ProjectileData part, int layer)
     {
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(pool, activesTransform, transform, tag, layer);
-            res.GetComponent<ParticleChooser>().laserevo.data = part;
-            res.GetComponent<ParticleChooser>().active = res.GetComponent<ParticleChooser>().laserevo;
-            res.GetComponent<ParticleChooser>().active.enabled = true;
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laser, part);
         }
         return res;
     }
 
-    public GameObject particleInstantiateCommon(List<GameObject> particlePool, Transform activeTrans, Transform shipTransform, string tagShip, int layer)
+    private GameObject particleInstantiateLaserEvo(string tag, Transform transform, ProjectileData part, int layer)
     {
-        GameObject res = particlePool[particlePool.Count - 1];
-        particlePool.RemoveAt(particlePool.Count - 1);
-        res.transform.parent = activeTrans;
+        GameObject res = null;
+        if (pool.Count > 0)
+        {
+            res = particleInstantiateCommon(transform, tag, layer);
+            chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laserevo, part);
+
+            if (((LaserEvolutiveData)part).behaviour.network == null)
+                ((LaserEvolutiveData)part).behaviour.buildModel();
+        }
+        return res;
+    }
+
+    private void chooseParticle(ParticleChooser chooser, Particle classObj, ProjectileData part)
+    {
+        classObj.data = part;
+        chooser.active = classObj;
+        chooser.active.enabled = true;
+    }
+
+    private GameObject particleInstantiateCommon(Transform shipTransform, string tagShip, int layer)
+    {
+        GameObject res = pool[pool.Count - 1];
+        pool.RemoveAt(pool.Count - 1);
+        res.transform.parent = activesTransform;
         res.transform.position = shipTransform.position;
         res.transform.rotation = shipTransform.rotation;
 
@@ -202,56 +215,19 @@ public class ParticlePooling : MonoBehaviour
 
         res.GetComponent<TrailRenderer>().Clear();
 
-        //res.GetComponent<Particle>().enabled = true;
-
         res.layer = layer;
         res.SetActive(true);
 
         return res;
     }
 
-    public void destroyParticle(GameObject particle)
+    private void destroyCommon(GameObject particle)
     {
+        particle.GetComponent<ParticleChooser>().active.destroyed = true;
         particle.GetComponent<ParticleChooser>().active.enabled = false;
+        particle.GetComponent<ParticleChooser>().active.data = null;
         particle.GetComponent<ParticleChooser>().active = null;
-        //particle.GetComponent<Particle>().weapon = null;
-        destroyCommon(particle);
-    }
 
-    public void destroyEvolutive(GameObject particle)
-    {
-        particle.GetComponent<ParticleChooser>().active.enabled = false;
-        particle.GetComponent<ParticleChooser>().active = null;
-        //particle.GetComponent<Particle>().weapon = null;
-        destroyCommon(particle);
-    }
-
-    public void destroyHoming(GameObject particle)
-    {
-        particle.GetComponent<ParticleChooser>().active.enabled = false;
-        particle.GetComponent<ParticleChooser>().active = null;
-        //particle.GetComponent<Particle>().weapon = null;
-        destroyCommon(particle);
-    }
-
-    public void destroyLaser(GameObject particle)
-    {
-        particle.GetComponent<ParticleChooser>().active.enabled = false;
-        particle.GetComponent<ParticleChooser>().active = null;
-        //particle.GetComponent<Particle>().weapon = null;
-        destroyCommon(particle);
-    }
-
-    public void destroyLaserEvo(GameObject particle)
-    {
-        particle.GetComponent<ParticleChooser>().active.enabled = false;
-        particle.GetComponent<ParticleChooser>().active = null;
-        //particle.GetComponent<Particle>().weapon = null;
-        destroyCommon(particle);
-    }
-
-    public void destroyCommon(GameObject particle)
-    {
         particle.SetActive(false);
         particle.transform.parent = poolParticleTransform;
         pool.Add(particle);

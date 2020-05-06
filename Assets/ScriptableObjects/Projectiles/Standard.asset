@@ -16,4 +16,5 @@ MonoBehaviour:
   velocity: 5
   frequency: 10
   lifeTime: 1
-  damage: 0
+  damage: 10
+  special: 0

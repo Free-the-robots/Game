@@ -12,8 +12,11 @@ namespace Projectiles
         protected Rigidbody body;
 
         protected float t = 0f;
+        public bool destroyed = true;
+
         protected virtual void OnEnable()
         {
+            destroyed = false;
             body = GetComponent<Rigidbody>();
 
             t = 0f;
@@ -31,16 +34,25 @@ namespace Projectiles
 
         protected virtual void OnTriggerEnter(Collider other)
         {
+            if (destroyed)
+            {
+                return;
+            }
+
             if (other.transform.tag != shooterTag)
             {
                 if (other.transform.tag.Equals("Player"))
                 {
-                    other.transform.GetComponent<SpaceshipHeart>().loseHealth(10);
+                    if (other.transform.GetComponent<SpaceshipHeart>())
+                        other.transform.GetComponent<SpaceshipHeart>().loseHealth(data.damage);
                     ParticlePooling.Instance.destroy(this.gameObject);
                 }
                 else if (other.transform.tag.Equals("Enemy"))
                 {
-                    other.transform.GetComponent<Spaceship>().loseHealth(10);
+                    if(other.transform.GetComponent<Spaceship>())
+                        other.transform.GetComponent<Spaceship>().loseHealth(data.damage);
+                    //ProjectilesSpecials.enemyTriggerBehaviour[data.special](this.gameObject, other);
+
                     ParticlePooling.Instance.destroy(this.gameObject);
                 }
             }
@@ -48,6 +60,9 @@ namespace Projectiles
 
         protected virtual void OnCollisionEnter(Collision other)
         {
+            if (destroyed)
+                return;
+
             if (other.transform.tag != shooterTag)
             {
                 //if (other.transform.tag.Equals("Player") || other.transform.tag.Equals("Enemy"))
@@ -58,7 +73,7 @@ namespace Projectiles
 
                 if (other.transform.tag.Equals("Obstacles"))
                 {
-                    transform.forward = Vector3.Reflect(transform.forward, other.GetContact(0).normal);
+                    //ProjectilesSpecials.obstacleBehaviour[data.special](this.gameObject, other);
                 }
             }
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Projectiles
 {
-    [CreateAssetMenu(fileName = "ProjectileEvolutive", menuName = "Projectiles/ProjectileEvolutive", order = 3)]
+    [CreateAssetMenu(fileName = "ProjectileEvolutive", menuName = "Projectiles/Evolutive", order = 3)]
     public class ProjectileEvolutiveData : ProjectileData
     {
         public NEAT.Person behaviour;

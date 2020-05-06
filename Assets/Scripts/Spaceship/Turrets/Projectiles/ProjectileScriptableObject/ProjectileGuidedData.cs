@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Projectiles
 {
-    [CreateAssetMenu(fileName = "ProjectileGuided", menuName = "Projectiles/ProjectileGuided", order = 1)]
+    [CreateAssetMenu(fileName = "ProjectileGuided", menuName = "Projectiles/Guided", order = 1)]
     public class ProjectileGuidedData : ProjectileData
     {
         public float forceAmount = 1f;

@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f5faf4df6844af3b67ad05ee84b117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 4232605324814160302, guid: 3d91054d8e01e483295529ed8f73d241,
+  particle: {fileID: 8588834022480376716, guid: 6369b5cf1947b4a46ae38bd6576b5892,
     type: 3}
   poolParticleTransform: {fileID: 935009311}
   activesTransform: {fileID: 303740701}

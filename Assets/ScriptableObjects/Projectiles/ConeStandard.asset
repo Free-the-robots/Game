@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: HomingStandard
-  m_EditorClassIdentifier: Assembly-CSharp:Projectiles:ProjectileGuidedData
+  m_Script: {fileID: 11500000, guid: 2913d83c945ed43f2b8cfa1c8b28baa1, type: 3}
+  m_Name: ConeStandard
+  m_EditorClassIdentifier: 
   skin: {fileID: 0}
-  velocity: 5
-  frequency: 5
-  lifeTime: 2
+  velocity: 2
+  frequency: 40
+  lifeTime: 1
   damage: 0
   special: 0
-  forceAmount: 1.3
-  target: {fileID: 0}
+  spreadAngle: 100

@@ -114,7 +114,7 @@ namespace Projectiles
 
                 if (other.transform.tag.Equals("Obstacles"))
                 {
-                    //ProjectilesSpecials.obstacleBehaviour[data.special](this.gameObject, other);
+                    ProjectilesSpecials.obstacleBehaviour[data.special](this.gameObject, other);
                 }
             }
         }

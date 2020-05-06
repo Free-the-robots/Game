@@ -34,7 +34,7 @@ namespace Projectiles
 
         public static void obstacleCommon(GameObject that, Collision other)
         {
-
+            ParticlePooling.Destroy(that);
         }
 
         public static void obstacleRicochet(GameObject that, Collision other)

@@ -29,7 +29,6 @@ public class PlayerSpaceship : Spaceship
 
     private float mAngleHeadingChar;
 
-    private float mMaxSpeed = 100F;
     private Vector3 mNormalizedDirection;
 
     //public GameEvent playerHealthUpdate;
@@ -155,9 +154,8 @@ public class PlayerSpaceship : Spaceship
         mNormalizedDirection.x = -JoystickMoving.Direction.y;
         mNormalizedDirection.y = 0F;
         mNormalizedDirection.z = JoystickMoving.Direction.x;
-        Debug.Log("mNormalizedDirection : " + (int)mNormalizedDirection.x * 10 + " " + (int)mNormalizedDirection.y * 10 + " " + (int)mNormalizedDirection.z * 10);
         //CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
-        rbody.velocity = mNormalizedDirection * mMaxSpeed * Time.deltaTime;
+        rbody.velocity = mNormalizedDirection * spaceshipData.speed * Time.deltaTime;
     }
 
     private void StopMoving()

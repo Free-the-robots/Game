@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac43d89b90d46466281724ba1c640fed, type: 3}
   m_Name: Standard
   m_EditorClassIdentifier: 
-  skin: {fileID: 0}
+  skin: {fileID: 2800000, guid: 84487d73ca4b791498332d8f6858417f, type: 3}
   velocity: 5
   frequency: 10
   lifeTime: 1

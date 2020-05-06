@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: EvolutiveStandard
-  m_EditorClassIdentifier: Assembly-CSharp:Projectiles:ProjectileEvolutiveData
+  m_Script: {fileID: 11500000, guid: 10c716fd7b6e54f4192c30878de98e6b, type: 3}
+  m_Name: EvloutiveStandard
+  m_EditorClassIdentifier: 
   skin: {fileID: 0}
-  velocity: 4
+  velocity: 1
   frequency: 1
-  lifeTime: 4
+  lifeTime: 1
   damage: 0
-  behaviour: {fileID: 11400000, guid: b7ab3a16063624e80aac8615c87ba5af, type: 2}
+  special: 0
+  behaviour: {fileID: 0}

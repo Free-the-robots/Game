@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 0
   lifeMax: 1000
-  speed: 30
+  speed: 400
   freq: 10

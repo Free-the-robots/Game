@@ -5860,6 +5860,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ship6
       objectReference: {fileID: 0}
+    - target: {fileID: 5522293603516356527, guid: 54e8a7a1e2ce0448c8b3a97197918493,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54e8a7a1e2ce0448c8b3a97197918493, type: 3}
 --- !u!1001 &1002771175286962194
@@ -5873,6 +5878,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ParticlePooling
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002771175256036108, guid: a713d83a1f8a346cb839ca36fa6f7cf7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1002771175256036146, guid: a713d83a1f8a346cb839ca36fa6f7cf7,
         type: 3}
@@ -6132,6 +6142,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EventManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4891611298756586215, guid: f5f84c370e82d49ebbd80ab0bd826f48,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5f84c370e82d49ebbd80ab0bd826f48, type: 3}
 --- !u!1001 &6414824572950348605
@@ -6250,6 +6265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6414824573621468831, guid: 780ea1ed3d1d64ecaad4190402b5357f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780ea1ed3d1d64ecaad4190402b5357f, type: 3}

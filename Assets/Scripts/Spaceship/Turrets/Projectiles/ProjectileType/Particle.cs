@@ -10,21 +10,62 @@ namespace Projectiles
 
         public string shooterTag = "";
         protected Rigidbody body;
+        protected Renderer rendererComp;
+        //protected MaterialPropertyBlock materialBlock;
 
         protected float t = 0f;
+        protected float texTime = 0f;
+        //protected int texId = 0;
         public bool destroyed = true;
+
+//       private bool animated = false;
 
         protected virtual void OnEnable()
         {
             destroyed = false;
+//            if (data.skin.Count > 0)
+//                animated = true;
             body = GetComponent<Rigidbody>();
+            rendererComp = transform.GetChild(0).GetComponent<Renderer>();
+
+            rendererComp.material.mainTexture = data.skin;
+
+            //materialBlock = new MaterialPropertyBlock();
+            //// Get the current value of the material properties in the renderer.
+            //rendererComp.GetPropertyBlock(materialBlock, 0);
+            //// Assign our new value.
+            //float[] m_arrTextureArr = new float[1];
+            //m_arrTextureArr[0] = 0;
+            //materialBlock.SetFloatArray("_TextureIdx", m_arrTextureArr);
+            //// Apply the edited values to the renderer.
+            //rendererComp.SetPropertyBlock(materialBlock, 0);
 
             t = 0f;
+            texTime = 0f;
         }
 
         protected virtual void Update()
         {
             t += Time.deltaTime;
+            texTime += Time.deltaTime;
+
+            //if(texTime > 1f/data.frequencyImage)
+            //{
+            //    texTime = 0f;
+            //    texId = (texId + 1) % data.skin.Count;
+
+            //    //// Get the current value of the material properties in the renderer.
+            //    //rendererComp.GetPropertyBlock(materialBlock, 0);
+            //    //// Assign our new value.
+            //    //float[] m_arrTextureArr = new float[1];
+            //    //m_arrTextureArr[0] = texId;
+            //    //materialBlock.SetFloat("_TextureIdx", texId);
+            //    //// Apply the edited values to the renderer.
+            //    //rendererComp.SetPropertyBlock(materialBlock, 0);
+
+            //    //rendererComp.material.mainTexture = data.skin[texId];
+            //}
+
         }
 
         protected virtual void FixedUpdate()

@@ -131,12 +131,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            //Texture2DArray textureArray = new Texture2DArray(part.skin[0].width, part.skin[0].height, part.skin.Count, part.skin[0].format, false);
-
-            //for (int i = 0; i < part.skin.Count; i++)
-            //    Graphics.CopyTexture(part.skin[i], 0, 0, textureArray, i, 0);
-
-            //res.GetComponent<Renderer>().material.SetTexture("_Textures", textureArray);
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
 
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particle, part);
         }

@@ -1,11 +1,11 @@
-﻿Shader "Custom/StandardAnimated"
+﻿Shader "Custom/AnimatedStandard"
 {
     Properties
     {
-        //_TextureIdx("Texture Idx", float) = 0
+        _TextureIdx("Texture Idx", float) = 0
         _Color ("Color", Color) = (1,1,1,1)
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        //_Textures("Textures", 2DArray) = "" {}
+        //_MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Textures("Textures", 2DArray) = "" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
     }
@@ -29,17 +29,18 @@
 
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
+        #include "UnityCG.cginc"
 
-        sampler2D _MainTex;
-        //UNITY_DECLARE_TEX2DARRAY(_Textures);
+        //sampler2D _MainTex;
+        UNITY_DECLARE_TEX2DARRAY(_Textures);
 
-        //UNITY_INSTANCING_BUFFER_START(Props)
-        //   UNITY_DEFINE_INSTANCED_PROP(float, _TextureIdx)
-        //UNITY_INSTANCING_BUFFER_END(Props)
+        UNITY_INSTANCING_BUFFER_START(Props)
+           UNITY_DEFINE_INSTANCED_PROP(float, _TextureIdx)
+        UNITY_INSTANCING_BUFFER_END(Props)
 
         struct Input
         {
-            fixed2 uv_MainTex;
+            float2 uv_MainTex;
         };
 
         half _Glossiness;
@@ -55,14 +56,13 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            //UNITY_ACCESS_INSTANCED_PROP(Props, _TextureIdx);
             // Albedo comes from a texture tinted by color
-            //fixed4 c = UNITY_SAMPLE_TEX2DARRAY(
-            //    _Textures,
-            //    float3(IN.uv_MainTex, UNITY_ACCESS_INSTANCED_PROP(Props, _TextureIdx))
-            //);
+            fixed4 c = UNITY_SAMPLE_TEX2DARRAY(
+                _Textures,
+                float3(IN.uv_MainTex, UNITY_ACCESS_INSTANCED_PROP(Props, _TextureIdx))
+            );
 
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+            //fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             o.Albedo = c.rgb;
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;

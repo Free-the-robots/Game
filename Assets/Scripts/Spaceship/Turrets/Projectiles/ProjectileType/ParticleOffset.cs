@@ -23,11 +23,6 @@ namespace Projectiles
             apply(vel);
         }
 
-        protected override void OnCollisionEnter(Collision other)
-        {
-            base.OnCollisionEnter(other);
-        }
-
         protected override void apply(Vector3 vel)
         {
             vel.x = Mathf.Sin(vel.z * Mathf.PI / 2f) * vel.x;

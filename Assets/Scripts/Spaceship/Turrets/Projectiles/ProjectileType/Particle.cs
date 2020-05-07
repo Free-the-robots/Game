@@ -121,13 +121,14 @@ namespace Projectiles
 
         protected virtual void apply(Vector3 vel)
         {
-            body.velocity = transform.TransformDirection(vel.normalized * data.velocity);
+            //body.velocity = transform.TransformDirection(vel.normalized * data.velocity);
+            transform.position += transform.TransformDirection(vel.normalized * data.velocity * Time.deltaTime);
 
             if (t > data.lifeTime)
             {
                 t = 0f;
-                body.velocity = Vector3.zero;
-                body.angularVelocity = Vector3.zero;
+//                body.velocity = Vector3.zero;
+//                body.angularVelocity = Vector3.zero;
                 ParticlePooling.Instance.destroy(this.gameObject);
             }
         }

@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skin:
   - {fileID: 2800000, guid: c8410c7cb8b4e4a76803fb5ad54c536a, type: 3}
+  - {fileID: 2800000, guid: 9e36213d9819240cc948501970c36f10, type: 3}
+  - {fileID: 2800000, guid: d64d15e080f894f028a1df1fc6717ee1, type: 3}
   textureArray: {fileID: 0}
   frequencyImage: 10
   velocity: 3
-  frequency: 10
+  frequency: 1000
   lifeTime: 1
   damage: 10
-  special: 0
+  special: 1

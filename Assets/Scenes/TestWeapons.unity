@@ -402,6 +402,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 190885632, guid: 54e8a7a1e2ce0448c8b3a97197918493, type: 3}
+      propertyPath: projectileData
+      value: 
+      objectReference: {fileID: 11400000, guid: 844251d76dd3747ed88410f8d621f353,
+        type: 2}
     - target: {fileID: 1562987765358047422, guid: 54e8a7a1e2ce0448c8b3a97197918493,
         type: 3}
       propertyPath: JoystickMoving

@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: LaserStandard
   m_EditorClassIdentifier: Assembly-CSharp:Projectiles:LaserData
-  skin: {fileID: 0}
-  velocity: 1
+  skin:
+  - {fileID: 2800000, guid: 5b56d9fa0e8bd6e409ed188db38a692c, type: 3}
+  textureArray: {fileID: 0}
+  frequencyImage: 1
+  velocity: 10
   frequency: 1
-  lifeTime: 1
+  lifeTime: 0.2
   damage: 0
-  laserLifeTime: 1
+  special: 0
+  laserLifeTime: 0.2

@@ -144,6 +144,8 @@ public class ParticlePooling : MonoBehaviour
         if (pool.Count > 0)
         {
             res = particleInstantiateCommon(transform, tag, layer);
+
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleEvo, part);
 
             if (((ProjectileEvolutiveData)part).behaviour.network == null)
@@ -158,6 +160,8 @@ public class ParticlePooling : MonoBehaviour
         if (pool.Count > 0)
         {
             res = particleInstantiateCommon(transform, tag, layer);
+
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleHoming, part);
         }
         return res;
@@ -169,6 +173,8 @@ public class ParticlePooling : MonoBehaviour
         if (pool.Count > 0)
         {
             res = particleInstantiateCommon(transform, tag, layer);
+
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleCone, part);
         }
         return res;
@@ -180,6 +186,8 @@ public class ParticlePooling : MonoBehaviour
         if (pool.Count > 0)
         {
             res = particleInstantiateCommon(transform, tag, layer);
+
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laser, part);
         }
         return res;
@@ -191,6 +199,8 @@ public class ParticlePooling : MonoBehaviour
         if (pool.Count > 0)
         {
             res = particleInstantiateCommon(transform, tag, layer);
+
+            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laserevo, part);
 
             if (((LaserEvolutiveData)part).behaviour.network == null)

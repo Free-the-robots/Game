@@ -12,12 +12,10 @@ public class RotateWhenEnabled : MonoBehaviour
     public bool loop = false;
     public bool resetLoop = false;
 
-    private Vector3 stepLoop;
     // Start is called before the first frame update
     void OnEnable()
     {
         from = transform.rotation;
-        stepLoop = (from.eulerAngles - to);
     }
 
     float t = 0f;
@@ -30,10 +28,10 @@ public class RotateWhenEnabled : MonoBehaviour
             switch (rotate_type)
             {
                 case ROTATE_TYPE.ANTICLOCKWISE:
-                    transform.Rotate(stepLoop / time * Time.deltaTime, Space.Self);
+                    transform.Rotate(to / time * Time.deltaTime, Space.Self);
                     break;
                 case ROTATE_TYPE.CLOCKWISE:
-                    transform.Rotate(-stepLoop / time * Time.deltaTime, Space.Self);
+                    transform.Rotate(-to / time * Time.deltaTime, Space.Self);
                     break;
                 case ROTATE_TYPE.CLOSEST:
                     transform.rotation = Quaternion.Lerp(from, Quaternion.Euler(to), t / time);

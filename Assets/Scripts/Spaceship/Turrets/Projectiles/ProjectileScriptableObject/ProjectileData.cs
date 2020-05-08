@@ -11,6 +11,9 @@ namespace Projectiles
         public Texture2DArray textureArray = null;
         public float frequencyImage = 2f;
         //public Texture2D skin = null;
+
+        public ProjectileData explosion = null;
+
         public float velocity = 1f;
         public float frequency = 1f;
         public float lifeTime = 1f;
@@ -22,7 +25,6 @@ namespace Projectiles
         {
             if(textureArray == null && skin.Count > 0)
             {
-
                 textureArray = new Texture2DArray(skin[0].width, skin[0].height, skin.Count, skin[0].format, false);
 
                 for (int i = 0; i < skin.Count; i++)

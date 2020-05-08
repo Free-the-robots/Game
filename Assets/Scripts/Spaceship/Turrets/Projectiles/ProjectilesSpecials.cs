@@ -11,7 +11,8 @@ namespace Projectiles
         {
             NONE,
             RICOCHET,
-            EXPLOSIF
+            EXPLOSIF,
+            SUSTAIN
         }
 
         public delegate void ActionObstacle(GameObject that, Collision other);
@@ -19,7 +20,8 @@ namespace Projectiles
         {
             { SPECIAL.NONE,obstacleCommon},
             { SPECIAL.RICOCHET,obstacleRicochet},
-            { SPECIAL.EXPLOSIF,obstacleCommon }
+            { SPECIAL.EXPLOSIF,obstacleCommon },
+            { SPECIAL.SUSTAIN,obstacleCommon }
         };
 
 
@@ -29,7 +31,8 @@ namespace Projectiles
         {
             { SPECIAL.NONE,triggerCommon},
             { SPECIAL.RICOCHET,triggerCommon },
-            { SPECIAL.EXPLOSIF,triggerCommon }
+            { SPECIAL.EXPLOSIF,triggerExplosif },
+            { SPECIAL.SUSTAIN, triggerSustain }
         };
 
         public static void obstacleCommon(GameObject that, Collision other)
@@ -44,7 +47,19 @@ namespace Projectiles
 
         public static void triggerCommon(GameObject that, Collider other)
         {
+            ParticlePooling.Instance.destroy(that.gameObject);
+        }
 
+        public static void triggerSustain(GameObject that, Collider other)
+        {
+        }
+
+        public static void triggerExplosif(GameObject that, Collider other)
+        {
+            Particle particle = that.GetComponent<ParticleChooser>().active;
+            ParticlePooling.Instance.instantiate(particle.tag, that.transform, particle.data.explosion, that.layer);
+
+            triggerCommon(that, other);
         }
     }
 }

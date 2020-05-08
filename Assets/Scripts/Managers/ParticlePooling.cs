@@ -40,6 +40,8 @@ public class ParticlePooling : MonoBehaviour
 
     public static ParticlePooling Instance { get { return instance; } }
 
+    private List<Texture2D> listParticles = new List<Texture2D>();
+    private Texture2DArray textureArray = null;
 
     private void Awake()
     {
@@ -131,7 +133,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
 
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particle, part);
         }
@@ -145,7 +147,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleEvo, part);
 
             if (((ProjectileEvolutiveData)part).behaviour.network == null)
@@ -161,7 +163,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleHoming, part);
         }
         return res;
@@ -174,7 +176,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleCone, part);
         }
         return res;
@@ -187,7 +189,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laser, part);
         }
         return res;
@@ -200,7 +202,7 @@ public class ParticlePooling : MonoBehaviour
         {
             res = particleInstantiateCommon(transform, tag, layer);
 
-            part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
+            //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laserevo, part);
 
             if (((LaserEvolutiveData)part).behaviour.network == null)
@@ -213,6 +215,22 @@ public class ParticlePooling : MonoBehaviour
     {
         classObj.data = part;
         chooser.active = classObj;
+
+        if (!listParticles.Contains(part.skin[0]))
+        {
+            chooser.active.texIdStart = listParticles.Count;
+            listParticles.AddRange(part.skin);
+            textureArray = new Texture2DArray(part.skin[0].width, part.skin[0].height, listParticles.Count, part.skin[0].format, false);
+
+            for (int i = 0; i < listParticles.Count; i++)
+                Graphics.CopyTexture(listParticles[i], 0, 0, textureArray, i, 0);
+
+            chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
+        }
+        else
+        {
+            chooser.active.texIdStart = listParticles.IndexOf(part.skin[0]);
+        }
         chooser.active.enabled = true;
     }
 

@@ -16,26 +16,29 @@ namespace Projectiles
         protected float t = 0f;
         protected float texTime = 0f;
         protected int texId = 0;
+        public int texIdStart = 0;
         public bool destroyed = true;
 
         private bool animated = false;
+        protected virtual void Awake()
+        {
+            body = GetComponent<Rigidbody>();
+            rendererComp = transform.GetChild(0).GetComponent<Renderer>();
+            materialBlock = new MaterialPropertyBlock();
+        }
 
         protected virtual void OnEnable()
         {
             destroyed = false;
-            if (data.skin.Count > 0)
+            if (data.skin.Count > 1)
                 animated = true;
-
-            body = GetComponent<Rigidbody>();
-            rendererComp = transform.GetChild(0).GetComponent<Renderer>();
 
             //rendererComp.material.mainTexture = data.skin;
 
-            materialBlock = new MaterialPropertyBlock();
             // Get the current value of the material properties in the renderer.
             rendererComp.GetPropertyBlock(materialBlock, 0);
             // Assign our new value.
-            materialBlock.SetFloat("_TextureIdx", texId);
+            materialBlock.SetFloat("_TextureIdx", texIdStart + texId);
             // Apply the edited values to the renderer.
             rendererComp.SetPropertyBlock(materialBlock, 0);
 
@@ -58,14 +61,20 @@ namespace Projectiles
                     // Get the current value of the material properties in the renderer.
                     rendererComp.GetPropertyBlock(materialBlock, 0);
                     // Assign our new value.
-                    materialBlock.SetFloat("_TextureIdx", texId);
+                    materialBlock.SetFloat("_TextureIdx", texIdStart + texId);
                     // Apply the edited values to the renderer.
                     rendererComp.SetPropertyBlock(materialBlock, 0);
 
                     //rendererComp.material.mainTexture = data.skin[texId];
                 }
             }
+        }
 
+        protected virtual void OnDisable()
+        {
+            texId = 0;
+            texIdStart = 0;
+            destroyed = true;
         }
 
         protected virtual void FixedUpdate()
@@ -92,9 +101,7 @@ namespace Projectiles
                 {
                     if(other.transform.GetComponent<Spaceship>())
                         other.transform.GetComponent<Spaceship>().loseHealth(data.damage);
-                    //ProjectilesSpecials.enemyTriggerBehaviour[data.special](this.gameObject, other);
-
-                    ParticlePooling.Instance.destroy(this.gameObject);
+                    ProjectilesSpecials.enemyTriggerBehaviour[data.special](this.gameObject, other);
                 }
             }
         }
@@ -126,6 +133,7 @@ namespace Projectiles
 
             if (t > data.lifeTime)
             {
+                Debug.Log(data.lifeTime);
                 t = 0f;
 //                body.velocity = Vector3.zero;
 //                body.angularVelocity = Vector3.zero;

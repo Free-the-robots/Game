@@ -35,7 +35,7 @@
         UNITY_DECLARE_TEX2DARRAY(_Textures);
 
         UNITY_INSTANCING_BUFFER_START(Props)
-           UNITY_DEFINE_INSTANCED_PROP(float, _TextureIdx)
+           UNITY_DEFINE_INSTANCED_PROP(fixed, _TextureIdx)
         UNITY_INSTANCING_BUFFER_END(Props)
 
         struct Input

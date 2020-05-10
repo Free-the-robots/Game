@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac43d89b90d46466281724ba1c640fed, type: 3}
   m_Name: ExplosionStandard
   m_EditorClassIdentifier: 
-  skin: []
+  skin:
+  - {fileID: 2800000, guid: 39e9bd8c9e1ff4a948b47a868e9b568a, type: 3}
   textureArray: {fileID: 0}
   frequencyImage: 2
   explosion: {fileID: 0}
-  velocity: 1
-  frequency: 1
-  lifeTime: 1
+  velocity: 0
+  frequency: 0
+  lifeTime: 5
   damage: 0
-  special: 0
+  special: 3

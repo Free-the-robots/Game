@@ -18,8 +18,9 @@ MonoBehaviour:
   - {fileID: 2800000, guid: d64d15e080f894f028a1df1fc6717ee1, type: 3}
   textureArray: {fileID: 0}
   frequencyImage: 10
+  explosion: {fileID: 11400000, guid: 51c01dee37123401d822f0a00b6c9f49, type: 2}
   velocity: 3
-  frequency: 1000
+  frequency: 5
   lifeTime: 1
   damage: 10
-  special: 1
+  special: 2

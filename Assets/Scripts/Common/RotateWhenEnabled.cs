@@ -17,7 +17,7 @@ public class RotateWhenEnabled : MonoBehaviour
     void OnEnable()
     {
         from = transform.rotation;
-        stepLoop = (from.eulerAngles - to);
+        stepLoop = (to);
     }
 
     float t = 0f;

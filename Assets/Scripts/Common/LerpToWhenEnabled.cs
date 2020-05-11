@@ -15,6 +15,7 @@ public class LerpToWhenEnabled : MonoBehaviour
     public float time = 1f;
 
     public bool flip = false;
+    public bool flipWhenFinished = true;
 
     float t = 0f;
     
@@ -59,6 +60,8 @@ public class LerpToWhenEnabled : MonoBehaviour
         }
         else
         {
+            if (flipWhenFinished)
+                flip = !flip;
             transform.position = toPosition;
             transform.rotation = toQuaternion;
             enabled = false;

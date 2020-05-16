@@ -13,16 +13,12 @@ public class CanvasGroupFade : MonoBehaviour
     private short step = 1;
 
     public bool disableGameObjectWhenFinished = true;
-    public bool activateReponseWhenFinished = false;
-    public bool InvokeWhenFinished { get { return activateReponseWhenFinished; } set { activateReponseWhenFinished = value; } }
-    public UnityEvent ResponseWhenFinished;
-    // Start is called before the first frame update
-    void Start()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
+    public UnityEvent ResponseWhenFinishedBegin;
+    public UnityEvent ResponseWhenFinishedEnd;
+
     void OnEnable()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
         if (flip)
             step = 1;
         else
@@ -38,8 +34,8 @@ public class CanvasGroupFade : MonoBehaviour
             canvasGroup.alpha = 0;
             if (flipWhenFinished)
                 flip = !flip;
-            if(activateReponseWhenFinished)
-                ResponseWhenFinished.Invoke();
+
+            ResponseWhenFinishedEnd.Invoke();
             enabled = false;
             gameObject.SetActive(false);
         }
@@ -48,9 +44,14 @@ public class CanvasGroupFade : MonoBehaviour
             canvasGroup.alpha = 1;
             if (flipWhenFinished)
                 flip = !flip;
-            //if(activateReponseWhenFinished)
-            //    ResponseWhenFinished.Invoke();
+
+            ResponseWhenFinishedBegin.Invoke();
             enabled = false;
         }
+    }
+
+    public void ResetFills()
+    {
+        GetComponent<CanvasGroup>().alpha = 0;
     }
 }

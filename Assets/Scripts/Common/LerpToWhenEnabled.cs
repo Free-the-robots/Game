@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LerpToWhenEnabled : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class LerpToWhenEnabled : MonoBehaviour
 
     public bool flip = false;
     public bool flipWhenFinished = true;
+
+    public UnityEvent ResponseWhenFinishedBegin;
+    public UnityEvent ResponseWhenFinishedEnd;
 
     float t = 0f;
     
@@ -51,7 +55,7 @@ public class LerpToWhenEnabled : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (t/time < 1f)
+        if (t < time)
         {
             t += Time.deltaTime;
             float tLerp = t * t * (3 - 2 * t);
@@ -60,6 +64,10 @@ public class LerpToWhenEnabled : MonoBehaviour
         }
         else
         {
+            if(!flip)
+                ResponseWhenFinishedEnd.Invoke();
+            else
+                ResponseWhenFinishedBegin.Invoke();
             if (flipWhenFinished)
                 flip = !flip;
             transform.position = toPosition;

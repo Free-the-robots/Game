@@ -8,6 +8,7 @@ public class LerpAlphaWhenEnabled : MonoBehaviour
 {
     float t = 0f;
     public float time = 1f;
+    public float max = 1f;
     Image imageSprite;
 
     public UnityEvent Response;
@@ -15,6 +16,10 @@ public class LerpAlphaWhenEnabled : MonoBehaviour
     void OnEnable()
     {
         imageSprite = GetComponent<Image>();
+        if(t < time)
+        {
+            imageSprite.color = new Color(imageSprite.color.r, imageSprite.color.g, imageSprite.color.b, 0);
+        }
         t = 0f;
     }
 
@@ -22,7 +27,7 @@ public class LerpAlphaWhenEnabled : MonoBehaviour
     void Update()
     {
         t += Time.deltaTime;
-        imageSprite.color = new Color(imageSprite.color.r, imageSprite.color.g, imageSprite.color.b, t / time);
+        imageSprite.color = new Color(imageSprite.color.r, imageSprite.color.g, imageSprite.color.b, t / time*max);
         if(t > time)
         {
             Response.Invoke();

@@ -11,8 +11,7 @@ public class EnableClusterPlanet : MonoBehaviour
     // Start is called before the first frame update
     public void enableAll()
     {
-        line.enabled = true;
-        percentage.enabled = true;
+        enablePercentage();
         GetComponent<CanvasGroupFade>().enabled = true;
         gameObject.SetActive(true);
     }
@@ -23,7 +22,11 @@ public class EnableClusterPlanet : MonoBehaviour
         percentage.ResetFills();
         foreach (PlanetEnabler planete in planets)
             planete.ResetFills();
-        foreach (GameObject gb in planet3D)
-            gb.SetActive(false);
+    }
+
+    public void enablePercentage()
+    {
+        line.enabled = true;
+        percentage.enabled = true;
     }
 }

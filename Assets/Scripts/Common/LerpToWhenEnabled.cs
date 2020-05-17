@@ -8,9 +8,11 @@ public class LerpToWhenEnabled : MonoBehaviour
     public Transform from;
     public Transform to;
     private Vector3 fromPosition;
+    public Vector3 fromOffset = Vector3.zero;
     private Quaternion fromQuaternion;
 
     private Vector3 toPosition;
+    public Vector3 toOffset = Vector3.zero;
     private Quaternion toQuaternion;
 
     public float time = 1f;
@@ -21,6 +23,9 @@ public class LerpToWhenEnabled : MonoBehaviour
     public UnityEvent ResponseWhenFinishedBegin;
     public UnityEvent ResponseWhenFinishedEnd;
 
+    public bool lerpRotate = true;
+    public bool lerpPosition = true;
+
     float t = 0f;
     
     // Start is called before the first frame update
@@ -28,23 +33,23 @@ public class LerpToWhenEnabled : MonoBehaviour
     {
         if(from == null)
         {
-            fromPosition = transform.position;
+            fromPosition = transform.position + fromOffset;
             fromQuaternion = transform.rotation;
         }
         else
         {
             if (flip)
             {
-                fromPosition = to.position;
+                fromPosition = to.position + toOffset;
                 fromQuaternion = to.rotation;
-                toPosition = from.position;
+                toPosition = from.position + fromOffset;
                 toQuaternion = from.rotation;
             }
             else
             {
-                fromPosition = from.position;
+                fromPosition = from.position + fromOffset;
                 fromQuaternion = from.rotation;
-                toPosition = to.position;
+                toPosition = to.position + toOffset;
                 toQuaternion = to.rotation;
             }
         }
@@ -59,8 +64,10 @@ public class LerpToWhenEnabled : MonoBehaviour
         {
             t += Time.deltaTime;
             float tLerp = t * t * (3 - 2 * t);
-            transform.position = Vector3.Lerp(fromPosition, toPosition, tLerp / time);
-            transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, tLerp / time);
+            if (lerpPosition)
+                transform.position = Vector3.Lerp(fromPosition, toPosition, tLerp / time);
+            if (lerpRotate)
+                transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, tLerp / time);
         }
         else
         {
@@ -70,9 +77,31 @@ public class LerpToWhenEnabled : MonoBehaviour
                 ResponseWhenFinishedBegin.Invoke();
             if (flipWhenFinished)
                 flip = !flip;
-            transform.position = toPosition;
-            transform.rotation = toQuaternion;
+            if (lerpPosition)
+                transform.position = toPosition;
+            if (lerpRotate)
+                transform.rotation = toQuaternion;
             enabled = false;
         }
+    }
+
+    public void setOffsetZTo(float z)
+    {
+        toOffset.z = z;
+    }
+
+    public void setOffsetZFrom(float z)
+    {
+        fromOffset.z = z;
+    }
+
+    public void setToTransform(Transform toTransform)
+    {
+        to = toTransform;
+    }
+
+    public void setFromTransform(Transform fromTransform)
+    {
+        from = fromTransform;
     }
 }

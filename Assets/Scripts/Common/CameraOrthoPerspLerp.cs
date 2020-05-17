@@ -18,6 +18,8 @@ public class CameraOrthoPerspLerp : MonoBehaviour
     private void Awake()
     {
         float aspect = (float)Screen.width / (float)Screen.height;
+        if (GetComponent<Camera>().targetTexture != null)
+            aspect = GetComponent<Camera>().targetTexture.width / (float)GetComponent<Camera>().targetTexture.height;
 
         ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far);
         perspective = Matrix4x4.Perspective(fov, aspect, near, far);

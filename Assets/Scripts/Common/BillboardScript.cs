@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BillboardScript : MonoBehaviour
 {
+    public Transform faceSecondary = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,9 @@ public class BillboardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(Camera.main.transform.position, Vector3.up);
+        if(faceSecondary == null)
+            transform.LookAt(Camera.main.transform.position, Vector3.up);
+        else
+            transform.LookAt(faceSecondary.position, Vector3.up);
     }
 }

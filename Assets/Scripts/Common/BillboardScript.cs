@@ -17,6 +17,6 @@ public class BillboardScript : MonoBehaviour
         if(faceSecondary == null)
             transform.LookAt(Camera.main.transform.position, Vector3.up);
         else
-            transform.LookAt(faceSecondary.position, Vector3.up);
+            transform.rotation = Quaternion.LookRotation((transform.position - faceSecondary.position).normalized, Vector3.up);
     }
 }

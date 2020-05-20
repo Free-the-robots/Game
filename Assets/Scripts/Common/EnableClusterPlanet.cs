@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnableClusterPlanet : MonoBehaviour
 {
+    public int id = 0;
     public FillUIParent line;
     public FillUIParent percentage;
     public CanvasGroupFade planetInfo;
@@ -29,7 +30,9 @@ public class EnableClusterPlanet : MonoBehaviour
 
     public void enablePercentage()
     {
+        line.maxPercentile = UserData.UserDataManager.Instance.userData.clusters[id].percentage();
         line.enabled = true;
+        percentage.maxPercentile = line.maxPercentile;
         percentage.enabled = true;
     }
 

@@ -8,10 +8,19 @@ public class LevelSelector : MonoBehaviour
 {
     public Camera cameraTexture;
     public RawImage renderTexture;
+    public int id = 0;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        
+        //planet
+        for(int i = 0; i < transform.childCount; ++i)
+        {
+            LevelSelectorRaycast[] ls = transform.GetChild(i).GetComponentsInChildren<LevelSelectorRaycast>();
+            foreach(LevelSelectorRaycast level in ls)
+            {
+                level.updateInfo(id, i);
+            }
+        }
     }
 
     // Update is called once per frame

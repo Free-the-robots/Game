@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable, CreateAssetMenu(fileName = "SData", menuName = "Spaceship/SpaceshipData", order = 1)]
 public class SpaceshipData : ScriptableObject
 {
+    public int id;
     public float life;
     public float lifeMax;
 

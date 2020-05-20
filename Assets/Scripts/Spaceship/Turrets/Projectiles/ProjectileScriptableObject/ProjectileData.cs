@@ -7,6 +7,7 @@ namespace Projectiles
     [CreateAssetMenu(fileName = "Projectile", menuName = "Projectiles/Projectile", order = 0)]
     public class ProjectileData : ScriptableObject
     {
+        public int id = 0;
         public List<Texture2D> skin = new List<Texture2D>();
         public Texture2DArray textureArray = null;
         public float frequencyImage = 2f;

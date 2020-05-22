@@ -10,6 +10,9 @@ namespace UserData
         private static UserDataManager instance;
         public readonly UserData userData = new UserData();
 
+        public List<SpaceshipData> spaceshipScriptableData = new List<SpaceshipData>();
+        public List<SpaceshipData> weaponScriptableData = new List<SpaceshipData>();
+
         public static UserDataManager Instance { get { return instance; } }
 
         private string userDataPath = "";

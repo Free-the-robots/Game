@@ -40,10 +40,11 @@ namespace UserData
         {
             LoadSerialize(data);
         }
-        public CommonData(int exp, byte lvl)
+        public CommonData(int exp, byte lvl, ushort id)
         {
             this.exp = exp;
             this.level = lvl;
+            this.id = id;
         }
 
         public override byte[] Serialize()
@@ -113,6 +114,8 @@ namespace UserData
         public List<ShipData> ships = new List<ShipData>();
         public List<WeaponData> weapons = new List<WeaponData>();
 
+        public int shipEquiped = 0;
+
         public UserData()
         {
 
@@ -141,6 +144,12 @@ namespace UserData
             cluster.planets.Add(planetData3);
 
             clusters.Add(cluster);
+
+            for(int i = 0; i < 10; ++i)
+            {
+                ShipData ship = new ShipData(10, 2, (ushort)i);
+                ships.Add(ship);
+            }
         }
 
         public void test()
@@ -163,8 +172,8 @@ namespace UserData
             }
             for (int i = 0; i < 20; ++i)
             {
-                weapons.Add(new WeaponData(0, (byte)i));
-                ships.Add(new ShipData(0, (byte)i));
+                weapons.Add(new WeaponData(0, (byte)i, (ushort)i));
+                ships.Add(new ShipData(0, (byte)i, (ushort)i));
             }
 
             string test = "test : ";
@@ -210,15 +219,6 @@ namespace UserData
                 clusters.Add(cluster);
                 j += cluster.byteCount();
             }
-            size = BitConverter.ToInt32(data, j);
-            ships = new List<ShipData>(size);
-            j += sizeof(int);
-            for (int i = 0; i < size; i++)
-            {
-                ShipData ship = new ShipData(data.Skip(j).ToArray());
-                ships.Add(ship);
-                j += ship.byteCount();
-            }
 
             size = BitConverter.ToInt32(data, j);
             weapons = new List<WeaponData>(size);
@@ -228,6 +228,16 @@ namespace UserData
                 WeaponData weapon = new WeaponData(data.Skip(j).ToArray());
                 weapons.Add(weapon);
                 j += weapon.byteCount();
+            }
+
+            size = BitConverter.ToInt32(data, j);
+            ships = new List<ShipData>(size);
+            j += sizeof(int);
+            for (int i = 0; i < size; i++)
+            {
+                ShipData ship = new ShipData(data.Skip(j).ToArray());
+                ships.Add(ship);
+                j += ship.byteCount();
             }
 
             return this;

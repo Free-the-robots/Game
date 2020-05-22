@@ -17,7 +17,7 @@ namespace UserData
             LoadSerialize(data);
         }
 
-        public WeaponData(int exp, byte lvl) : base(exp, lvl)
+        public WeaponData(int exp, byte lvl, ushort id) : base(exp, lvl, id)
         {
 
         }
@@ -49,7 +49,7 @@ namespace UserData
             LoadSerialize(data);
         }
 
-        public EvoWeaponData(int exp, byte lvl) : base(exp, lvl)
+        public EvoWeaponData(int exp, byte lvl, ushort id) : base(exp, lvl, id)
         {
 
         }

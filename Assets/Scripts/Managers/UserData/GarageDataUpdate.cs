@@ -19,10 +19,12 @@ public class GarageDataUpdate : MonoBehaviour
 
     public Camera secondCamera;
 
-    public Transform shipTransform;
+    public Transform ship3D;
 
     public Transform shipContent;
     public GameObject ScrollButton;
+
+    public ToggleGroup togglesGroup;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -42,11 +44,12 @@ public class GarageDataUpdate : MonoBehaviour
         UpdateStats();
 
         //Active gameobjects
-        shipTransform.gameObject.SetActive(true);
-        shipTransform.GetChild(actualShip.id).gameObject.SetActive(true);
+        ship3D.gameObject.SetActive(true);
+        ship3D.GetChild(actualShip.id).gameObject.SetActive(true);
 
         ToggleGroup toggleGroup = shipContent.GetComponent<ToggleGroup>();
-        for(int i = 0; i < 10; ++i)
+
+        for (int i = 0; i < 10; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             button.transform.SetParent(shipContent);
@@ -68,17 +71,19 @@ public class GarageDataUpdate : MonoBehaviour
         actualShip = userData.ships.Find(i => i.id == toggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex());
         actualShipData = userManager.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
 
+        UpdateStats();
+
         ActivateShip(actualShip.id);
     }
 
     public void DisableShip(int id)
     {
-        shipTransform.GetChild(id).gameObject.SetActive(false);
+        ship3D.GetChild(id).gameObject.SetActive(false);
     }
 
     public void ActivateShip(int id)
     {
-        shipTransform.GetChild(actualShip.id).gameObject.SetActive(true);
+        ship3D.GetChild(actualShip.id).gameObject.SetActive(true);
     }
 
     public void UpdateStats()
@@ -95,14 +100,42 @@ public class GarageDataUpdate : MonoBehaviour
 
     private void OnDisable()
     {
-        shipTransform.gameObject.SetActive(false);
+        ship3D.gameObject.SetActive(false);
         DisableShip(actualShip.id);
         secondCamera.GetComponent<CameraOrthoPerspLerp>().enabled = true;
+    }
+
+    bool animating = false;
+    float t = 0f;
+    private Quaternion rotationShip;
+    public void UpdateWeaponPage(bool toggle)
+    {
+        if (toggle)
+        {
+            ship3D.GetComponent<RotateWhenEnabled>().enabled = false;
+            animating = true;
+            t = 0f;
+            rotationShip = ship3D.rotation;
+        }
+        else
+        {
+            ship3D.GetComponent<RotateWhenEnabled>().enabled = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (animating)
+        {
+            t += Time.deltaTime;
+            ship3D.rotation = Quaternion.Lerp(rotationShip, Quaternion.Euler(new Vector3(0f, 190f, 0f)), t * t * (3 - 2 * t));
+            if(t > 1f)
+            {
+                t = 0f;
+                animating = false;
+                ship3D.rotation = Quaternion.Euler(new Vector3(0f, 190f, 0f));
+            }
+        }
     }
 }

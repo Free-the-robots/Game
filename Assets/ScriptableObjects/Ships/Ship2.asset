@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 308a22279508742e080583c90460ae8e, type: 3}
-  m_Name: Ship0
+  m_Name: Ship2
   m_EditorClassIdentifier: 
-  id: 0
-  shipName: Yo
-  description: Blablalbal
-  life: 20
+  id: 2
+  shipName: RoRoRo
+  description: SDFFDFG
+  life: 100
   lifeMax: 1000
-  speed: 0.4
-  damage: 0.3
-  shield: 0.6
-  armor: 0.2
-  rarity: 3
-  freq: 5
+  speed: 1
+  damage: 23
+  shield: 15
+  armor: 65
+  rarity: 5
+  freq: 20

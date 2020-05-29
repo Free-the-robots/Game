@@ -28,6 +28,9 @@ public class GarageDataUpdate : MonoBehaviour
 
     public ToggleGroup togglesGroup;
     public ToggleGroup weaponToggleGroup;
+    public ToggleGroup weapon3DToggle;
+    public GameObject weapon3DToggleObj;
+    public RectTransform shipRawImage;
 
     private List<Weapon.Turret> actualTurrets = new List<Weapon.Turret>();
 
@@ -59,27 +62,36 @@ public class GarageDataUpdate : MonoBehaviour
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             button.transform.SetParent(shipContent);
-            button.GetComponent<Toggle>().onValueChanged.AddListener((bool val) => UpdateShip(val));
+            int tmpI = i;
+            button.GetComponent<Toggle>().onValueChanged.AddListener((bool val) => UpdateShip(val, tmpI));
             button.GetComponent<Toggle>().group = toggleGroup;
             toggleGroup.ActiveToggles().FirstOrDefault();
             button.GetComponentInChildren<Text>().text = " " + i;
         }
     }
 
-    public void UpdateShip(bool toggle)
+    public void UpdateShip(bool toggle, int index)
     {
-        ToggleGroup toggleGroup = shipContent.GetComponent<ToggleGroup>();
+        if (toggle)
+        {
+            if (actualShip.id != index)
+            {
+                DisableShip(actualShip.id);
 
-        DisableShip(actualShip.id);
+                UserData.UserData userData = UserDataManager.Instance.userData;
+                AssetDataManager assetData = AssetDataManager.Instance;
+                actualShip = userData.ships.Find(i => i.id == index);
+                actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
 
-        UserData.UserData userData = UserDataManager.Instance.userData;
-        AssetDataManager assetData = AssetDataManager.Instance;
-        actualShip = userData.ships.Find(i => i.id == toggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex());
-        actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
+                UpdateStats();
 
-        UpdateStats();
-
-        ActivateShip(actualShip.id);
+                ActivateShip(actualShip.id);
+            }
+            else
+            {
+                Debug.Log("Equip " + index);
+            }
+        }
     }
 
     public void DisableShip(int id)
@@ -134,10 +146,55 @@ public class GarageDataUpdate : MonoBehaviour
             {
                 toggleWeapon.interactable = toggleWeapon.transform.GetSiblingIndex() < actualTurrets.Count;
             }
+
+            updateToggleWeapon();
         }
         else
         {
             ship3D.GetComponent<RotateWhenEnabled>().enabled = true;
+            foreach(Transform trans in weapon3DToggle.transform)
+            {
+                GameObject.Destroy(trans.gameObject);
+            }
+        }
+    }
+
+    private void updateToggleWeapon()
+    {
+        //Project 3D object to screen
+        RawImage rawImage = shipRawImage.GetComponent<RawImage>();
+        Vector2 cornerPos = shipRawImage.rect.min + new Vector2(shipRawImage.position.x, shipRawImage.position.y);
+        foreach (Weapon.Turret turret in actualTurrets)
+        {
+            Vector3 pos = secondCamera.WorldToScreenPoint(turret.transform.position);
+            pos.Scale(new Vector3(shipRawImage.rect.width / rawImage.mainTexture.width, shipRawImage.rect.height / rawImage.mainTexture.height, 0f));
+            pos += new Vector3(cornerPos.x, cornerPos.y, 0f);
+            GameObject wpT = GameObject.Instantiate(weapon3DToggleObj);
+            wpT.transform.SetParent(weapon3DToggle.transform);
+            wpT.GetComponent<RectTransform>().position = pos;
+            Toggle toggle = wpT.GetComponent<Toggle>();
+            toggle.group = weapon3DToggle;
+            toggle.onValueChanged.AddListener((bool val) => updateWeaponFrom3D(val));
+            toggle.isOn = false;
+        }
+        weapon3DToggle.transform.GetChild(0).GetComponent<Toggle>().isOn = true;
+    }
+
+    private void updateWeaponFrom3D(bool toggle)
+    {
+        if (toggle && weapon3DToggle.ActiveToggles().FirstOrDefault() != null)
+        {
+            int i = weapon3DToggle.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex();
+            weaponToggleGroup.transform.GetChild(i).GetComponent<Toggle>().isOn = true;
+        }
+    }
+
+    public void updateWeaponFromToggle(bool toggle)
+    {
+        if (toggle)
+        {
+            int i = weaponToggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex();
+            weapon3DToggle.transform.GetChild(i).GetComponent<Toggle>().isOn = true;
         }
     }
 
@@ -148,17 +205,25 @@ public class GarageDataUpdate : MonoBehaviour
         {
             t += Time.deltaTime;
             ship3D.rotation = Quaternion.Lerp(rotationShip, Quaternion.Euler(new Vector3(0f, 190f, 0f)), t * t * (3 - 2 * t));
-            if(t > 1f)
+
+
+            RawImage rawImage = shipRawImage.GetComponent<RawImage>();
+            Vector2 cornerPos = shipRawImage.rect.min + new Vector2(shipRawImage.position.x, shipRawImage.position.y);
+            int i = 0;
+            foreach (Transform weaponToggle in weapon3DToggle.transform)
+            {
+                Vector3 pos = secondCamera.WorldToScreenPoint(actualTurrets[i].transform.position);
+                pos.Scale(new Vector3(shipRawImage.rect.width / rawImage.mainTexture.width, shipRawImage.rect.height / rawImage.mainTexture.height, 0f));
+                pos += new Vector3(cornerPos.x, cornerPos.y, 0f);
+                weaponToggle.position = pos;
+                i++;
+            }
+            if (t > 1f)
             {
                 t = 0f;
                 animating = false;
                 ship3D.rotation = Quaternion.Euler(new Vector3(0f, 190f, 0f));
             }
-        }
-
-        if(togglesGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex() == 1)
-        {
-
         }
     }
 }

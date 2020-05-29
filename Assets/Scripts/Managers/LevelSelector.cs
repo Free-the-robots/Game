@@ -33,8 +33,7 @@ public class LevelSelector : MonoBehaviour
             {
                 RectTransform rect1 = renderTexture.rectTransform;
                 Vector3 pos = Input.mousePosition;
-                pos.Scale(new Vector3(1f / Screen.width, 1f / Screen.height, 1f));
-                pos.Scale(new Vector3(renderTexture.mainTexture.width, renderTexture.mainTexture.height, 1f));
+                pos.Scale(new Vector3(renderTexture.mainTexture.width / Screen.width, renderTexture.mainTexture.height / Screen.height, 1f));
                 ray = cameraTexture.ScreenPointToRay(pos); //trying to single select
             }
             RaycastHit hit;

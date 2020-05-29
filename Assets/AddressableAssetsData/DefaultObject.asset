@@ -9,17 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308a22279508742e080583c90460ae8e, type: 3}
-  m_Name: Ship1
+  m_Script: {fileID: 11500000, guid: 3a189bb168d8d90478a09ea08c2f3d72, type: 3}
+  m_Name: DefaultObject
   m_EditorClassIdentifier: 
-  id: 1
-  shipName: YO1
-  description: Walla
-  life: 0
-  lifeMax: 0
-  speed: 0.8
-  damage: 40
-  shield: 23
-  armor: 12
-  rarity: 1
-  freq: 10
+  m_AddressableAssetSettingsGuid: 246ecaa72c3a4425ea27df4471eb068e

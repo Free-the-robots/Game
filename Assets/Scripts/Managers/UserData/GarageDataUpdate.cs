@@ -9,6 +9,7 @@ public class GarageDataUpdate : MonoBehaviour
 {
     private ShipData actualShip;
     private SpaceshipData actualShipData;
+    private Transform actualShipObject;
     private List<ShipData> lockedShips;
     private List<ShipData> unlockedShips;
 
@@ -22,20 +23,25 @@ public class GarageDataUpdate : MonoBehaviour
     public Transform ship3D;
 
     public Transform shipContent;
+    public Transform weaponContent;
     public GameObject ScrollButton;
 
     public ToggleGroup togglesGroup;
+    public ToggleGroup weaponToggleGroup;
+
+    private List<Weapon.Turret> actualTurrets = new List<Weapon.Turret>();
 
     // Start is called before the first frame update
     void OnEnable()
     {
         secondCamera.GetComponent<CameraOrthoPerspLerp>().enabled = true;
+        ship3D.gameObject.SetActive(true);
 
         //Get Data from user data
-        UserDataManager userManager = UserDataManager.Instance;
-        UserData.UserData userData = userManager.userData;
+        UserData.UserData userData = UserDataManager.Instance.userData;
+        AssetDataManager assetData = AssetDataManager.Instance;
         actualShip = userData.ships.Find(i => i.id == userData.shipEquiped);
-        actualShipData = userManager.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
+        actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
 
         lockedShips = userData.ships.Where(i => !i.unlocked).OrderBy(obj=>obj.id).ToList();
         unlockedShips = userData.ships.Where(i => i.unlocked).OrderBy(obj => obj.id).ToList();
@@ -45,11 +51,11 @@ public class GarageDataUpdate : MonoBehaviour
 
         //Active gameobjects
         ship3D.gameObject.SetActive(true);
-        ship3D.GetChild(actualShip.id).gameObject.SetActive(true);
+        ActivateShip(actualShip.id);
 
         ToggleGroup toggleGroup = shipContent.GetComponent<ToggleGroup>();
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < AssetDataManager.Instance.spaceshipObject.Count; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             button.transform.SetParent(shipContent);
@@ -66,10 +72,10 @@ public class GarageDataUpdate : MonoBehaviour
 
         DisableShip(actualShip.id);
 
-        UserDataManager userManager = UserDataManager.Instance;
-        UserData.UserData userData = userManager.userData;
+        UserData.UserData userData = UserDataManager.Instance.userData;
+        AssetDataManager assetData = AssetDataManager.Instance;
         actualShip = userData.ships.Find(i => i.id == toggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex());
-        actualShipData = userManager.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
+        actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
 
         UpdateStats();
 
@@ -78,12 +84,14 @@ public class GarageDataUpdate : MonoBehaviour
 
     public void DisableShip(int id)
     {
-        ship3D.GetChild(id).gameObject.SetActive(false);
+        actualShipObject.gameObject.SetActive(false);
+        actualShipObject = null;
     }
 
     public void ActivateShip(int id)
     {
-        ship3D.GetChild(actualShip.id).gameObject.SetActive(true);
+        actualShipObject = ship3D.GetChild(id);
+        actualShipObject.gameObject.SetActive(true);
     }
 
     public void UpdateStats()
@@ -102,12 +110,16 @@ public class GarageDataUpdate : MonoBehaviour
     {
         ship3D.gameObject.SetActive(false);
         DisableShip(actualShip.id);
-        secondCamera.GetComponent<CameraOrthoPerspLerp>().enabled = true;
+        foreach(Transform transform in shipContent)
+        {
+            GameObject.Destroy(transform.gameObject);
+        }
     }
 
     bool animating = false;
     float t = 0f;
     private Quaternion rotationShip;
+
     public void UpdateWeaponPage(bool toggle)
     {
         if (toggle)
@@ -116,6 +128,12 @@ public class GarageDataUpdate : MonoBehaviour
             animating = true;
             t = 0f;
             rotationShip = ship3D.rotation;
+
+            actualTurrets = actualShipObject.GetComponentsInChildren<Weapon.Turret>().ToList();
+            foreach(Toggle toggleWeapon in weaponToggleGroup.GetComponentsInChildren<Toggle>())
+            {
+                toggleWeapon.interactable = toggleWeapon.transform.GetSiblingIndex() < actualTurrets.Count;
+            }
         }
         else
         {
@@ -136,6 +154,11 @@ public class GarageDataUpdate : MonoBehaviour
                 animating = false;
                 ship3D.rotation = Quaternion.Euler(new Vector3(0f, 190f, 0f));
             }
+        }
+
+        if(togglesGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex() == 1)
+        {
+
         }
     }
 }

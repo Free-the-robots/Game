@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e2014b53533994b1494f97d3caa073e2
+guid: 3ab3c986a40fa4aa982141c96996a7d3
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: pCube1Mat
-    second: {fileID: 2100000, guid: 7ae7c90797ada42628da15c7cedcd932, type: 2}
+      name: defaultMat
+    second: {fileID: 2100000, guid: beea60e19b2774feb8f3c9b4acd8ed56, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

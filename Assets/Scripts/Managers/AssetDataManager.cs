@@ -11,8 +11,9 @@ public class AssetDataManager : MonoBehaviour
 
     public List<SpaceshipData> spaceshipScriptableData = new List<SpaceshipData>();
     public List<GameObject> spaceshipObject = new List<GameObject>();
-    public List<Mesh> spaceshipMesh = new List<Mesh>();
     public List<Material> spaceshipMaterial = new List<Material>();
+
+    public List<GameObject> turretObject = new List<GameObject>();
 
     public static AssetDataManager Instance { get { return instance; } }
 
@@ -28,6 +29,9 @@ public class AssetDataManager : MonoBehaviour
 
     public GameObject loadingObject;
     private RectTransform rectLoading;
+
+    private const string shipURL = "Assets/Prefabs/Spaceships/";
+    private const string weaponURL = "Assets/Prefabs/Turrets/";
 
     private void Awake()
     {
@@ -56,6 +60,18 @@ public class AssetDataManager : MonoBehaviour
         {
             ships = www.downloadHandler.text;
         }
+
+        www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/weapons.txt");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            weapons = www.downloadHandler.text;
+        }
         yield return StartCoroutine(updateSetup());
 
         //Get list of spaceships and download dependencies
@@ -71,8 +87,14 @@ public class AssetDataManager : MonoBehaviour
         Transform model3D = obj.Result.transform.GetChild(0);
         spaceshipScriptableData.Add(obj.Result.GetComponent<PlayerSpaceship>().spaceshipData);
         spaceshipMaterial.Add(model3D.GetComponent<MeshRenderer>().sharedMaterial);
-        spaceshipMesh.Add(model3D.GetComponent<MeshFilter>().sharedMesh);
+        //spaceshipMesh.Add(model3D.GetComponent<MeshFilter>().sharedMesh);
         spaceshipObject.Add(obj.Result);
+    }
+
+    private void OnLoadDonePrefabWeapon(AsyncOperationHandle<GameObject> obj)
+    {
+        // In a production environment, you should add exception handling to catch scenarios such as a null result.
+        turretObject.Add(obj.Result);
     }
 
     IEnumerator LoadAssets()
@@ -84,11 +106,19 @@ public class AssetDataManager : MonoBehaviour
         maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
 
         //Load Spaceships
-        string shipObject = "Assets/Prefabs/Spaceships/";
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
-            AsyncOperationHandle<GameObject> async =  Addressables.LoadAssetAsync<GameObject>(shipObject + line + ".prefab");
+            AsyncOperationHandle<GameObject> async =  Addressables.LoadAssetAsync<GameObject>(shipURL + line + ".prefab");
             async.Completed += OnLoadDonePrefab;
+            downloadAsync = async;
+            yield return async;
+        }
+
+        //Load Turrets
+        foreach (string line in weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
+        {
+            AsyncOperationHandle<GameObject> async = Addressables.LoadAssetAsync<GameObject>(weaponURL + line + ".prefab");
+            async.Completed += OnLoadDonePrefabWeapon;
             downloadAsync = async;
             yield return async;
         }
@@ -105,11 +135,18 @@ public class AssetDataManager : MonoBehaviour
         downloading = true;
         maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
 
-        string shipObject = "Assets/Prefabs/Spaceships/";
 
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
-            AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(shipObject + line + ".prefab");
+            AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(shipURL + line + ".prefab");
+            async.Completed += FinishedDownloading;
+            downloadAsync = async;
+            yield return async;
+        }
+
+        foreach (string line in weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
+        {
+            AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(weaponURL + line + ".prefab");
             async.Completed += FinishedDownloading;
             downloadAsync = async;
             yield return async;
@@ -136,10 +173,16 @@ public class AssetDataManager : MonoBehaviour
 
     IEnumerator updateSetup()
     {
-        string shipObject = "Assets/Prefabs/Spaceships/";
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
-            AsyncOperationHandle<long> async = Addressables.GetDownloadSizeAsync(shipObject + line + ".prefab");
+            AsyncOperationHandle<long> async = Addressables.GetDownloadSizeAsync(shipURL + line + ".prefab");
+            async.Completed += MeasureDownloading;
+            yield return downloadAsync;
+        }
+
+        foreach (string line in weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
+        {
+            AsyncOperationHandle<long> async = Addressables.GetDownloadSizeAsync(weaponURL + line + ".prefab");
             async.Completed += MeasureDownloading;
             yield return downloadAsync;
         }

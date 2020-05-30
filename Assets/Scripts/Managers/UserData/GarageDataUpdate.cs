@@ -61,11 +61,29 @@ public class GarageDataUpdate : MonoBehaviour
         for (int i = 0; i < AssetDataManager.Instance.spaceshipObject.Count; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
+            Toggle toggle = button.GetComponent<Toggle>();
             button.transform.SetParent(shipContent);
             int tmpI = i;
-            button.GetComponent<Toggle>().onValueChanged.AddListener((bool val) => UpdateShip(val, tmpI));
-            button.GetComponent<Toggle>().group = toggleGroup;
-            toggleGroup.ActiveToggles().FirstOrDefault();
+            toggle.onValueChanged.AddListener((bool val) => UpdateShip(val, tmpI));
+            toggle.group = toggleGroup;
+            button.GetComponentInChildren<Text>().text = " " + i;
+            toggle.interactable = false;
+            if (i < userData.ships.Count)
+            {
+                toggle.interactable = userData.ships[i].unlocked;
+            }
+        }
+
+        ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
+        
+        for (int i = 0; i < userData.weapons.Count; ++i)
+        {
+            GameObject button = GameObject.Instantiate(ScrollButton);
+            Toggle toggle = button.GetComponent<Toggle>();
+            button.transform.SetParent(shipContent);
+            int tmpI = userData.weapons[i].id;
+            toggle.onValueChanged.AddListener((bool val) => UpdateWeapon(val, tmpI));
+            toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
         }
     }
@@ -91,6 +109,15 @@ public class GarageDataUpdate : MonoBehaviour
             {
                 Debug.Log("Equip " + index);
             }
+        }
+    }
+
+    public void UpdateWeapon(bool toggle, int index)
+    {
+        if (toggle)
+        {
+            int i = weaponToggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex();
+            //TODO Update weapon on 3D, and userdata
         }
     }
 
@@ -144,7 +171,8 @@ public class GarageDataUpdate : MonoBehaviour
             actualTurrets = actualShipObject.GetComponentsInChildren<Weapon.Turret>().ToList();
             foreach(Toggle toggleWeapon in weaponToggleGroup.GetComponentsInChildren<Toggle>())
             {
-                toggleWeapon.interactable = toggleWeapon.transform.GetSiblingIndex() < actualTurrets.Count;
+                int i = toggleWeapon.transform.GetSiblingIndex();
+                toggleWeapon.interactable = i < actualTurrets.Count && i >= (actualTurrets.Count - actualShipData.modifiableTurretCount);
             }
 
             updateToggleWeapon();
@@ -205,7 +233,6 @@ public class GarageDataUpdate : MonoBehaviour
         {
             t += Time.deltaTime;
             ship3D.rotation = Quaternion.Lerp(rotationShip, Quaternion.Euler(new Vector3(0f, 190f, 0f)), t * t * (3 - 2 * t));
-
 
             RawImage rawImage = shipRawImage.GetComponent<RawImage>();
             Vector2 cornerPos = shipRawImage.rect.min + new Vector2(shipRawImage.position.x, shipRawImage.position.y);

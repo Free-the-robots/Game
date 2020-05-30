@@ -20,6 +20,8 @@ public class SpaceshipData : ScriptableObject
 
     public float freq;
 
+    public int modifiableTurretCount = 0;
+
     public SpaceshipData Clone()
     {
         SpaceshipData res = ScriptableObject.CreateInstance<SpaceshipData>();
@@ -33,6 +35,7 @@ public class SpaceshipData : ScriptableObject
         res.rarity = rarity;
         res.freq = freq;
         res.description = description;
+        res.modifiableTurretCount = modifiableTurretCount;
         return res;
     }
 }

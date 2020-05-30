@@ -795,7 +795,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270071513}
   m_Enabled: 1
-  m_Alpha: 0.03
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -1462,7 +1462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565046204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -8}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 568113692}
@@ -1794,8 +1794,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceshipScriptableData: []
   spaceshipObject: []
-  spaceshipMesh: []
   spaceshipMaterial: []
+  turretObject: []
   loadingObject: {fileID: 995462006}
 --- !u!4 &672263666
 Transform:
@@ -6648,7 +6648,7 @@ PrefabInstance:
     - target: {fileID: 2875057098437885445, guid: 34a6c73c318bc46e3a559261c88b13dd,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.9619064
+      value: -1.9619026
       objectReference: {fileID: 0}
     - target: {fileID: 2875057098798355749, guid: 34a6c73c318bc46e3a559261c88b13dd,
         type: 3}
@@ -7594,5 +7594,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1774925858}
+    - target: {fileID: 9168819307244338606, guid: e1d323e792d594e7db9ec5ff52da99f3,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1d323e792d594e7db9ec5ff52da99f3, type: 3}

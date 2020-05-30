@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Turrets
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Turrets
   m_Data:
     m_SerializedData: []
-  m_GUID: 6edb23f933e9c47f089484a7f1e3399d
-  m_SerializeEntries: []
+  m_GUID: 0fa06466df7874d90a88ffd7712b71da
+  m_SerializeEntries:
+  - m_GUID: 30c4d290c88174a8898ea9c513d1decf
+    m_Address: Assets/Prefabs/Turrets/Turret01.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 246ecaa72c3a4425ea27df4471eb068e, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f8d0187304e7e4c73add2e12c3f9a105, type: 2}
-    - {fileID: 11400000, guid: 1e56f26475ed7460ea73614e6f203108, type: 2}
+    - {fileID: 11400000, guid: da9b69143ab6246638dfaff84efe21df, type: 2}
+    - {fileID: 11400000, guid: 66b2d1f59741d484e9f57f19c870d9f0, type: 2}

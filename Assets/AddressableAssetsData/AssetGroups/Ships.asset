@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Ship01
+  m_Name: Ships
   m_EditorClassIdentifier: 
-  m_GroupName: Ship01
+  m_GroupName: Ships
   m_Data:
     m_SerializedData: []
-  m_GUID: 187db5fbcaf264ac58068ff1ab91335d
+  m_GUID: 666316a1ef4cf471e95528a873fcaa2b
   m_SerializeEntries:
   - m_GUID: 54e8a7a1e2ce0448c8b3a97197918493
     m_Address: Assets/Prefabs/Spaceships/Ship01.prefab
@@ -33,5 +33,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 246ecaa72c3a4425ea27df4471eb068e, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 9d8beb915eb5f48a48a7c5f57be89ec6, type: 2}
-    - {fileID: 11400000, guid: 1bcd2416bf2574282a3dc313ef80b2d1, type: 2}
+    - {fileID: 11400000, guid: ea6063fbb47b842d38df518db559d6f2, type: 2}
+    - {fileID: 11400000, guid: e671926ff656b42a8b60f417e1afb63f, type: 2}

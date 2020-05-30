@@ -145,9 +145,35 @@ namespace UserData
 
             clusters.Add(cluster);
 
-            for(int i = 0; i < 10; ++i)
+            ShipData ship = new ShipData(0, 0, (ushort)0);
+            ship.unlocked = true;
+            ships.Add(ship);
+        }
+
+        public void CreateInitialWithEverything()
+        {
+            ClusterData cluster = new ClusterData();
+            PlanetData planetData = new PlanetData(true);
+            for (int i = 0; i < 3; i++)
+                planetData.levels.Add(new LevelData((ushort)i, false, 0));
+            cluster.planets.Add(planetData);
+
+            PlanetData planetData2 = new PlanetData(false);
+            for (int i = 0; i < 30; i++)
+                planetData2.levels.Add(new LevelData((ushort)(i + 30), false, 0));
+            cluster.planets.Add(planetData2);
+
+            PlanetData planetData3 = new PlanetData(false);
+            for (int i = 0; i < 30; i++)
+                planetData3.levels.Add(new LevelData((ushort)(i + 60), false, 0));
+            cluster.planets.Add(planetData3);
+
+            clusters.Add(cluster);
+
+            for(int i = 0; i < 3; i++)
             {
-                ShipData ship = new ShipData(10, 2, (ushort)i);
+                ShipData ship = new ShipData(0, 0, (ushort)i);
+                ship.unlocked = true;
                 ships.Add(ship);
             }
         }

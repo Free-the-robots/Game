@@ -18,15 +18,27 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(findTarget());
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = target.position + r * new Vector3(Mathf.Sin(ph), Mathf.Cos(ph), 0f);//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
+        if(target != null)
+        {
+            transform.position = target.position + r * new Vector3(Mathf.Sin(ph), Mathf.Cos(ph), 0f);//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
 
-        //transform.position = target.TransformPoint(offsetPosition);
-        transform.LookAt(target);
+            //transform.position = target.TransformPoint(offsetPosition);
+            transform.LookAt(target);
+        }
+    }
+
+    IEnumerator findTarget()
+    {
+        while (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            yield return null;
+        }
+        target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 }

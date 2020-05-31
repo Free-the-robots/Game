@@ -9,7 +9,6 @@ public class PlayerSpaceship : Spaceship
 
     public List<Weapon.Abilities> abilities = new List<Weapon.Abilities>();
 
-
     /// <summary>
     /// Movement script from POC
     /// </summary>
@@ -166,5 +165,36 @@ public class PlayerSpaceship : Spaceship
         //mNormalizedDirection.z = 0F;
         //CharacterToMove.transform.position += mNormalizedDirection * mMaxSpeed * Time.deltaTime;
         rbody.velocity = Vector3.zero;
+    }
+
+    private void updateModifiableTurrets()
+    {
+        UserData.UserData userData = UserData.UserDataManager.Instance.userData;
+        AssetDataManager assetDataManager = AssetDataManager.Instance;
+
+        UserData.ShipData actualData= userData.ships.Find(i => i.id == spaceshipData.id);
+        int turretCount = GetComponentsInChildren<Weapon.Turret>().Length;
+        int modTurretsCount = userData.ships.Find(i => i.id == spaceshipData.id).turrets.Count;
+
+        if (modTurretsCount > 0 && turretCount == modTurretsCount)
+        {
+            for (int i = 0; i < modTurretsCount; ++i)
+            {
+                GameObject turret = GameObject.Instantiate(assetDataManager.turretObject[actualData.turrets[i].id]);
+                turret.transform.SetParent(transform.GetChild(turretCount + i));
+                turret.transform.localPosition = new Vector3(0f, 0f, 0f);
+            }
+        }
+    }
+
+    private void clearModifiableTurrets()
+    {
+        int turretCount = GetComponentsInChildren<Weapon.Turret>().Length;
+        UserData.UserData userData = UserData.UserDataManager.Instance.userData;
+        int modTurretsCount = userData.ships.Find(i => i.id == spaceshipData.id).turrets.Count;
+        for (int i = 0; i < modTurretsCount; ++i)
+        {
+            GameObject.Destroy(transform.GetChild(turretCount + i).GetChild(0).gameObject);
+        }
     }
 }

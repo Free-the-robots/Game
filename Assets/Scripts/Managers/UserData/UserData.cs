@@ -265,6 +265,7 @@ namespace UserData
                 ships.Add(ship);
                 j += ship.byteCount();
             }
+            shipEquiped = BitConverter.ToInt32(data, j);
 
             return this;
         }
@@ -294,6 +295,7 @@ namespace UserData
             {
                 byteArray = CommonData.addByteToArray(byteArray, ships[i].Serialize());
             }
+            byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(shipEquiped));
             return byteArray;
         }
 

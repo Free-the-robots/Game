@@ -9,7 +9,8 @@ namespace UserData
     [Serializable]
     public class ShipData : CommonData
     {
-        List<WeaponData> turrents = new List<WeaponData>();
+        public List<WeaponData> turrets = new List<WeaponData>();
+
         public ShipData() : base()
         {
 
@@ -27,9 +28,9 @@ namespace UserData
         public override byte[] Serialize()
         {
             byte[] bytes = CommonData.addByteToArray(null, base.Serialize());
-            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrents.Count));
-            for(int i = 0; i < turrents.Count; ++i)
-                bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrents[i].id));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets.Count));
+            for(int i = 0; i < turrets.Count; ++i)
+                bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets[i].id));
             return bytes;
         }
 
@@ -40,11 +41,11 @@ namespace UserData
             int size = BitConverter.ToInt32(data,base.byteCount());
             j += base.byteCount();
 
-            turrents = new List<WeaponData>(size);
+            turrets = new List<WeaponData>(size);
             for (int i = 0; i < size; ++i)
             {
                 WeaponData weaponEquiped = UserDataManager.Instance.userData.weapons.Find(obj => obj.id == BitConverter.ToUInt16(data, j));
-                turrents.Add(weaponEquiped);
+                turrets.Add(weaponEquiped);
                 j += sizeof(ushort);
             }
             return this;
@@ -52,7 +53,7 @@ namespace UserData
 
         public override int byteCount()
         {
-            return base.byteCount() + sizeof(int) + turrents.Count*sizeof(ushort);
+            return base.byteCount() + sizeof(int) + turrets.Count*sizeof(ushort);
         }
     }
 }

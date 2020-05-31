@@ -8,9 +8,9 @@ namespace Weapon
     {
         public Projectiles.ProjectileData projectileData = null;
 
-        private float freqT = 0f;
+        protected float freqT = 0f;
 
-        private void Update()
+        protected virtual void Update()
         {
             freqT += Time.deltaTime;
         }

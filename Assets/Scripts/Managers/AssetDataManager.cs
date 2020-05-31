@@ -17,6 +17,8 @@ public class AssetDataManager : MonoBehaviour
 
     public static AssetDataManager Instance { get { return instance; } }
 
+    public bool loadedAssets = false;
+
     private string ships;
     private string weapons;
 
@@ -38,13 +40,15 @@ public class AssetDataManager : MonoBehaviour
         if (instance != null && instance != this)
             Destroy(this.gameObject);
         else
+        {
             instance = this;
+            if (loadingObject != null)
+                rectLoading = loadingObject.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>();
+
+            StartCoroutine(Setup());
+        }
 
         DontDestroyOnLoad(this);
-
-        rectLoading = loadingObject.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>();
-
-        StartCoroutine(Setup());
     }
 
     private IEnumerator Setup()
@@ -94,7 +98,7 @@ public class AssetDataManager : MonoBehaviour
     private void OnLoadDonePrefabWeapon(AsyncOperationHandle<GameObject> obj)
     {
         // In a production environment, you should add exception handling to catch scenarios such as a null result.
-        turretObject[System.Convert.ToInt32(obj.Result.name.Remove(6))] = obj.Result;
+        turretObject[System.Convert.ToInt32(obj.Result.name.Remove(0,6))] = obj.Result;
     }
 
     IEnumerator LoadAssets()
@@ -125,6 +129,7 @@ public class AssetDataManager : MonoBehaviour
 
         loadingObject.SetActive(false);
         downloading = false;
+        loadedAssets = true;
     }
 
     IEnumerator DownloadAssets()

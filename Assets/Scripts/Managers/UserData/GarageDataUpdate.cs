@@ -118,6 +118,7 @@ public class GarageDataUpdate : MonoBehaviour
         {
             int i = weaponToggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex();
             //TODO Update weapon on 3D, and userdata
+
         }
     }
 

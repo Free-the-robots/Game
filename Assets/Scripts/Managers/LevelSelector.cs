@@ -33,7 +33,8 @@ public class LevelSelector : MonoBehaviour
             {
                 RectTransform rect1 = renderTexture.rectTransform;
                 Vector3 pos = Input.mousePosition;
-                pos.Scale(new Vector3(renderTexture.mainTexture.width / Screen.width, renderTexture.mainTexture.height / Screen.height, 1f));
+                pos.Scale(new Vector3(1f / Screen.width, 1f / Screen.height, 1f));
+                pos.Scale(new Vector3(renderTexture.mainTexture.width, renderTexture.mainTexture.height, 1f));
                 ray = cameraTexture.ScreenPointToRay(pos); //trying to single select
             }
             RaycastHit hit;
@@ -42,8 +43,12 @@ public class LevelSelector : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 Debug.Log(hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
-                //SceneManager.LoadScene(hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
+                if (Application.CanStreamedLevelBeLoaded(hit.collider.GetComponent<LevelSelectorRaycast>().levelName))
+                    SceneManager.LoadScene(hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
+                else
+                    Debug.LogError("No scene with name : " + hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
             }
+
         }
     }
 }

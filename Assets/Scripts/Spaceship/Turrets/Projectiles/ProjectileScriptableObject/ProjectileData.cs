@@ -9,7 +9,7 @@ namespace Projectiles
     {
         public int id = 0;
         public List<Texture2D> skin = new List<Texture2D>();
-        public Texture2DArray textureArray = null;
+        //public Texture2DArray textureArray = null;
         public float frequencyImage = 2f;
         //public Texture2D skin = null;
 
@@ -22,7 +22,7 @@ namespace Projectiles
 
         public ProjectilesSpecials.SPECIAL special = ProjectilesSpecials.SPECIAL.NONE;
 
-        public void createTextureArray(Material material)
+        /*public void createTextureArray(Material material)
         {
             if(textureArray == null && skin.Count > 0)
             {
@@ -32,6 +32,6 @@ namespace Projectiles
                     Graphics.CopyTexture(skin[i], 0, 0, textureArray, i, 0);
             }
             material.SetTexture("_Textures", textureArray);
-        }
+        }*/
     }
 }

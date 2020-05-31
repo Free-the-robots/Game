@@ -9,17 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d57aae38d86a94a15a7bd45544bd7634, type: 3}
-  m_Name: LaserStandard
-  m_EditorClassIdentifier: Assembly-CSharp:Projectiles:LaserData
-  id: 0
-  skin: []
+  m_Script: {fileID: 11500000, guid: 39501fccbdcec4fb9bdf714f07796ef7, type: 3}
+  m_Name: Projectile01
+  m_EditorClassIdentifier: 
+  id: 1
+  skin:
+  - {fileID: 2800000, guid: c8410c7cb8b4e4a76803fb5ad54c536a, type: 3}
+  - {fileID: 2800000, guid: 9e36213d9819240cc948501970c36f10, type: 3}
+  - {fileID: 2800000, guid: d64d15e080f894f028a1df1fc6717ee1, type: 3}
   textureArray: {fileID: 0}
   frequencyImage: 2
   explosion: {fileID: 0}
   velocity: 1
   frequency: 1
-  lifeTime: 1
+  lifeTime: 10
   damage: 0
   special: 0
-  laserLifeTime: 1
+  turretPositions: []

@@ -17,9 +17,10 @@ MonoBehaviour:
   description: Blablalbal
   life: 20
   lifeMax: 1000
-  speed: 0.4
+  speed: 100
   damage: 0.3
   shield: 0.6
   armor: 0.2
   rarity: 3
   freq: 5
+  modifiableTurretCount: 0

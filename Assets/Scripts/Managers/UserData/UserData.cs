@@ -244,6 +244,8 @@ namespace UserData
                 ClusterData cluster = new ClusterData(data.Skip(j).ToArray());
                 clusters.Add(cluster);
                 j += cluster.byteCount();
+                if (j > data.Length)
+                    throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
             }
 
             size = BitConverter.ToInt32(data, j);
@@ -254,6 +256,8 @@ namespace UserData
                 WeaponData weapon = new WeaponData(data.Skip(j).ToArray());
                 weapons.Add(weapon);
                 j += weapon.byteCount();
+                if (j > data.Length)
+                    throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
             }
 
             size = BitConverter.ToInt32(data, j);
@@ -264,6 +268,8 @@ namespace UserData
                 ShipData ship = new ShipData(data.Skip(j).ToArray());
                 ships.Add(ship);
                 j += ship.byteCount();
+                if (j > data.Length)
+                    throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
             }
             shipEquiped = BitConverter.ToInt32(data, j);
 

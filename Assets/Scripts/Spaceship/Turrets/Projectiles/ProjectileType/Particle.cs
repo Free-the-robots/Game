@@ -133,7 +133,7 @@ namespace Projectiles
 
             if (t > data.lifeTime)
             {
-                Debug.Log(data.lifeTime);
+                //Debug.Log(data.lifeTime);
                 t = 0f;
 //                body.velocity = Vector3.zero;
 //                body.angularVelocity = Vector3.zero;

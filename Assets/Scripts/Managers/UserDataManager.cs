@@ -19,21 +19,34 @@ namespace UserData
             if (instance != null && instance != this)
                 Destroy(this.gameObject);
             else
+            {
                 instance = this;
 
+                userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
+
+                if (File.Exists(userDataPath))
+                {
+                    try
+                    {
+                        userData.LoadSerialize(userDataPath);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError(e.Message);
+                        Debug.LogError("Recreating intial user data");
+                        userData.CreateInitial();
+                        userData.SaveSerialize(userDataPath);
+                    }
+                }
+                else
+                {
+                    userData.CreateInitial();
+                    userData.SaveSerialize(userDataPath);
+                }
+
+            }
+
             DontDestroyOnLoad(this);
-
-            userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
-
-            if (File.Exists(userDataPath))
-            {
-                userData.LoadSerialize(userDataPath);
-            }
-            else
-            {
-                userData.CreateInitial();
-                userData.SaveSerialize(userDataPath);
-            }
         }
         // Start is called before the first frame update
         void Start()

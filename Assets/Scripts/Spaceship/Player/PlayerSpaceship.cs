@@ -42,6 +42,11 @@ public class PlayerSpaceship : Spaceship
         abilities.Add(new Weapon.CircleDeath());
         if(JoystickRotate != null)
             JoystickRotate.OnActiveJoystick += Rotate;
+        else{
+            JoystickRotate = GameObject.Find("RotateJoystick").GetComponent<FloatingJoystick>();
+            JoystickMoving = GameObject.Find("MoveJoystick").GetComponent<FloatingJoystick>();
+            JoystickRotate.OnActiveJoystick += Rotate;
+        }
         //mRotationSpeed = 20F;
     }
 
@@ -72,7 +77,9 @@ public class PlayerSpaceship : Spaceship
         //    }
         //}
         if (JoystickMoving != null && JoystickMoving.IsJoystickActive)
+        {
             MoveCharacter();
+        }
         else
         {
             StopMoving();

@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 0b337c2d811264f7588d4efb0fc1b825
+  - enabled: 1
+    path: Assets/Scenes/Level1.unity
+    guid: 5176101eb33d0424889077d697cb6cc4
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 3001a00a718de46408b4c150ac1dd81b,
       type: 2}

@@ -53,6 +53,7 @@ public class ParticlePooling : MonoBehaviour
         DontDestroyOnLoad(this);
 
         typeInstantiateMap[typeof(ProjectileData)] = particleInstantiate;
+        typeInstantiateMap[typeof(ProjectileMultipleStandard)] = particleInstantiate;
         typeInstantiateMap[typeof(ProjectileEvolutiveData)] = particleInstantiateEvolutive;
         typeInstantiateMap[typeof(ProjectileGuidedData)] = particleInstantiateHoming;
         typeInstantiateMap[typeof(ProjectileConeData)] = particleInstantiateCone;
@@ -60,6 +61,7 @@ public class ParticlePooling : MonoBehaviour
         typeInstantiateMap[typeof(LaserEvolutiveData)] = particleInstantiateLaserEvo;
 
         typeKillMap[typeof(ProjectileData)] = destroyCommon;
+        typeKillMap[typeof(ProjectileMultipleStandard)] = destroyCommon;
         typeKillMap[typeof(ProjectileEvolutiveData)] = destroyCommon;
         typeKillMap[typeof(ProjectileGuidedData)] = destroyCommon;
         typeKillMap[typeof(ProjectileConeData)] = destroyCommon;
@@ -226,6 +228,7 @@ public class ParticlePooling : MonoBehaviour
                 Graphics.CopyTexture(listParticles[i], 0, 0, textureArray, i, 0);
 
             chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
+            //part.textureArray = textureArray;
         }
         else
         {

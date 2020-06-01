@@ -73,6 +73,7 @@ public class GarageDataUpdate : MonoBehaviour
             //    toggle.interactable = userData.ships[i].unlocked;
             //}
         }
+        shipContent.GetComponentsInChildren<Toggle>()[actualShip.id].isOn = true;
 
 
         ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
@@ -166,12 +167,12 @@ public class GarageDataUpdate : MonoBehaviour
 
     private void OnDisable()
     {
-        ship3D.gameObject.SetActive(false);
         DisableShip(actualShipData.id);
-        foreach(Transform transform in shipContent)
+        foreach (Transform transform in shipContent)
         {
             GameObject.Destroy(transform.gameObject);
         }
+        ship3D.gameObject.SetActive(false);
     }
 
     bool animating = false;

@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 2869864859400346389}
   - component: {fileID: 9100406515280430767}
   - component: {fileID: 4191530487774974261}
+  - component: {fileID: 2542853012865857451}
   m_Layer: 31
   m_Name: Level
   m_TagString: Untagged
@@ -529,6 +530,18 @@ MonoBehaviour:
   id: 0
   stars: {fileID: 121789439953976208}
   Lvl: {fileID: 2869864858937553647}
+--- !u!225 &2542853012865857451
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869864859400346602}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4771190122739644777
 GameObject:
   m_ObjectHideFlags: 0

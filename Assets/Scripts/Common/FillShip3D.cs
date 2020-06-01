@@ -25,7 +25,8 @@ public class FillShip3D : MonoBehaviour
     {
         foreach(Transform trans in transform)
         {
-            GameObject.Destroy(trans.gameObject);
+            if(trans != unlockPlane)
+                GameObject.Destroy(trans.gameObject);
         }
     }
 

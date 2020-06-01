@@ -131,11 +131,12 @@ namespace UserData
             PlanetData planetData = new PlanetData(true);
             for (int i = 0; i < 3; i++)
                 planetData.levels.Add(new LevelData((ushort)i, false, 0));
+            planetData.levels[0].unlocked = true;
             cluster.planets.Add(planetData);
 
             PlanetData planetData2 = new PlanetData(false);
             for (int i = 0; i < 30; i++)
-                planetData2.levels.Add(new LevelData((ushort)(i + 30), false, 0));
+                planetData2.levels.Add(new LevelData((ushort)(i + 3), false, 0));
             cluster.planets.Add(planetData2);
 
             PlanetData planetData3 = new PlanetData(false);

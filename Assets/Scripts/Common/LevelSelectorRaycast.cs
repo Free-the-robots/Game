@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelSelectorRaycast : MonoBehaviour
 {
     public string levelName = "";
+    public int clusterID = 0;
+    public int planetID = 0;
     public int id = 0;
 
     public Text stars;
@@ -14,6 +17,7 @@ public class LevelSelectorRaycast : MonoBehaviour
     void OnEnable()
     {
         Lvl.text = "Lvl " + id;
+        updateInfo(clusterID, planetID);
     }
 
     // Update is called once per frame
@@ -26,9 +30,36 @@ public class LevelSelectorRaycast : MonoBehaviour
     {
         UserData.LevelData level = UserData.UserDataManager.Instance.userData.clusters[clusterID].planets[planetID].levels[id];
         stars.text = "";
-        for(int i = 0; i < level.difficultyLevel; i++)
+        if(level != null)
         {
-            stars.text += "";
+            for (int i = 0; i < level.difficultyLevel; i++)
+            {
+                stars.text += "";
+            }
+            if (level.unlocked)
+            {
+                GetComponent<CanvasGroup>().alpha = 1;
+            }
+            else
+            {
+                GetComponent<CanvasGroup>().alpha = 0.3f;
+            }
+        }
+        else
+        {
+            GetComponent<CanvasGroup>().alpha = 0.3f;
+        }
+    }
+
+    public void clicked()
+    {
+        Debug.Log(levelName);
+        if (GetComponent<CanvasGroup>().alpha > 0.5f)
+        {
+            if (Application.CanStreamedLevelBeLoaded(levelName))
+                SceneManager.LoadScene(levelName);
+            else
+                Debug.LogError("No scene with name : " + levelName);
         }
     }
 }

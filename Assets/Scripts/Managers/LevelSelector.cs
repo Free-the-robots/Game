@@ -12,15 +12,7 @@ public class LevelSelector : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        //planet
-        for(int i = 0; i < transform.childCount; ++i)
-        {
-            LevelSelectorRaycast[] ls = transform.GetChild(i).GetComponentsInChildren<LevelSelectorRaycast>();
-            foreach(LevelSelectorRaycast level in ls)
-            {
-                level.updateInfo(id, i);
-            }
-        }
+
     }
 
     // Update is called once per frame
@@ -42,11 +34,7 @@ public class LevelSelector : MonoBehaviour
             int layerMask = 1 << 31;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Debug.Log(hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
-                if (Application.CanStreamedLevelBeLoaded(hit.collider.GetComponent<LevelSelectorRaycast>().levelName))
-                    SceneManager.LoadScene(hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
-                else
-                    Debug.LogError("No scene with name : " + hit.collider.GetComponent<LevelSelectorRaycast>().levelName);
+                hit.collider.GetComponent<LevelSelectorRaycast>().clicked();
             }
 
         }

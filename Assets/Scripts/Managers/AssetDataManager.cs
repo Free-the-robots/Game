@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -25,15 +26,13 @@ public class AssetDataManager : MonoBehaviour
     private AsyncOperationHandle downloadAsync;
     private bool downloading = false;
 
-    private float maxPercent = 0f;
     private float actualPercent = 0f;
     private float maxDownload = 0f;
 
-    public GameObject loadingObject;
-    private RectTransform rectLoading;
-
     private const string shipURL = "Assets/Prefabs/Spaceships/";
     private const string weaponURL = "Assets/Prefabs/Turrets/";
+
+    public string version = "";
 
     private void Awake()
     {
@@ -42,8 +41,6 @@ public class AssetDataManager : MonoBehaviour
         else
         {
             instance = this;
-            if (loadingObject != null)
-                rectLoading = loadingObject.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>();
 
             StartCoroutine(Setup());
         }
@@ -53,29 +50,7 @@ public class AssetDataManager : MonoBehaviour
 
     private IEnumerator Setup()
     {
-        UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/ships.txt");
-        yield return www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            ships = www.downloadHandler.text;
-        }
-
-        www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/weapons.txt");
-        yield return www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            weapons = www.downloadHandler.text;
-        }
+        yield return StartCoroutine(CheckVersion());
         yield return StartCoroutine(updateSetup());
 
         //Get list of spaceships and download dependencies
@@ -83,6 +58,65 @@ public class AssetDataManager : MonoBehaviour
             yield return StartCoroutine(DownloadAssets());
 
         yield return StartCoroutine(LoadAssets());
+    }
+
+    private IEnumerator CheckVersion()
+    {
+        Debug.Log("retrieving version");
+        UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/version.txt");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            version = www.downloadHandler.text;
+        }
+        if (File.Exists(Application.persistentDataPath + Path.DirectorySeparatorChar + ".v.d"))
+        {
+            string localVersion = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".v.d");
+            if (version.Equals(localVersion))
+            {
+                ships = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".ships.d");
+                weapons = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".weapons.d");
+            }
+            else
+            {
+                Debug.Log("local version different. updating version");
+                yield return StartCoroutine(UpdateVersion());
+            }
+        }
+        else
+        {
+            Debug.Log("no local version");
+            yield return StartCoroutine(UpdateVersion());
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator UpdateVersion()
+    {
+        yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(Application.persistentDataPath + Path.DirectorySeparatorChar + ".v.d", version));
+
+        UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/assets.txt");
+        yield return www.SendWebRequest();
+        string assets = "";
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            assets = www.downloadHandler.text;
+        }
+        ships = assets.Split(new char[] { '.' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+        weapons = assets.Split(new char[] { '.' }, System.StringSplitOptions.RemoveEmptyEntries)[1];
+
+        yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(Application.persistentDataPath + Path.DirectorySeparatorChar + ".ships.d", ships));
+        yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(Application.persistentDataPath + Path.DirectorySeparatorChar + ".weapons.d", weapons));
     }
 
     private void OnLoadDonePrefab(AsyncOperationHandle<GameObject> obj)
@@ -103,11 +137,12 @@ public class AssetDataManager : MonoBehaviour
 
     IEnumerator LoadAssets()
     {
-        resetLoading();
+        LoadingManager.Instance.resetLoading();
+        LoadingManager.Instance.enableLoading();
 
-        loadingObject.SetActive(true);
         downloading = true;
-        maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
+
+        LoadingManager.Instance.maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries).Length;
 
         //Load Spaceships
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
@@ -127,18 +162,18 @@ public class AssetDataManager : MonoBehaviour
             yield return async;
         }
 
-        loadingObject.SetActive(false);
+        LoadingManager.Instance.disableLoading();
         downloading = false;
         loadedAssets = true;
     }
 
     IEnumerator DownloadAssets()
     {
-        resetLoading();
+        LoadingManager.Instance.resetLoading();
+        LoadingManager.Instance.enableLoading();
 
-        loadingObject.SetActive(true);
         downloading = true;
-        maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
+        LoadingManager.Instance.maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
 
 
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
@@ -157,7 +192,7 @@ public class AssetDataManager : MonoBehaviour
             yield return async;
         }
 
-        loadingObject.SetActive(false);
+        LoadingManager.Instance.disableLoading();
         downloading = false;
     }
 
@@ -170,9 +205,7 @@ public class AssetDataManager : MonoBehaviour
     {
         if (downloading)
         {
-            float maxWidth = loadingObject.transform.GetChild(0).GetComponent<RectTransform>().rect.width;
-            float percent = actualPercent + downloadAsync.PercentComplete;
-            rectLoading.sizeDelta = new Vector2(percent/maxPercent*maxWidth, rectLoading.sizeDelta.y);
+            LoadingManager.Instance.setPercent(actualPercent + downloadAsync.PercentComplete);
         }
     }
 
@@ -193,16 +226,9 @@ public class AssetDataManager : MonoBehaviour
         }
     }
 
-    private void resetLoading()
-    {
-        rectLoading.sizeDelta = new Vector2(0f, rectLoading.sizeDelta.y);
-
-        maxDownload = 0f;
-        actualPercent = 0f;
-    }
-
     private void MeasureDownloading(AsyncOperationHandle<long> obj)
     {
         maxDownload += obj.Result;
+        LoadingManager.Instance.maxValue = maxDownload;
     }
 }

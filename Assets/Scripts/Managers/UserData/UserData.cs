@@ -276,11 +276,11 @@ namespace UserData
             return this;
         }
 
-        public void SaveSerialize(string filename)
+        public IEnumerator SaveSerialize(string filename)
         {
             byte[] byteArray = Serialize();
 
-            EncryptDecrypt.StoreEncryptFile(filename,byteArray);
+            yield return EncryptDecrypt.StoreEncryptFile(filename,byteArray);
             Debug.Log("writing to : " + filename);
         }
 

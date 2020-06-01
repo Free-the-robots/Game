@@ -26,12 +26,14 @@ public class LerpToWhenEnabled : MonoBehaviour
     public bool lerpRotate = true;
     public bool lerpPosition = true;
 
+    private bool animating = false;
+
     float t = 0f;
-    
+
     // Start is called before the first frame update
-    void OnEnable()
+    private void OnEnable()
     {
-        if(from == null)
+        if (from == null)
         {
             fromPosition = transform.position + fromOffset;
             fromQuaternion = transform.rotation;
@@ -55,34 +57,52 @@ public class LerpToWhenEnabled : MonoBehaviour
         }
 
         t = 0f;
+        animating = true;
+    }
+    public void enable()
+    {
+        if (enabled)
+        {
+            finishedAnimation();
+            OnEnable();
+        }
+        enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (t < time)
+        if (animating)
         {
-            t += Time.deltaTime;
-            float tLerp = t * t * (3 - 2 * t);
-            if (lerpPosition)
-                transform.position = Vector3.Lerp(fromPosition, toPosition, tLerp / time);
-            if (lerpRotate)
-                transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, tLerp / time);
-        }
-        else
-        {
-            if(!flip)
-                ResponseWhenFinishedEnd.Invoke();
+            if (t < time)
+            {
+                t += Time.deltaTime;
+                float tLerp = t * t * (3 - 2 * t);
+                if (lerpPosition)
+                    transform.position = Vector3.Lerp(fromPosition, toPosition, tLerp / time);
+                if (lerpRotate)
+                    transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, tLerp / time);
+            }
             else
-                ResponseWhenFinishedBegin.Invoke();
-            if (flipWhenFinished)
-                flip = !flip;
-            if (lerpPosition)
-                transform.position = toPosition;
-            if (lerpRotate)
-                transform.rotation = toQuaternion;
-            enabled = false;
+            {
+                if (!flip)
+                    ResponseWhenFinishedEnd.Invoke();
+                else
+                    ResponseWhenFinishedBegin.Invoke();
+                finishedAnimation();
+                enabled = false;
+            }
         }
+    }
+
+    private void finishedAnimation()
+    {
+        if (flipWhenFinished)
+            flip = !flip;
+        if (lerpPosition)
+            transform.position = toPosition;
+        if (lerpRotate)
+            transform.rotation = toQuaternion;
     }
 
     public void setOffsetZTo(float z)

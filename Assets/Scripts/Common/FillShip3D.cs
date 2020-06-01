@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FillShip3D : MonoBehaviour
 {
+    public Transform unlockPlane;
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -17,6 +18,7 @@ public class FillShip3D : MonoBehaviour
             gb.transform.SetParent(transform,false);
             gb.SetActive(false);
         }
+        unlockPlane.transform.SetAsLastSibling();
     }
 
     private void OnDisable()

@@ -45,23 +45,23 @@ public class EnableClusterPlanet : MonoBehaviour
         lerp.setOffsetZTo(-cluster.transform.GetChild(i).localScale.x);
         ResetFills();
 
-        planetInfo.enabled = true;
-        lerp.enabled = true;
-        ortho.enabled = true;
+        planetInfo.enable();
+        lerp.enable();
+        ortho.enable();
         cluster.transform.GetChild(i).GetChild(0).gameObject.SetActive(true);
     }
 
-    public void FocusBlackPlanet()
+    public void FocusBackPlanet()
     {
         LerpToWhenEnabled lerp = clusterCamera.GetComponent<LerpToWhenEnabled>();
         CameraOrthoPerspLerp ortho = clusterCamera.GetComponent<CameraOrthoPerspLerp>();
         enablePercentage();
 
         planetInfo.gameObject.SetActive(true);
-        planetInfo.enabled = true;
-        lerp.enabled = true;
-        ortho.enabled = true;
-        foreach(Transform planet in cluster.transform)
+        planetInfo.enable();
+        lerp.enable();
+        ortho.enable();
+        foreach (Transform planet in cluster.transform)
         {
             if(planet.childCount > 0)
                 planet.GetChild(0).gameObject.SetActive(false);

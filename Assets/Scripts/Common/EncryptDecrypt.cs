@@ -41,7 +41,25 @@ public static class EncryptDecrypt
         return ms.ToArray();
     }
 
-    public static void StoreEncryptFile(string filename, byte[] data)
+    public static IEnumerator StoreEncryptFile(string filename, string text)
+    {
+        FileStream fs = new FileStream(filename, FileMode.Create);
+
+        byte[] data = System.Text.Encoding.Default.GetBytes(text);
+        byte[] dataEcrypted = EncryptDecrypt.encrypt(data);
+        fs.Write(dataEcrypted, 0, dataEcrypted.Length);
+
+        byte[] md5 = CalculateMD5(dataEcrypted);
+        fs.Write(md5, 0, md5.Length);
+
+        fs.Flush();
+        fs.Close();
+        fs.Dispose();
+
+        yield return null;
+    }
+
+    public static IEnumerator StoreEncryptFile(string filename, byte[] data)
     {
         FileStream fs = new FileStream(filename, FileMode.Create);
 
@@ -54,6 +72,8 @@ public static class EncryptDecrypt
         fs.Flush();
         fs.Close();
         fs.Dispose();
+
+        yield return null;
     }
 
     public static byte[] LoadDecryptFile(string filename)
@@ -79,6 +99,32 @@ public static class EncryptDecrypt
         bytes = EncryptDecrypt.decrypt(bytes);
 
         return bytes;
+    }
+
+    public static string LoadDecryptFileString(string filename)
+    {
+        FileStream fs = File.Open(filename, FileMode.Open);
+
+        byte[] bytes = new byte[fs.Length - 16];
+        fs.Read(bytes, 0, (int)(fs.Length - 16));
+
+        byte[] md5 = new byte[16];
+        fs.Seek((int)(fs.Length - 16), SeekOrigin.Begin);
+        fs.Read(md5, 0, 16);
+
+        fs.Flush();
+        fs.Close();
+        fs.Dispose();
+
+        if (!VerifyMD5(bytes, md5))
+        {
+            Debug.LogError("File Corrupted");
+            return null;
+        }
+
+        string res = System.Text.Encoding.Default.GetString(EncryptDecrypt.decrypt(bytes));
+
+        return res;
     }
 
     public static byte[] CalculateMD5(byte[] data)

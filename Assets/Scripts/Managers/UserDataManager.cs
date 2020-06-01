@@ -22,8 +22,8 @@ namespace UserData
             {
                 instance = this;
 
-                userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
 
+                userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
                 if (File.Exists(userDataPath))
                 {
                     try
@@ -35,27 +35,18 @@ namespace UserData
                         Debug.LogError(e.Message);
                         Debug.LogError("Recreating intial user data");
                         userData.CreateInitial();
-                        userData.SaveSerialize(userDataPath);
+                        SaveData();
                     }
                 }
                 else
                 {
                     userData.CreateInitial();
-                    userData.SaveSerialize(userDataPath);
+                    SaveData();
                 }
 
             }
 
             DontDestroyOnLoad(this);
-        }
-        // Start is called before the first frame update
-        void Start()
-        {
-        }
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         public void AddWeapon(Projectiles.ProjectileData projectile)
@@ -77,6 +68,18 @@ namespace UserData
             ShipData ship = new ShipData();
             ship.id = (ushort)shipData.id;
             userData.ships.Add(ship);
+        }
+
+        public void SaveData()
+        {
+            StartCoroutine(SaveDataAsync());
+        }
+
+        private IEnumerator SaveDataAsync()
+        {
+            LoadingManager.Instance.enableLoading();
+            yield return StartCoroutine(userData.SaveSerialize(userDataPath));
+            LoadingManager.Instance.disableLoading();
         }
     }
 }

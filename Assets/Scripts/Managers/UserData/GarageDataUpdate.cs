@@ -37,7 +37,7 @@ public class GarageDataUpdate : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        secondCamera.GetComponent<CameraOrthoPerspLerp>().enabled = true;
+        secondCamera.GetComponent<CameraOrthoPerspLerp>().enable();
         ship3D.gameObject.SetActive(true);
 
         //Get Data from user data
@@ -67,12 +67,13 @@ public class GarageDataUpdate : MonoBehaviour
             toggle.onValueChanged.AddListener((bool val) => UpdateShip(val, tmpI));
             toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
-            toggle.interactable = false;
-            if (i < userData.ships.Count)
-            {
-                toggle.interactable = userData.ships[i].unlocked;
-            }
+            //toggle.interactable = false;
+            //if (i < userData.ships.Count)
+            //{
+            //    toggle.interactable = userData.ships[i].unlocked;
+            //}
         }
+
 
         ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
         
@@ -92,23 +93,32 @@ public class GarageDataUpdate : MonoBehaviour
     {
         if (toggle)
         {
-            if (actualShip.id != index)
+            UserData.UserData userData = UserDataManager.Instance.userData;
+            AssetDataManager assetData = AssetDataManager.Instance;
+            if (actualShipData.id != index)
             {
-                DisableShip(actualShip.id);
-
-                UserData.UserData userData = UserDataManager.Instance.userData;
-                AssetDataManager assetData = AssetDataManager.Instance;
                 actualShip = userData.ships.Find(i => i.id == index);
-                actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == actualShip.id);
+                actualShipData = assetData.spaceshipScriptableData.Find(obj => obj.id == index);
 
                 UpdateStats();
 
-                ActivateShip(actualShip.id);
+                ActivateShip(index);
             }
             else
             {
-                Debug.Log("Equip " + index);
+                if(userData.shipEquiped != index && actualShip != null && actualShip.unlocked)
+                {
+                    Debug.Log("Equip " + index);
+                    userData.shipEquiped = index;
+                    UserDataManager.Instance.SaveData();
+                }
+                if(actualShip == null || !actualShip.unlocked)
+                    Debug.Log("Not unlocked " + index);
             }
+        }
+        else
+        {
+            DisableShip(index);
         }
     }
 
@@ -124,7 +134,7 @@ public class GarageDataUpdate : MonoBehaviour
 
     public void DisableShip(int id)
     {
-        actualShipObject.gameObject.SetActive(false);
+        ship3D.GetChild(id).gameObject.SetActive(false);
         actualShipObject = null;
     }
 
@@ -142,14 +152,22 @@ public class GarageDataUpdate : MonoBehaviour
 
         shipName.text = actualShipData.name;
 
-        xP.maxPercentile = actualShip.exp / 1000f;
-        Level.text = "Lvl : " + actualShip.level;
+        if(actualShip != null)
+        {
+            xP.maxPercentile = actualShip.exp / 1000f;
+            Level.text = "Lvl : " + actualShip.level;
+        }
+        else
+        {
+            xP.maxPercentile = 0f;
+            Level.text = "Lvl : 0";
+        }
     }
 
     private void OnDisable()
     {
         ship3D.gameObject.SetActive(false);
-        DisableShip(actualShip.id);
+        DisableShip(actualShipData.id);
         foreach(Transform transform in shipContent)
         {
             GameObject.Destroy(transform.gameObject);

@@ -14,6 +14,7 @@ public class CameraOrthoPerspLerp : MonoBehaviour
     public bool flip = true;
     public float time = 1f;
     private float t = 0f;
+    private bool animating = false;
 
     private void Awake()
     {
@@ -27,7 +28,6 @@ public class CameraOrthoPerspLerp : MonoBehaviour
 
     private void OnEnable()
     {
-
         current = GetComponent<Camera>().projectionMatrix;
 
         if (flip)
@@ -36,19 +36,35 @@ public class CameraOrthoPerspLerp : MonoBehaviour
             target = perspective;
 
         t = 0f;
+        animating = true;
+    }
+
+    public void enable()
+    {
+        if(enabled)
+        {
+            animating = false;
+            flip = !flip;
+            GetComponent<Camera>().projectionMatrix = target;
+            OnEnable();
+        }
+        enabled = true;
     }
 
     void Update()
     {
-        t += Time.deltaTime;
-        GetComponent<Camera>().projectionMatrix = MatrixLerp(current, target, t / time);
-
-        if (t >= time)
+        if (animating)
         {
-            flip = !flip;
-            GetComponent<Camera>().projectionMatrix = target;
-            t = 0f;
-            enabled = false;
+            t += Time.deltaTime;
+            GetComponent<Camera>().projectionMatrix = MatrixLerp(current, target, t / time);
+
+            if (t >= time)
+            {
+                flip = !flip;
+                GetComponent<Camera>().projectionMatrix = target;
+                t = 0f;
+                enabled = false;
+            }
         }
     }
 

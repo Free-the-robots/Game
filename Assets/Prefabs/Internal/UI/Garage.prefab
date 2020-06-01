@@ -3291,8 +3291,6 @@ MonoBehaviour:
   Level: {fileID: 9159952578106824214}
   xP: {fileID: 1843407374653392167}
   stats: {fileID: 9159952579599030486}
-  secondCamera: {fileID: 0}
-  ship3D: {fileID: 0}
   shipContent: {fileID: 8650686588834278070}
   weaponContent: {fileID: 9159952579077556029}
   ScrollButton: {fileID: 6352348111923840308, guid: 6e701665a4c49440aa946903b055e45b,
@@ -3303,6 +3301,10 @@ MonoBehaviour:
   weapon3DToggleObj: {fileID: 5761116179363610893, guid: c5850656c37714ab687b9f70d3d52207,
     type: 3}
   shipRawImage: {fileID: 9159952578441512267}
+  ToCamera: {fileID: 0}
+  ToCameraOrigin: {fileID: 0}
+  secondCamera: {fileID: 0}
+  ship3D: {fileID: 0}
 --- !u!1 &9159952579599030490
 GameObject:
   m_ObjectHideFlags: 0
@@ -4756,7 +4758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9148771581609278, guid: 3674a26e8e55f4a9c8ace50a8c0fdc06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9148771581609278, guid: 3674a26e8e55f4a9c8ace50a8c0fdc06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -4777,10 +4779,10 @@ PrefabInstance:
     - target: {fileID: 9148771581609278, guid: 3674a26e8e55f4a9c8ace50a8c0fdc06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 9159952579575156091}
+      objectReference: {fileID: 5544860692025244731}
     - target: {fileID: 9148771581609278, guid: 3674a26e8e55f4a9c8ace50a8c0fdc06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: enable
+      value: Disable
       objectReference: {fileID: 0}
     - target: {fileID: 9148771581609278, guid: 3674a26e8e55f4a9c8ace50a8c0fdc06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

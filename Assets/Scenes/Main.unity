@@ -1506,7 +1506,7 @@ Transform:
   m_Children:
   - {fileID: 775692218}
   m_Father: {fileID: 568113692}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &565046206
 MonoBehaviour:
@@ -1566,6 +1566,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 322145206}
+  - {fileID: 1955637977}
   - {fileID: 1263325979}
   - {fileID: 719943318}
   - {fileID: 1255972242}
@@ -1880,7 +1881,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 568113692}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &746718508 stripped
 GameObject:
@@ -2469,7 +2470,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 568113692}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &920955824 stripped
 MonoBehaviour:
@@ -3298,7 +3299,7 @@ Transform:
   m_Children:
   - {fileID: 1883588861}
   m_Father: {fileID: 568113692}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1263325978
 GameObject:
@@ -3328,7 +3329,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 568113692}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!1 &1270236741 stripped
 GameObject:
@@ -4110,7 +4111,7 @@ MonoBehaviour:
   far: 1000
   orthographicSize: 8
   flip: 1
-  time: 1
+  time: 0.4
 --- !u!20 &1774925859
 Camera:
   m_ObjectHideFlags: 0
@@ -4184,7 +4185,7 @@ MonoBehaviour:
   to: {fileID: 1003441347}
   fromOffset: {x: 0, y: 0, z: 0}
   toOffset: {x: 0, y: 0, z: -4}
-  time: 1
+  time: 0.4
   flip: 0
   flipWhenFinished: 1
   ResponseWhenFinishedBegin:
@@ -4193,7 +4194,7 @@ MonoBehaviour:
   ResponseWhenFinishedEnd:
     m_PersistentCalls:
       m_Calls: []
-  lerpRotate: 0
+  lerpRotate: 1
   lerpPosition: 1
 --- !u!1001 &1791293544
 PrefabInstance:
@@ -5093,6 +5094,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952323893}
   m_CullTransparentMesh: 0
+--- !u!1 &1955637976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1955637977}
+  m_Layer: 0
+  m_Name: ToCameraGarage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1955637977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955637976}
+  m_LocalRotation: {x: 0.04013178, y: 0, z: 0, w: 0.99919444}
+  m_LocalPosition: {x: 0, y: 0.5, z: -7.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 568113692}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 4.6, y: 0, z: 0}
 --- !u!1 &1995177688
 GameObject:
   m_ObjectHideFlags: 0
@@ -6945,6 +6976,16 @@ PrefabInstance:
       propertyPath: ship3D
       value: 
       objectReference: {fileID: 565046205}
+    - target: {fileID: 5544860692025244731, guid: e1d323e792d594e7db9ec5ff52da99f3,
+        type: 3}
+      propertyPath: ToCamera
+      value: 
+      objectReference: {fileID: 1955637977}
+    - target: {fileID: 5544860692025244731, guid: e1d323e792d594e7db9ec5ff52da99f3,
+        type: 3}
+      propertyPath: ToCameraOrigin
+      value: 
+      objectReference: {fileID: 1263325979}
     - target: {fileID: 9159952578655272391, guid: e1d323e792d594e7db9ec5ff52da99f3,
         type: 3}
       propertyPath: m_AnchoredPosition.y

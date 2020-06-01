@@ -18,10 +18,6 @@ public class GarageDataUpdate : MonoBehaviour
     public FillUIParent xP;
     public StatsUpdate stats;
 
-    public Camera secondCamera;
-
-    public Transform ship3D;
-
     public Transform shipContent;
     public Transform weaponContent;
     public GameObject ScrollButton;
@@ -32,12 +28,24 @@ public class GarageDataUpdate : MonoBehaviour
     public GameObject weapon3DToggleObj;
     public RectTransform shipRawImage;
 
+    public Transform ToCamera;
+    public Transform ToCameraOrigin;
+    private float toOffset;
+    public Camera secondCamera;
+
+    public Transform ship3D;
+
     private List<Weapon.Turret> actualTurrets = new List<Weapon.Turret>();
 
     // Start is called before the first frame update
     void OnEnable()
     {
         secondCamera.GetComponent<CameraOrthoPerspLerp>().enable();
+        secondCamera.GetComponent<LerpToWhenEnabled>().lerpRotate = true;
+        toOffset = secondCamera.GetComponent<LerpToWhenEnabled>().toOffset.z;
+        secondCamera.GetComponent<LerpToWhenEnabled>().setToTransform(ToCamera);
+        secondCamera.GetComponent<LerpToWhenEnabled>().setOffsetZTo(0f);
+        secondCamera.GetComponent<LerpToWhenEnabled>().enable();
         ship3D.gameObject.SetActive(true);
 
         //Get Data from user data
@@ -165,8 +173,18 @@ public class GarageDataUpdate : MonoBehaviour
         }
     }
 
+    public void Disable()
+    {
+        secondCamera.GetComponent<CameraOrthoPerspLerp>().enable();
+        secondCamera.GetComponent<LerpToWhenEnabled>().enable();
+        GetComponent<CanvasGroupFade>().enable();
+    }
+
     private void OnDisable()
     {
+        secondCamera.GetComponent<LerpToWhenEnabled>().setOffsetZTo(toOffset);
+        secondCamera.GetComponent<LerpToWhenEnabled>().setToTransform(ToCameraOrigin);
+        secondCamera.GetComponent<LerpToWhenEnabled>().lerpRotate = false;
         DisableShip(actualShipData.id);
         foreach (Transform transform in shipContent)
         {

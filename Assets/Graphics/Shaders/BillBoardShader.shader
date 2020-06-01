@@ -2,7 +2,8 @@
 {
 Properties
     {
-        _MainTex ("Sprite Texture", 2D) = "white" {}
+        _TextureIdx("Texture Idx", float) = 0
+        _Textures("Textures", 2DArray) = "" {}
         _Color ("Tint", Color) = (1,1,1,1)
         _ScaleX ("Scale X", Float) = 1.0
         _ScaleY ("Scale Y", Float) = 1.0
@@ -53,8 +54,17 @@ Properties
                 UNITY_VERTEX_OUTPUT_STEREO
             };
              
-            fixed4 _Color;
-            sampler2D _MainTex;
+            //fixed4 _Color;
+            //sampler2D _MainTex;
+
+            UNITY_DECLARE_TEX2DARRAY(_Textures);
+
+            UNITY_INSTANCING_BUFFER_START(Props)
+               UNITY_DEFINE_INSTANCED_PROP(fixed, _TextureIdx)
+               UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+               UNITY_DEFINE_INSTANCED_PROP(fixed2, _Scale)
+            UNITY_INSTANCING_BUFFER_END(Props)
+
             sampler2D _AlphaTex;
             float _ScaleX;
             float _ScaleY;
@@ -91,7 +101,7 @@ Properties
                 UNITY_SETUP_INSTANCE_ID(IN);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
                 OUT.texcoord = IN.texcoord.xy;
-                OUT.color = IN.color * _Color;
+                OUT.color = IN.color * UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 
 /*
                 // The world position of the center of the object
@@ -135,7 +145,7 @@ Properties
                 modelView[2][1] = 0;
                 modelView[2][2] = 1;
 
-                float3 mPos = mul(RotationMatrix(_Rotation.xyz),IN.vertex.xyz * float3(_ScaleX, _ScaleY, 0));
+                float3 mPos = mul(RotationMatrix(_Rotation.xyz),IN.vertex.xyz * float3(UNITY_ACCESS_INSTANCED_PROP(Props, _Scale).x, UNITY_ACCESS_INSTANCED_PROP(Props, _Scale).y, 0));
                 OUT.vertex = mul(UNITY_MATRIX_P,mul(modelView,float4(mPos,1)));
 
                 return OUT;
@@ -143,7 +153,8 @@ Properties
  
             fixed4 SampleSpriteTexture (float2 uv)
             {
-                fixed4 color = tex2D (_MainTex, uv);
+                fixed4 color = UNITY_SAMPLE_TEX2DARRAY(_Textures,float3(uv, UNITY_ACCESS_INSTANCED_PROP(Props, _TextureIdx)));
+                //fixed4 color = tex2D (_MainTex, uv);
  
 #if ETC1_EXTERNAL_ALPHA
                 // get the color from an external texture (usecase: Alpha support for ETC1 on android)

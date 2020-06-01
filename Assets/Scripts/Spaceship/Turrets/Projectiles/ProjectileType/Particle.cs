@@ -39,6 +39,9 @@ namespace Projectiles
             rendererComp.GetPropertyBlock(materialBlock, 0);
             // Assign our new value.
             materialBlock.SetFloat("_TextureIdx", texIdStart + texId);
+            materialBlock.SetColor("_Color", data.tint);
+            if(data.projectileType == ProjectileData.PROJECTILETYPE.Billboard)
+                materialBlock.SetVector("_Scale", data.Scale);
             // Apply the edited values to the renderer.
             rendererComp.SetPropertyBlock(materialBlock, 0);
 

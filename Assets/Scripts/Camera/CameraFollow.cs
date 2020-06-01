@@ -10,8 +10,8 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     private  float r = 5f;
 
-    [SerializeField]
-    private Vector3 offsetPosition;
+    //[SerializeField]
+    //private Vector3 offsetPosition;
 
     const float ph = 0.7853981634f; // 45d
     const float th = 0f; //-0.7853981634f; // 45d

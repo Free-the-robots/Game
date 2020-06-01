@@ -7,7 +7,14 @@ namespace Projectiles
     [CreateAssetMenu(fileName = "Projectile", menuName = "Projectiles/Projectile", order = 0)]
     public class ProjectileData : ScriptableObject
     {
+        public enum PROJECTILETYPE { Standard, Billboard};
+
         public int id = 0;
+
+        public PROJECTILETYPE projectileType = PROJECTILETYPE.Billboard;
+        public Color tint = Color.white;
+        public Vector2 Scale = Vector2.one;
+
         public List<Texture2D> skin = new List<Texture2D>();
         //public Texture2DArray textureArray = null;
         public float frequencyImage = 2f;

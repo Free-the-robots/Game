@@ -7,18 +7,21 @@ using Projectiles;
 public class ParticlePooling : MonoBehaviour
 {
     public GameObject particle;
+    public GameObject particleBillboard;
     //public GameObject particleEvolutive;
     //public GameObject particleHoming;
     //public GameObject particleLaser;
     //public GameObject particleLaserEvo;
 
     private List<GameObject> pool;
+    private List<GameObject> poolBillboard;
     //private List<GameObject> poolEvolutive;
     //private List<GameObject> poolHoming;
     //private List<GameObject> poolLaser;
     //private List<GameObject> poolLaserEvo;
 
     public Transform poolParticleTransform;
+    public Transform poolParticleBillboardTransform;
     //public Transform poolParticleEvolutiveTransform;
     //public Transform poolParticleHomingTransform;
     //public Transform poolParticleLaserTransform;
@@ -73,11 +76,18 @@ public class ParticlePooling : MonoBehaviour
     void Start()
     {
         pool = new List<GameObject>(nb);
+        poolBillboard = new List<GameObject>(nb);
         for (int i = 0; i < nb; i++)
         {
             GameObject par = GameObject.Instantiate(particle, poolParticleTransform);
             par.SetActive(false);
             pool.Add(par);
+        }
+        for (int i = 0; i < nb; i++)
+        {
+            GameObject par = GameObject.Instantiate(particleBillboard, poolParticleBillboardTransform);
+            par.SetActive(false);
+            poolBillboard.Add(par);
         }
         //poolEvolutive = new List<GameObject>(nb);
         //for (int i = 0; i < nb; i++)
@@ -133,7 +143,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
 
@@ -147,7 +157,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleEvo, part);
@@ -163,7 +173,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleHoming, part);
@@ -176,7 +186,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().particleCone, part);
@@ -189,7 +199,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laser, part);
@@ -202,7 +212,7 @@ public class ParticlePooling : MonoBehaviour
         GameObject res = null;
         if (pool.Count > 0)
         {
-            res = particleInstantiateCommon(transform, tag, layer);
+            res = particleInstantiateCommon(transform, tag, layer, part);
 
             //part.createTextureArray(res.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial);
             chooseParticle(res.GetComponent<ParticleChooser>(), res.GetComponent<ParticleChooser>().laserevo, part);
@@ -237,10 +247,24 @@ public class ParticlePooling : MonoBehaviour
         chooser.active.enabled = true;
     }
 
-    private GameObject particleInstantiateCommon(Transform shipTransform, string tagShip, int layer)
+    private GameObject particleInstantiateCommon(Transform shipTransform, string tagShip, int layer, ProjectileData part)
     {
-        GameObject res = pool[pool.Count - 1];
-        pool.RemoveAt(pool.Count - 1);
+        GameObject res;
+        switch (part.projectileType)
+        {
+            case ProjectileData.PROJECTILETYPE.Billboard:
+                res = poolBillboard[poolBillboard.Count - 1];
+                poolBillboard.RemoveAt(poolBillboard.Count - 1);
+                break;
+            case ProjectileData.PROJECTILETYPE.Standard:
+                res = pool[pool.Count - 1];
+                pool.RemoveAt(pool.Count - 1);
+                break;
+            default:
+                res = pool[pool.Count - 1];
+                pool.RemoveAt(pool.Count - 1);
+                break;
+        }
         res.transform.parent = activesTransform;
         res.transform.position = shipTransform.position;
         res.transform.rotation = shipTransform.rotation;
@@ -257,13 +281,28 @@ public class ParticlePooling : MonoBehaviour
 
     private void destroyCommon(GameObject particle)
     {
+        ProjectileData part = particle.GetComponent<ParticleChooser>().active.data;
         particle.GetComponent<ParticleChooser>().active.destroyed = true;
         particle.GetComponent<ParticleChooser>().active.enabled = false;
         particle.GetComponent<ParticleChooser>().active.data = null;
         particle.GetComponent<ParticleChooser>().active = null;
 
         particle.SetActive(false);
-        particle.transform.parent = poolParticleTransform;
-        pool.Add(particle);
+
+        switch (part.projectileType)
+        {
+            case ProjectileData.PROJECTILETYPE.Billboard:
+                particle.transform.parent = poolParticleBillboardTransform;
+                poolBillboard.Add(particle);
+                break;
+            case ProjectileData.PROJECTILETYPE.Standard:
+                particle.transform.parent = poolParticleTransform;
+                pool.Add(particle);
+                break;
+            default:
+                particle.transform.parent = poolParticleTransform;
+                pool.Add(particle);
+                break;
+        }
     }
 }

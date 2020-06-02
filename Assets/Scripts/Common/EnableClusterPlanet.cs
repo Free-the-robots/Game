@@ -42,13 +42,14 @@ public class EnableClusterPlanet : MonoBehaviour
         CameraOrthoPerspLerp ortho = clusterCamera.GetComponent<CameraOrthoPerspLerp>();
 
         lerp.setToTransform(cluster.transform.GetChild(i));
-        lerp.setOffsetZTo(-cluster.transform.GetChild(i).localScale.x);
+        lerp.setOffsetZTo(-cluster.transform.GetChild(i).GetChild(0).localScale.x*2.5f);
         ResetFills();
 
         planetInfo.enable();
         lerp.enable();
         ortho.enable();
         cluster.transform.GetChild(i).GetChild(0).gameObject.SetActive(true);
+        cluster.transform.GetChild(i).GetChild(1).gameObject.SetActive(true);
     }
 
     public void FocusBackPlanet()
@@ -64,7 +65,7 @@ public class EnableClusterPlanet : MonoBehaviour
         foreach (Transform planet in cluster.transform)
         {
             if(planet.childCount > 0)
-                planet.GetChild(0).gameObject.SetActive(false);
+                planet.GetChild(1).gameObject.SetActive(false);
         }
     }
 

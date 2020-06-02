@@ -5,9 +5,9 @@ using UnityEngine;
 public class RenderLineOnParent : MonoBehaviour
 {
     private LineRenderer line;
-    private Transform parent;
     private float radius;
 
+    public Transform parent;
     public Transform bottom;
 
     // Start is called before the first frame update

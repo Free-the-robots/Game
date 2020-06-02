@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Weapon
 {
-    public class Abilities
+    public class Abilities : MonoBehaviour
     {
         public virtual void RunAbility(Transform transform)
         {

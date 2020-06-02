@@ -14,6 +14,8 @@ namespace UserData
 
         public static UserDataManager Instance { get { return instance; } }
 
+        public CanvasGroupFade fader = null;
+
         private string userDataPath = "";
         private string userDataPath2 = "";
 
@@ -51,10 +53,17 @@ namespace UserData
                 {
                     StartCoroutine(checkUser());
                 }
-
             }
 
             DontDestroyOnLoad(this);
+        }
+
+        private void Start()
+        {
+            if (fader != null)
+            {
+                fader.enable();
+            }
         }
 
         public void AddWeapon(Projectiles.ProjectileData projectile)

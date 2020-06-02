@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,12 @@ namespace UserData
     {
         private static UserDataManager instance;
         public readonly UserData userData = new UserData();
+        public sqlUserData userAuth = null;
 
         public static UserDataManager Instance { get { return instance; } }
 
         private string userDataPath = "";
+        private string userDataPath2 = "";
 
         private void Awake()
         {
@@ -21,7 +24,6 @@ namespace UserData
             else
             {
                 instance = this;
-
 
                 userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
                 if (File.Exists(userDataPath))
@@ -42,6 +44,12 @@ namespace UserData
                 {
                     userData.CreateInitial();
                     SaveData();
+                }
+
+                userDataPath2 = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat";
+                if (File.Exists(userDataPath2))
+                {
+                    StartCoroutine(checkUser());
                 }
 
             }
@@ -75,11 +83,33 @@ namespace UserData
             StartCoroutine(SaveDataAsync());
         }
 
+        public void LoadData()
+        {
+            StartCoroutine(LoadDataAsync());
+        }
+
         private IEnumerator SaveDataAsync()
         {
             LoadingManager.Instance.enableLoading();
             yield return StartCoroutine(userData.SaveSerialize(userDataPath));
+            if(GetComponent<ConnectionScript>().loggedin)
+                yield return StartCoroutine(GetComponent<ConnectionScript>().updateLog(userAuth.id, EncryptDecrypt.encrypt(userData.Serialize())));
             LoadingManager.Instance.disableLoading();
+        }
+
+        private IEnumerator LoadDataAsync()
+        {
+            LoadingManager.Instance.enableLoading();
+            if (GetComponent<ConnectionScript>().loggedin)
+                yield return StartCoroutine(GetComponent<ConnectionScript>().getLog(userAuth.username));
+            LoadingManager.Instance.disableLoading();
+        }
+
+        private IEnumerator checkUser()
+        {
+            string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
+            string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
         }
     }
 }

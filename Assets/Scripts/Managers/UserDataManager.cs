@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace UserData
 {
+    [RequireComponent(typeof(ConnectionScript))]
+    [RequireComponent(typeof(FacebookLogin))]
     public class UserDataManager : MonoBehaviour
     {
         public readonly UserData userData = new UserData();

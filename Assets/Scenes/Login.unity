@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 1472313631}
   - component: {fileID: 1472313630}
   - component: {fileID: 1472313632}
+  - component: {fileID: 1472313633}
   m_Layer: 0
   m_Name: User
   m_TagString: Untagged
@@ -509,6 +510,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loggedin: 0
   level: Main
+--- !u!114 &1472313633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472313629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 501e8a83449b945a2bf28e861fa9fb73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2104180813
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +767,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1472313633}
+    - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FBLogin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4971774169939984702, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}

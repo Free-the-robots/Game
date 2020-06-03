@@ -8,10 +8,10 @@ namespace UserData
 {
     public class UserDataManager : MonoBehaviour
     {
-        private static UserDataManager instance;
         public readonly UserData userData = new UserData();
         public sqlUserData userAuth = null;
 
+        private static UserDataManager instance;
         public static UserDataManager Instance { get { return instance; } }
 
         public CanvasGroupFade fader = null;
@@ -36,6 +36,7 @@ namespace UserData
                     }
                     catch (System.Exception e)
                     {
+                        //TODO : REMOVE FOR PRODUCTION
                         Debug.LogError(e.Message);
                         Debug.LogError("Recreating intial user data");
                         userData.CreateInitial();
@@ -44,6 +45,7 @@ namespace UserData
                 }
                 else
                 {
+                    //TODO : REMOVE FOR PRODUCTION
                     userData.CreateInitial();
                     SaveData();
                 }
@@ -119,6 +121,31 @@ namespace UserData
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
             yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
+        }
+
+        public void Share(string title, string description, Texture2D image)
+        {
+            string filePath = Path.Combine(Application.temporaryCachePath, "shared img.png");
+            File.WriteAllBytes(filePath, image.EncodeToPNG());
+            Share(title, description, filePath);
+        }
+
+        public void Share(string title, string description, string imageFileName)
+        {
+            new NativeShare().AddFile(imageFileName).SetTitle(title).SetText(description).Share();
+        }
+
+        public void Share(string title, string description)
+        {
+            new NativeShare().SetTitle(title).SetText(description).Share();
+        }
+
+        public void ShareSocialMedia(System.Uri content, string title, string description, System.Uri image)
+        {
+            if(userData.userType == UserData.USERTYPE.FACEBOOK)
+            {
+                GetComponent<FacebookLogin>().FBShare(content, title, description, image);
+            }
         }
     }
 }

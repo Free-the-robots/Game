@@ -69,7 +69,7 @@ public class ConnectionScript : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator createLog(string user, string pass)
+    public IEnumerator createLog(string user, string pass)
     {
         WWWForm form = new WWWForm();
         form.AddField("username", user);
@@ -94,6 +94,10 @@ public class ConnectionScript : MonoBehaviour
                     yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(
                         Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
                         userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass));
+
+                    UserData.UserDataManager.Instance.userData.CreateInitial();
+                    UserData.UserDataManager.Instance.SaveData();
+
                     if (SceneManager.GetActiveScene().name.Equals("Login"))
                         SceneManager.LoadScene(level);
                 }

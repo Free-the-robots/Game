@@ -8,7 +8,8 @@ public class FacebookLogin : MonoBehaviour
     string Status;
     string LastResponse;
     List<string> friendsName = new List<string>();
-    string username;
+    string fullname;
+    string id;
     Sprite picture;
 
     void Awake()
@@ -25,9 +26,9 @@ public class FacebookLogin : MonoBehaviour
         }
     }
 
-    public void FBLogin()
+    public void FBSignIn()
     {
-        FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends" }, this.AuthCallback);
+        FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends", "user_birthday" }, this.AuthCallback);
     }
 
     public void FBInvite(string message, string title)
@@ -40,6 +41,7 @@ public class FacebookLogin : MonoBehaviour
         FB.ShareLink(content, title, description, image,callback: ShareCallback);
     }
 
+    //Shows only friends connected to app
     public void FBFriends()
     {
         string query = "/me/friends";
@@ -55,13 +57,20 @@ public class FacebookLogin : MonoBehaviour
          });
     }
 
-    public void FBUsername()
+    public void FBUsername(System.Action action = null)
     {
-        string query = "/me?fields=first_name";
+        string query = "/me?fields=id,name";
         FB.API(query, HttpMethod.GET, result =>
         {
             if (result.Error == null)
-                username = (string)(result.ResultDictionary["first_name"]);
+            {
+                id = (string)(result.ResultDictionary["id"]);
+                fullname = (string)(result.ResultDictionary["name"]);
+                if (action != null)
+                {
+                    action.Invoke();
+                }
+            }
             else
                 Debug.LogError(result.Error);
         });
@@ -69,12 +78,12 @@ public class FacebookLogin : MonoBehaviour
 
     public void FBPicture()
     {
-        string query = "/me/picture?type=square&height=128&width=128";
+        string query = "/me/picture?type=square&height=200width=200";
         FB.API(query, HttpMethod.GET, result =>
         {
 
             if (result.Texture != null)
-                picture = Sprite.Create(result.Texture, new Rect(0, 0, 128, 128), Vector2.zero);
+                picture = Sprite.Create(result.Texture, new Rect(0, 0, 200, 200), Vector2.zero);
             else
                 Debug.LogError(result.Error);
         });
@@ -93,10 +102,11 @@ public class FacebookLogin : MonoBehaviour
         {
             // Signal an app activation App Event
             FB.ActivateApp();
-            // Continue with Facebook SDK
 
             if (AccessToken.CurrentAccessToken != null)
             {
+                FBUsername();
+                FBPicture();
                 Debug.Log("already have access token");
             }
         }
@@ -166,6 +176,9 @@ public class FacebookLogin : MonoBehaviour
             {
                 Debug.Log(perm);
             }
+
+            FBPicture();
+            FBUsername(CreateUser);
         }
         else
         {
@@ -190,5 +203,13 @@ public class FacebookLogin : MonoBehaviour
             // Share succeeded without postID
             Debug.Log("ShareLink success!");
         }
+    }
+
+    private void CreateUser()
+    {
+        GetComponent<ConnectionScript>().username = fullname;
+        GetComponent<ConnectionScript>().password = id;
+        UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.FACEBOOK;
+        GetComponent<ConnectionScript>().SingIn();
     }
 }

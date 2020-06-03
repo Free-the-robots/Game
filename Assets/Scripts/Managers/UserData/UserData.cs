@@ -110,11 +110,15 @@ namespace UserData
     [Serializable]
     public class UserData : SerializableData<UserData>
     {
+        public enum USERTYPE : int { STANDARD = 0, FACEBOOK = 1, APPLE = 2}
+
         public List<ClusterData> clusters = new List<ClusterData>();
         public List<ShipData> ships = new List<ShipData>();
         public List<WeaponData> weapons = new List<WeaponData>();
 
         public int shipEquiped = 0;
+
+        public USERTYPE userType = USERTYPE.STANDARD;
 
         public UserData()
         {
@@ -215,18 +219,6 @@ namespace UserData
             Debug.Log(test);
         }
 
-        public override int byteCount()
-        {
-            int b = 0;
-            for (int i = 0; i < clusters.Count; i++)
-                b += clusters[i].byteCount();
-            for (int i = 0; i < ships.Count; i++)
-                b += ships[i].byteCount();
-            for (int i = 0; i < weapons.Count; i++)
-                b += weapons[i].byteCount();
-            return b;
-        }
-
         public void LoadSerialize(string filename)
         {
             LoadSerialize(EncryptDecrypt.LoadDecryptFile(filename));
@@ -273,6 +265,8 @@ namespace UserData
                     throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
             }
             shipEquiped = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            userType = (USERTYPE)BitConverter.ToInt32(data, j);
 
             return this;
         }
@@ -303,7 +297,22 @@ namespace UserData
                 byteArray = CommonData.addByteToArray(byteArray, ships[i].Serialize());
             }
             byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(shipEquiped));
+            byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes((int)userType));
             return byteArray;
+        }
+
+        public override int byteCount()
+        {
+            int b = 0;
+            for (int i = 0; i < clusters.Count; i++)
+                b += clusters[i].byteCount();
+            for (int i = 0; i < ships.Count; i++)
+                b += ships[i].byteCount();
+            for (int i = 0; i < weapons.Count; i++)
+                b += weapons[i].byteCount();
+            b += sizeof(int);
+            b += sizeof(int);
+            return b;
         }
 
         public string SerializedString()

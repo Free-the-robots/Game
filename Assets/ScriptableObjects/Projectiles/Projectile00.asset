@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Projectile00
   m_EditorClassIdentifier: 
   id: 0
+  projectileType: 1
+  tint: {r: 1, g: 0, b: 0, a: 1}
+  Scale: {x: 1, y: 1}
   skin:
-  - {fileID: 2800000, guid: c8410c7cb8b4e4a76803fb5ad54c536a, type: 3}
-  - {fileID: 2800000, guid: 9e36213d9819240cc948501970c36f10, type: 3}
-  - {fileID: 2800000, guid: d64d15e080f894f028a1df1fc6717ee1, type: 3}
-  textureArray: {fileID: 0}
+  - {fileID: 2800000, guid: 80f6d78c9dcce4e2eb4d79e8612db5b5, type: 3}
   frequencyImage: 10
   explosion: {fileID: 0}
-  velocity: 3
+  velocity: 6
   frequency: 5
   lifeTime: 1
   damage: 0

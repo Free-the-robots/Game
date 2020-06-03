@@ -1737,9 +1737,9 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: be84ba7f7470a4d0fab06fa6d70f7ca2, type: 2}
   weapon:
   - {fileID: 425174863}
-  style: 0
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 2
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
 --- !u!136 &516845584
 CapsuleCollider:
@@ -1952,9 +1952,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceshipData: {fileID: 11400000, guid: 5a05dbe5c51ff4fbfb6ec70c938f239b, type: 2}
   weapon: []
-  style: 0
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 0
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
   destinations:
   - {fileID: 1264346659}
@@ -2849,9 +2849,9 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: a94bc06f6cec74949b0cdab910df2d67, type: 2}
   weapon:
   - {fileID: 274080988}
-  style: 1
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 1
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
 --- !u!195 &808476683
 NavMeshAgent:
@@ -3331,9 +3331,9 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: be84ba7f7470a4d0fab06fa6d70f7ca2, type: 2}
   weapon:
   - {fileID: 653336199}
-  style: 0
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 2
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
 --- !u!136 &1145506056
 CapsuleCollider:
@@ -3931,9 +3931,9 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: be84ba7f7470a4d0fab06fa6d70f7ca2, type: 2}
   weapon:
   - {fileID: 552521212}
-  style: 0
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 2
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
 --- !u!136 &1475645115
 CapsuleCollider:
@@ -4959,9 +4959,9 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: be84ba7f7470a4d0fab06fa6d70f7ca2, type: 2}
   weapon:
   - {fileID: 464524937}
-  style: 0
+  triggerStyle: 0
   triggerSize: 10
-  aiBehaviour: 2
+  shooterBehaviour: 0
   ennemyDead: {fileID: 11400000, guid: 8d2a31670467548cb9e5803537af083f, type: 2}
 --- !u!136 &1915018133
 CapsuleCollider:

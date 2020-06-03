@@ -6,11 +6,11 @@ using UnityEngine.AI;
 public class EnnemyAISpaceship : Spaceship
 {
     public enum TriggerVision { NONE, SPHERE, CHILDTRIGGER };
-    public TriggerVision style;
+    public TriggerVision triggerStyle;
     public float triggerSize = 10f;
 
-    public enum AIBehaviour { NONE, ANIMATION, FOLLOWPLAYER };
-    public AIBehaviour aiBehaviour;
+    public enum ShooterBehaviour { NONE, ANIMATION, FOLLOWPLAYER };
+    public ShooterBehaviour shooterBehaviour;
 
     public GameEvent ennemyDead;
 
@@ -30,12 +30,12 @@ public class EnnemyAISpaceship : Spaceship
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
 
-        switch (aiBehaviour)
+        switch (shooterBehaviour)
         {
-            case AIBehaviour.ANIMATION:
+            case ShooterBehaviour.ANIMATION:
                 shootingBehaviour = new ShootBehaviour.AnimationBehaviour(GetComponent<Animator>());
                 break;
-            case AIBehaviour.FOLLOWPLAYER:
+            case ShooterBehaviour.FOLLOWPLAYER:
                 shootingBehaviour = new ShootBehaviour.FollowBehaviour(target);
                 break;
             default:
@@ -52,7 +52,7 @@ public class EnnemyAISpaceship : Spaceship
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        switch (style)
+        switch (triggerStyle)
         {
             case TriggerVision.SPHERE:
                 Gizmos.DrawWireSphere(transform.position, triggerSize);
@@ -69,7 +69,7 @@ public class EnnemyAISpaceship : Spaceship
 
     protected virtual bool CheckTrigger()
     {
-        if (style == TriggerVision.SPHERE)
+        if (triggerStyle == TriggerVision.SPHERE)
             return (Vector3.Distance(target.position, transform.position) < triggerSize);
         else
             return (triggered);

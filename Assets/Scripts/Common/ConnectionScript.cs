@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class sqlUserData
 {
@@ -22,6 +23,8 @@ public class ConnectionScript : MonoBehaviour
     public bool loggedin = false;
     public string level = "Main";
 
+    public Text debugMessage;
+
     public void LogIn()
     {
         StartCoroutine(authenticateLog(username, password));
@@ -29,7 +32,19 @@ public class ConnectionScript : MonoBehaviour
 
     public void SingIn()
     {
-        StartCoroutine(createLog(username, password));
+        if (username.Length > 3 && password.Length > 3)
+            StartCoroutine(createLog(username, password, username));
+        else
+        {
+            Debug.LogError("username and password not long enough");
+            if (debugMessage != null)
+                debugMessage.text = "Username or Password not long enough. You need at least 3 characters.";
+        }
+    }
+
+    public void SingIn(string name)
+    {
+        StartCoroutine(createLog(username, password, name));
     }
 
     public IEnumerator authenticateLog(string user, string pass)
@@ -45,6 +60,8 @@ public class ConnectionScript : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                if (debugMessage != null)
+                    debugMessage.text = www.error;
             }
             else
             {
@@ -63,13 +80,15 @@ public class ConnectionScript : MonoBehaviour
                 else
                 {
                     Debug.LogError("Error authenticating");
+                    if (debugMessage != null)
+                        debugMessage.text = "Error authenticating";
                 }
             }
         }
         yield return null;
     }
 
-    public IEnumerator createLog(string user, string pass)
+    public IEnumerator createLog(string user, string pass, string name = null)
     {
         WWWForm form = new WWWForm();
         form.AddField("username", user);
@@ -82,6 +101,8 @@ public class ConnectionScript : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                if (debugMessage != null)
+                    debugMessage.text = www.error;
             }
             else
             {
@@ -91,9 +112,11 @@ public class ConnectionScript : MonoBehaviour
                     UserData.UserDataManager userDataMan = UserData.UserDataManager.Instance;
                     userDataMan.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
                     loggedin = true;
+                    if (name == null)
+                        name = "User" + userDataMan.userAuth.id;
                     yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(
                         Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
-                        userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass));
+                        userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass + "\n" + name));
 
                     UserData.UserDataManager.Instance.userData.CreateInitial();
                     UserData.UserDataManager.Instance.SaveData();
@@ -103,7 +126,9 @@ public class ConnectionScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Error creating user");
+                    Debug.LogError("Error creating User");
+                    if (debugMessage != null)
+                        debugMessage.text = "Error creating User";
                 }
             }
         }
@@ -119,6 +144,8 @@ public class ConnectionScript : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                if (debugMessage != null)
+                    debugMessage.text = www.error;
             }
             else
             {
@@ -129,7 +156,9 @@ public class ConnectionScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Error creating user");
+                    Debug.LogError("Error getting User");
+                    if (debugMessage != null)
+                        debugMessage.text = "Error getting User";
                 }
             }
         }
@@ -150,6 +179,8 @@ public class ConnectionScript : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                if (debugMessage != null)
+                    debugMessage.text = www.error;
             }
             else
             {
@@ -160,7 +191,9 @@ public class ConnectionScript : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Error creating user");
+                    Debug.LogError("Error updating User");
+                    if (debugMessage != null)
+                        debugMessage.text = "Error updating User";
                 }
             }
         }

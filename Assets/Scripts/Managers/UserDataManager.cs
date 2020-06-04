@@ -133,7 +133,7 @@ namespace UserData
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
             if (userData.userType == UserData.USERTYPE.APPLE)
             {
-                yield return StartCoroutine(GetComponent<SignInAppleObject>().CheckCredentialStatusForUserId(data[2]));
+                yield return StartCoroutine(GetComponent<SignInAppleObject>().CheckCredentialStatusForUserId(data[0]));
                 if (!GetComponent<SignInAppleObject>().credentialOK)
                     yield break;
             }

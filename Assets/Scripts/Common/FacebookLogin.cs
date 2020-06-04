@@ -207,9 +207,9 @@ public class FacebookLogin : MonoBehaviour
 
     private void CreateUser()
     {
-        GetComponent<ConnectionScript>().username = fullname;
-        GetComponent<ConnectionScript>().password = id;
+        GetComponent<ConnectionScript>().username = id;
+        GetComponent<ConnectionScript>().password = "Facebook!"+id+fullname;
         UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.FACEBOOK;
-        GetComponent<ConnectionScript>().SingIn();
+        GetComponent<ConnectionScript>().SingIn(fullname);
     }
 }

@@ -78,8 +78,10 @@ public class GooglePlayService : MonoBehaviour
         {
             if (Social.localUser.authenticated)
             {
-                string user = Social.localUser.userName;
-                string id = Social.localUser.id;
+                GetComponent<ConnectionScript>().username = Social.localUser.id;
+                GetComponent<ConnectionScript>().password = "Google!" + Social.localUser.id + Social.localUser.userName;
+                UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.GOOGLE;
+                GetComponent<ConnectionScript>().SingIn(Social.localUser.userName);
 
                 //avatar
                 //Social.localUser.image

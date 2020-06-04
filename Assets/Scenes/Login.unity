@@ -127,6 +127,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 499160398698039882}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &645140825 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2462244026285223298, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+    type: 3}
+  m_PrefabInstance: {fileID: 499160398698039882}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &999187775
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +480,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501e8a83449b945a2bf28e861fa9fb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1963038181 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 499160398339462006, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+    type: 3}
+  m_PrefabInstance: {fileID: 499160398698039882}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2104180813
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,11 +796,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1472313632}
+      objectReference: {fileID: 4607468782863167018}
     - target: {fileID: 4971774169939984702, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SingIn
+      value: SignIn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971774169939984702, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5158353658592905919, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
@@ -841,6 +858,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3986588042718428255, guid: e632166a918cd4ed1bdedbcf96f3e37a,
+        type: 3}
+      propertyPath: googlePlayButton
+      value: 
+      objectReference: {fileID: 645140825}
     - target: {fileID: 4607468781508433716, guid: e632166a918cd4ed1bdedbcf96f3e37a,
         type: 3}
       propertyPath: m_Name
@@ -906,6 +928,11 @@ PrefabInstance:
       propertyPath: fader
       value: 
       objectReference: {fileID: 2104180814}
+    - target: {fileID: 8924361256464253735, guid: e632166a918cd4ed1bdedbcf96f3e37a,
+        type: 3}
+      propertyPath: appleButton
+      value: 
+      objectReference: {fileID: 1963038181}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e632166a918cd4ed1bdedbcf96f3e37a, type: 3}
 --- !u!114 &4607468782863167018 stripped

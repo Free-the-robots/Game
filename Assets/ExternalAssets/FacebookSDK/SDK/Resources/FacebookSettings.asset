@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 0
+  - 559050978127292
   appLabels:
-  - App Name
+  - FreeTheRobots
   cookie: 1
   logging: 1
   status: 1

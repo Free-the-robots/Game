@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.lupidan.apple-signin-unity": "https://github.com/lupidan/apple-signin-unity.git#v1.2.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "1.1.10",
     "com.unity.collab-proxy": "1.2.16",
@@ -41,5 +42,11 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.lupidan.apple-signin-unity": {
+      "revision": "v1.2.0",
+      "hash": "dba7173505350e7a8b9fab447485ab5075037826"
+    }
   }
 }

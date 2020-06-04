@@ -8,6 +8,7 @@ namespace UserData
 {
     [RequireComponent(typeof(ConnectionScript))]
     [RequireComponent(typeof(FacebookLogin))]
+    [RequireComponent(typeof(SignInAppleObject))]
     public class UserDataManager : MonoBehaviour
     {
         public readonly UserData userData = new UserData();
@@ -30,6 +31,9 @@ namespace UserData
                 instance = this;
 
                 userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
+#if UNITY_IPHONE
+                UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath);
+#endif
                 if (File.Exists(userDataPath))
                 {
                     try
@@ -41,18 +45,21 @@ namespace UserData
                         //TODO : REMOVE FOR PRODUCTION
                         Debug.LogError(e.Message);
                         Debug.LogError("Recreating intial user data");
-                        userData.CreateInitial();
-                        SaveData();
+                        //userData.CreateInitial();
+                        //SaveData();
                     }
                 }
                 else
                 {
                     //TODO : REMOVE FOR PRODUCTION
-                    userData.CreateInitial();
-                    SaveData();
+                    //userData.CreateInitial();
+                    //SaveData();
                 }
 
                 userDataPath2 = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat";
+#if UNITY_IPHONE
+                UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath2);
+#endif
                 if (File.Exists(userDataPath2))
                 {
                     StartCoroutine(checkUser());
@@ -122,6 +129,12 @@ namespace UserData
         {
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            if(userData.userType == UserData.USERTYPE.APPLE)
+            {
+                yield return StartCoroutine(GetComponent<SignInAppleObject>().CheckCredentialStatusForUserId(data[2]));
+                if (!GetComponent<SignInAppleObject>().credentialOK)
+                    yield break;
+            }
             yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
         }
 

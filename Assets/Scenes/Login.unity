@@ -610,6 +610,16 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: set_password
       objectReference: {fileID: 0}
+    - target: {fileID: 499160398339462005, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4607468782863167018}
+    - target: {fileID: 499160398339462005, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SignIn
+      objectReference: {fileID: 0}
     - target: {fileID: 499160398593863000, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
       propertyPath: m_Name
@@ -728,7 +738,7 @@ PrefabInstance:
     - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: FBLogin
+      value: FBSignIn
       objectReference: {fileID: 0}
     - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
@@ -757,6 +767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3732258820237584849, guid: ca2cb939b2c8c4d0a81c110bca3597bb, type: 3}
+    - {fileID: 499160398339462004, guid: ca2cb939b2c8c4d0a81c110bca3597bb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ca2cb939b2c8c4d0a81c110bca3597bb, type: 3}
 --- !u!1001 &4607468782863167017
 PrefabInstance:
@@ -832,3 +843,15 @@ PrefabInstance:
       objectReference: {fileID: 2104180814}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e632166a918cd4ed1bdedbcf96f3e37a, type: 3}
+--- !u!114 &4607468782863167018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8924361256464253735, guid: e632166a918cd4ed1bdedbcf96f3e37a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4607468782863167017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d6b741f8863e46ebbb643d519545124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

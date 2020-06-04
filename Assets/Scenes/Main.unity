@@ -2266,6 +2266,11 @@ PrefabInstance:
       propertyPath: renderTexture
       value: 
       objectReference: {fileID: 920955824}
+    - target: {fileID: 5758903306505558390, guid: f29cbd54cb5784b55b0f1e889da73c2d,
+        type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6038568581103519891, guid: f29cbd54cb5784b55b0f1e889da73c2d,
         type: 3}
       propertyPath: planetID
@@ -2985,6 +2990,11 @@ PrefabInstance:
       propertyPath: renderTexture
       value: 
       objectReference: {fileID: 920955824}
+    - target: {fileID: 5758903306505558390, guid: f29cbd54cb5784b55b0f1e889da73c2d,
+        type: 3}
+      propertyPath: m_Radius
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6038568581103519891, guid: f29cbd54cb5784b55b0f1e889da73c2d,
         type: 3}
       propertyPath: planetID
@@ -4631,7 +4641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1883588861
 Transform:
   m_ObjectHideFlags: 0
@@ -6197,6 +6207,11 @@ PrefabInstance:
       propertyPath: renderTexture
       value: 
       objectReference: {fileID: 920955824}
+    - target: {fileID: 5758903306505558390, guid: f29cbd54cb5784b55b0f1e889da73c2d,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7043150627827066138, guid: f29cbd54cb5784b55b0f1e889da73c2d,
         type: 3}
       propertyPath: cameraTexture

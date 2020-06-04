@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public Transform startSpawn;
-    public GameObject Level;
+    public List<GameObject> objectToActivate;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +24,8 @@ public class LevelManager : MonoBehaviour
         GameObject player = GameObject.Instantiate(assetData.spaceshipObject.Find(obj => obj.GetComponent<PlayerSpaceship>().spaceshipData.id == userData.userData.shipEquiped));
         player.transform.position = startSpawn.position;
         player.transform.rotation = startSpawn.rotation;
-        Level.SetActive(true);
+        for(int i = 0; i < objectToActivate.Count; ++i)
+            objectToActivate[i].SetActive(true);
     }
 
     // Update is called once per frame

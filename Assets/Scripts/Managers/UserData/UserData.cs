@@ -110,7 +110,7 @@ namespace UserData
     [Serializable]
     public class UserData : SerializableData<UserData>
     {
-        public enum USERTYPE : int { STANDARD = 0, FACEBOOK = 1, APPLE = 2}
+        public enum USERTYPE : int { STANDARD = 0, FACEBOOK = 1, APPLE = 2, GOOGLE = 3}
 
         public List<ClusterData> clusters = new List<ClusterData>();
         public List<ShipData> ships = new List<ShipData>();

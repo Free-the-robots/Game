@@ -1,24 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_IOS || UNITY_STANDALONE_OSX
 using AppleAuth;
 using AppleAuth.Enums;
 using AppleAuth.Interfaces;
 using AppleAuth.Native;
 using AppleAuth.Extensions;
+#endif
 
 public class SignInAppleObject : MonoBehaviour
 {
+#if UNITY_IOS || UNITY_STANDALONE_OSX
     private IAppleAuthManager appleAuthManager;
     public bool credentialOK = false;
+#endif
+    public GameObject appleButton;
     void Awake()
     {
 #if UNITY_IOS || UNITY_STANDALONE_OSX
         Open();
 #else
-        gameObject.SetActive(false);
+        enabled = false;
+        if(appleButton != null)
+            appleButton.SetActive(false);
 #endif
     }
+
+    public void SignIn()
+    {
+#if UNITY_IOS || UNITY_STANDALONE_OSX
+        this.SignInWithApple();
+#endif
+    }
+
+#if UNITY_IOS || UNITY_STANDALONE_OSX
 
     void Update()
     {
@@ -28,10 +44,10 @@ public class SignInAppleObject : MonoBehaviour
         }
     }
 
-#if UNITY_IOS || UNITY_STANDALONE_OSX
-    public void Open()
+    private void Open()
     {
-        gameObject.SetActive(true);
+        if (appleButton != null)
+            appleButton.SetActive(true);
         if (AppleAuthManager.IsCurrentPlatformSupported)
         {
             // Creates a default JSON deserializer, to transform JSON Native responses to C# instances
@@ -40,16 +56,6 @@ public class SignInAppleObject : MonoBehaviour
             this.appleAuthManager = new AppleAuthManager(deserializer);
             //AttemptQuickLogin();
         }
-    }
-
-    public void Close()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SignIn()
-    {
-        this.SignInWithApple();
     }
     public IEnumerator CheckCredentialStatusForUserId(string appleUserId)
     {

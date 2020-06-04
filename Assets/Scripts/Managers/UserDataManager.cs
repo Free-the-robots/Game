@@ -31,7 +31,8 @@ namespace UserData
                 instance = this;
 
                 userDataPath = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata.d";
-#if UNITY_IPHONE
+
+#if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
                 UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath);
 #endif
                 if (File.Exists(userDataPath))
@@ -129,12 +130,19 @@ namespace UserData
         {
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            if(userData.userType == UserData.USERTYPE.APPLE)
+#if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
+            if (userData.userType == UserData.USERTYPE.APPLE)
             {
                 yield return StartCoroutine(GetComponent<SignInAppleObject>().CheckCredentialStatusForUserId(data[2]));
                 if (!GetComponent<SignInAppleObject>().credentialOK)
                     yield break;
             }
+#elif UNITY_ANDROID
+            if (userData.userType == UserData.USERTYPE.GOOGLE)
+            {
+                GetComponent<GooglePlayService>().SignInSilent();
+            }
+#endif
             yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
         }
 

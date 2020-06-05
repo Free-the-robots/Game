@@ -81,7 +81,8 @@ public class GooglePlayService : MonoBehaviour
                 GetComponent<ConnectionScript>().username = Social.localUser.id;
                 GetComponent<ConnectionScript>().password = "Google!" + Social.localUser.id + Social.localUser.userName;
                 UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.GOOGLE;
-                GetComponent<ConnectionScript>().SingIn(Social.localUser.userName);
+                //GetComponent<ConnectionScript>().SingIn(Social.localUser.userName);
+                StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(Social.localUser.userName));
 
                 //avatar
                 //Social.localUser.image

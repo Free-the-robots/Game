@@ -47,6 +47,20 @@ public class ConnectionScript : MonoBehaviour
         StartCoroutine(createLog(username, password, name));
     }
 
+    public IEnumerator CheckSignIn()
+    {
+        yield return StartCoroutine(authenticateLog(username, password));
+        if (!loggedin)
+            yield return StartCoroutine(createLog(username, password));
+    }
+
+    public IEnumerator CheckSignIn(string name)
+    {
+        yield return StartCoroutine(authenticateLog(username, password));
+        if (!loggedin)
+            yield return StartCoroutine(createLog(username, password, name));
+    }
+
     public IEnumerator authenticateLog(string user, string pass)
     {
         WWWForm form = new WWWForm();

@@ -282,27 +282,26 @@ public class ParticlePooling : MonoBehaviour
     private void destroyCommon(GameObject particle)
     {
         ProjectileData part = particle.GetComponent<ParticleChooser>().active.data;
-        particle.GetComponent<ParticleChooser>().active.destroyed = true;
-        particle.GetComponent<ParticleChooser>().active.enabled = false;
-        particle.GetComponent<ParticleChooser>().active.data = null;
-        particle.GetComponent<ParticleChooser>().active = null;
-
         particle.SetActive(false);
 
         switch (part.projectileType)
         {
             case ProjectileData.PROJECTILETYPE.Billboard:
-                particle.transform.parent = poolParticleBillboardTransform;
+                particle.transform.SetParent(poolParticleBillboardTransform);
                 poolBillboard.Add(particle);
                 break;
             case ProjectileData.PROJECTILETYPE.Standard:
-                particle.transform.parent = poolParticleTransform;
+                particle.transform.SetParent(poolParticleTransform);
                 pool.Add(particle);
                 break;
             default:
-                particle.transform.parent = poolParticleTransform;
+                particle.transform.SetParent(poolParticleTransform);
                 pool.Add(particle);
                 break;
         }
+        particle.GetComponent<ParticleChooser>().active.destroyed = true;
+        particle.GetComponent<ParticleChooser>().active.enabled = false;
+        particle.GetComponent<ParticleChooser>().active.data = null;
+        particle.GetComponent<ParticleChooser>().active = null;
     }
 }

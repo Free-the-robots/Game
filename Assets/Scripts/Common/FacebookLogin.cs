@@ -210,6 +210,7 @@ public class FacebookLogin : MonoBehaviour
         GetComponent<ConnectionScript>().username = id;
         GetComponent<ConnectionScript>().password = "Facebook!"+id+fullname;
         UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.FACEBOOK;
-        GetComponent<ConnectionScript>().SingIn(fullname);
+
+        StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(fullname));
     }
 }

@@ -130,7 +130,7 @@ public class SignInAppleObject : MonoBehaviour
                 GetComponent<ConnectionScript>().username = credential.User;;
                 GetComponent<ConnectionScript>().password = "Apple!"+credential.User+appleIdCredential.FullName.ToLocalizedString();
                 UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.APPLE;
-                GetComponent<ConnectionScript>().SingIn(appleIdCredential.FullName.ToLocalizedString());
+                StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(appleIdCredential.FullName.ToLocalizedString()));
 
                 //Debug.Log(appleIdCredential.Email);
             },

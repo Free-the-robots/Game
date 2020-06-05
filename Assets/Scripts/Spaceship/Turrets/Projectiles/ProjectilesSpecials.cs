@@ -37,7 +37,7 @@ namespace Projectiles
 
         public static void obstacleCommon(GameObject that, Collision other)
         {
-            ParticlePooling.Destroy(that);
+            ParticlePooling.Instance.destroy(that);
         }
 
         public static void obstacleRicochet(GameObject that, Collision other)
@@ -47,7 +47,7 @@ namespace Projectiles
 
         public static void triggerCommon(GameObject that, Collider other)
         {
-            ParticlePooling.Instance.destroy(that.gameObject);
+            ParticlePooling.Instance.destroy(that);
         }
 
         public static void triggerSustain(GameObject that, Collider other)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 #if UNITY_IOS || UNITY_STANDALONE_OSX
 using AppleAuth;
 using AppleAuth.Enums;
@@ -127,10 +128,25 @@ public class SignInAppleObject : MonoBehaviour
                 IAppleIDCredential appleIdCredential = credential as IAppleIDCredential;
                 IPasswordCredential passwordCredential = credential as IPasswordCredential;
 
-                GetComponent<ConnectionScript>().username = credential.User;;
-                GetComponent<ConnectionScript>().password = "Apple!"+credential.User+appleIdCredential.FullName.ToLocalizedString();
-                UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.APPLE;
-                StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(appleIdCredential.FullName.ToLocalizedString()));
+                if(appleIdCredential.FullName != null)
+                {
+                    GetComponent<ConnectionScript>().username = credential.User;
+                    GetComponent<ConnectionScript>().password = "Apple!" + credential.User + appleIdCredential.FullName.ToLocalizedString();
+                    UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.APPLE;
+                    StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(appleIdCredential.FullName.ToLocalizedString()));
+                }
+                else
+                {
+                    if(File.Exists(Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.d"))
+                    {
+                        StartCoroutine(CheckCredentialStatusForUserId(credential.User));
+                    }
+                    else
+                    {
+                        Debug.LogError("Apple signed in already but didn't find a user");
+                    }
+                }
+
 
                 //Debug.Log(appleIdCredential.Email);
             },

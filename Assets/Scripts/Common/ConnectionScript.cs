@@ -56,9 +56,13 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator CheckSignIn(string name)
     {
+        Debug.Log("cheking signin");
         yield return StartCoroutine(authenticateLog(username, password));
         if (!loggedin)
+        {
+            Debug.Log("Creating account");
             yield return StartCoroutine(createLog(username, password, name));
+        }
     }
 
     public IEnumerator authenticateLog(string user, string pass)
@@ -83,8 +87,12 @@ public class ConnectionScript : MonoBehaviour
                 if (!www.downloadHandler.text.Contains("Error"))
                 {
                     UserData.UserDataManager userDataMan = UserData.UserDataManager.Instance;
-                    UserData.UserDataManager.Instance.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
+                    userDataMan.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
                     loggedin = true;
+                    if (userDataMan.userAuth.data.Length > 0)
+                        userDataMan.userData.LoadSerialize(EncryptDecrypt.decrypt(userDataMan.userAuth.data));
+                    else
+                        Debug.LogError("User Data NULL");
                     yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(
                         Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
                         userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass));
@@ -132,8 +140,8 @@ public class ConnectionScript : MonoBehaviour
                         Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
                         userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass + "\n" + name));
 
-                    UserData.UserDataManager.Instance.userData.CreateInitial();
-                    UserData.UserDataManager.Instance.SaveData();
+                    userDataMan.userData.CreateInitial();
+                    yield return StartCoroutine(userDataMan.SaveDataAsync());
 
                     if (SceneManager.GetActiveScene().name.Equals("Login"))
                         SceneManager.LoadScene(level);
@@ -198,10 +206,9 @@ public class ConnectionScript : MonoBehaviour
             }
             else
             {
-                //Debug.Log(www.downloadHandler.text);
                 if (!www.downloadHandler.text.Contains("Error"))
                 {
-
+                    Debug.Log(www.downloadHandler.text);
                 }
                 else
                 {

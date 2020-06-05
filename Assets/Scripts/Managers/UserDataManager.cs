@@ -109,12 +109,15 @@ namespace UserData
             StartCoroutine(LoadDataAsync());
         }
 
-        private IEnumerator SaveDataAsync()
+        public IEnumerator SaveDataAsync()
         {
             LoadingManager.Instance.enableLoading();
             yield return StartCoroutine(userData.SaveSerialize(userDataPath));
-            if(GetComponent<ConnectionScript>().loggedin)
+            if (GetComponent<ConnectionScript>().loggedin)
+            {
+                Debug.Log("logged in so saving online");
                 yield return StartCoroutine(GetComponent<ConnectionScript>().updateLog(userAuth.id, EncryptDecrypt.encrypt(userData.Serialize())));
+            }
             LoadingManager.Instance.disableLoading();
         }
 
@@ -128,6 +131,7 @@ namespace UserData
 
         private IEnumerator checkUser()
         {
+            LoadingManager.Instance.enableLoading();
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
@@ -144,6 +148,7 @@ namespace UserData
             }
 #endif
             yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
+            LoadingManager.Instance.disableLoading();
         }
 
         public void Share(string title, string description, Texture2D image)

@@ -138,7 +138,7 @@ public class AssetDataManager : MonoBehaviour
     IEnumerator LoadAssets()
     {
         LoadingManager.Instance.resetLoading();
-        LoadingManager.Instance.enableLoading();
+        LoadingManager.Instance.enableLoading("Loading Assets...");
 
         downloading = true;
 
@@ -170,7 +170,7 @@ public class AssetDataManager : MonoBehaviour
     IEnumerator DownloadAssets()
     {
         LoadingManager.Instance.resetLoading();
-        LoadingManager.Instance.enableLoading();
+        LoadingManager.Instance.enableLoading("Downloading Assets...");
 
         downloading = true;
         LoadingManager.Instance.maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;

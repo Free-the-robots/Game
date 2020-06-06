@@ -111,7 +111,7 @@ namespace UserData
 
         public IEnumerator SaveDataAsync()
         {
-            LoadingManager.Instance.enableLoading();
+            LoadingManager.Instance.enableLoading("Saving...");
             yield return StartCoroutine(userData.SaveSerialize(userDataPath));
             if (GetComponent<ConnectionScript>().loggedin)
             {
@@ -122,7 +122,7 @@ namespace UserData
 
         private IEnumerator LoadDataAsync()
         {
-            LoadingManager.Instance.enableLoading();
+            LoadingManager.Instance.enableLoading("Loading...");
             if (GetComponent<ConnectionScript>().loggedin)
                 yield return StartCoroutine(GetComponent<ConnectionScript>().getLog(userAuth.username));
             LoadingManager.Instance.disableLoading();
@@ -130,7 +130,7 @@ namespace UserData
 
         private IEnumerator checkUser()
         {
-            LoadingManager.Instance.enableLoading();
+            LoadingManager.Instance.enableLoading("Checking...");
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE

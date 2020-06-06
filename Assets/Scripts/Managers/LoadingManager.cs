@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class LoadingManager : MonoBehaviour
 
     public RectTransform rectLoadingParent;
     public RectTransform rectLoading;
+    public Text message;
 
     public float maxPercent = 0f;
     public float maxValue = 0f;
@@ -33,8 +35,9 @@ public class LoadingManager : MonoBehaviour
         rectLoading.sizeDelta = new Vector2(p / maxPercent * maxWidth, rectLoading.sizeDelta.y);
     }
 
-    public void enableLoading()
+    public void enableLoading(string mes)
     {
+        message.text = mes;
         gameObject.SetActive(true);
     }
 

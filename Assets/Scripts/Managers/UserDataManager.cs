@@ -115,7 +115,6 @@ namespace UserData
             yield return StartCoroutine(userData.SaveSerialize(userDataPath));
             if (GetComponent<ConnectionScript>().loggedin)
             {
-                Debug.Log("logged in so saving online");
                 yield return StartCoroutine(GetComponent<ConnectionScript>().updateLog(userAuth.id, EncryptDecrypt.encrypt(userData.Serialize())));
             }
             LoadingManager.Instance.disableLoading();

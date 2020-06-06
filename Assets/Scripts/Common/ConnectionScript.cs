@@ -12,7 +12,7 @@ public class sqlUserData
     public string username;
     public string password;
     public string last;
-    public byte[] data;
+    public string data;
 }
 
 public class ConnectionScript : MonoBehaviour
@@ -56,17 +56,17 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator CheckSignIn(string name)
     {
-        Debug.Log("cheking signin");
         yield return StartCoroutine(authenticateLog(username, password));
         if (!loggedin)
         {
-            Debug.Log("Creating account");
             yield return StartCoroutine(createLog(username, password, name));
         }
     }
 
     public IEnumerator authenticateLog(string user, string pass)
     {
+        debugMessage.text = "Authenticating...";
+
         WWWForm form = new WWWForm();
         form.AddField("username", user);
         form.AddField("password", pass);
@@ -90,7 +90,11 @@ public class ConnectionScript : MonoBehaviour
                     userDataMan.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
                     loggedin = true;
                     if (userDataMan.userAuth.data.Length > 0)
-                        userDataMan.userData.LoadSerialize(EncryptDecrypt.decrypt(userDataMan.userAuth.data));
+                    {
+                        userDataMan.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
+                        byte[] data = EncryptDecrypt.decrypt(System.Text.Encoding.Default.GetBytes(userDataMan.userAuth.data));
+                        userDataMan.userData.LoadSerialize(data);
+                    }
                     else
                         Debug.LogError("User Data NULL");
                     yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(
@@ -112,6 +116,8 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator createLog(string user, string pass, string name = null)
     {
+        debugMessage.text = "Creating account...";
+
         WWWForm form = new WWWForm();
         form.AddField("username", user);
         form.AddField("password", pass);
@@ -159,6 +165,8 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator getLog(string user)
     {
+        debugMessage.text = "Getting account...";
+
         using (UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.com/api/users/"+username))
         {
             yield return www.SendWebRequest();
@@ -174,7 +182,10 @@ public class ConnectionScript : MonoBehaviour
                 //Debug.Log(www.downloadHandler.text);
                 if (!www.downloadHandler.text.Contains("Error"))
                 {
-                    UserData.UserDataManager.Instance.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
+                    UserData.UserDataManager userMan = UserData.UserDataManager.Instance;
+                    userMan.userAuth = JsonUtility.FromJson<sqlUserData>(www.downloadHandler.text);
+                    byte[] data = EncryptDecrypt.decrypt(System.Text.Encoding.Default.GetBytes(userMan.userAuth.data));
+                    userMan.userData.LoadSerialize(data);
                 }
                 else
                 {
@@ -189,10 +200,11 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator updateLog(int id, byte[] data)
     {
+        debugMessage.text = "Updating account...";
         WWWForm form = new WWWForm();
         form.AddField("username", UserData.UserDataManager.Instance.userAuth.username);
         form.AddField("password", UserData.UserDataManager.Instance.userAuth.password);
-        form.AddBinaryData("data", data);
+        form.AddField("data", System.Text.Encoding.Default.GetString(data));
 
         using (UnityWebRequest www = UnityWebRequest.Post("https://free-the-robots.com/api/users/" + id, form))
         {

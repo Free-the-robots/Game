@@ -13,6 +13,7 @@ public class AssetDataManager : MonoBehaviour
     public List<SpaceshipData> spaceshipScriptableData = new List<SpaceshipData>();
     public List<GameObject> spaceshipObject = new List<GameObject>();
     public List<Material> spaceshipMaterial = new List<Material>();
+    public List<Projectiles.ProjectileData> weaponData = new List<Projectiles.ProjectileData>();
 
     public Dictionary<int,GameObject> turretObject = new Dictionary<int, GameObject>();
 

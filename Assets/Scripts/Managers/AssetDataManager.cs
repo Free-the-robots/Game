@@ -13,8 +13,8 @@ public class AssetDataManager : MonoBehaviour
     public List<SpaceshipData> spaceshipScriptableData = new List<SpaceshipData>();
     public List<GameObject> spaceshipObject = new List<GameObject>();
     public List<Material> spaceshipMaterial = new List<Material>();
-    public List<Projectiles.ProjectileData> weaponData = new List<Projectiles.ProjectileData>();
 
+    public Dictionary<int, Projectiles.ProjectileData> weaponData = new Dictionary<int, Projectiles.ProjectileData>();
     public Dictionary<int,GameObject> turretObject = new Dictionary<int, GameObject>();
 
     public static AssetDataManager Instance { get { return instance; } }
@@ -133,7 +133,9 @@ public class AssetDataManager : MonoBehaviour
     private void OnLoadDonePrefabWeapon(AsyncOperationHandle<GameObject> obj)
     {
         // In a production environment, you should add exception handling to catch scenarios such as a null result.
-        turretObject[System.Convert.ToInt32(obj.Result.name.Remove(0,6))] = obj.Result;
+        int id = System.Convert.ToInt32(obj.Result.name.Remove(0, 6));
+        turretObject[id] = obj.Result;
+        weaponData[id] = obj.Result.GetComponent<Weapon.Turret>().projectileData;
     }
 
     IEnumerator LoadAssets()

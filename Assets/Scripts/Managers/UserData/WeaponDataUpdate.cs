@@ -46,8 +46,9 @@ public class WeaponDataUpdate : MonoBehaviour
         //Get Data from user data
         UserData.UserData userData = UserDataManager.Instance.userData;
         AssetDataManager assetData = AssetDataManager.Instance;
-        actualWeapon = userData.weapons.First(i=>i.unlocked);
-        actualWeaponData = assetData.weaponData[userData.weapons.IndexOf(actualWeapon)];
+        actualWeapon = userData.weapons.FirstOrDefault();
+        if(actualWeapon != null)
+            actualWeaponData = assetData.weaponData[actualWeapon.id];
 
         //Update stats and info
         UpdateStats();
@@ -58,7 +59,7 @@ public class WeaponDataUpdate : MonoBehaviour
 
         ToggleGroup toggleGroup = weaponContent.GetComponent<ToggleGroup>();
 
-        for (int i = 0; i < AssetDataManager.Instance.weaponData.Count; ++i)
+        for (int i = 0; i < userData.weapons.Count; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             Toggle toggle = button.GetComponent<Toggle>();
@@ -68,7 +69,8 @@ public class WeaponDataUpdate : MonoBehaviour
             toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
         }
-        weaponContent.GetComponentsInChildren<Toggle>()[actualWeapon.id].isOn = true;
+        if(actualWeapon != null)
+            weaponContent.GetComponentsInChildren<Toggle>()[actualWeapon.id].isOn = true;
 
 
         ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
@@ -87,35 +89,35 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public void UpdateWeapon(bool toggle, int index)
     {
-        if (toggle)
-        {
-            UserData.UserData userData = UserDataManager.Instance.userData;
-            AssetDataManager assetData = AssetDataManager.Instance;
-            if (actualWeaponData.id != index)
-            {
-                actualWeapon = userData.weapons.Find(i => i.id == index);
-                actualWeaponData = assetData.weaponData.Find(obj => obj.id == index);
+        //if (toggle)
+        //{
+        //    UserData.UserData userData = UserDataManager.Instance.userData;
+        //    AssetDataManager assetData = AssetDataManager.Instance;
+        //    if (actualWeaponData.id != index)
+        //    {
+        //        actualWeapon = userData.weapons.Find(i => i.id == index);
+        //        actualWeaponData = assetData.weaponData.Find(obj => obj.id == index);
 
-                UpdateStats();
+        //        UpdateStats();
 
-                ActivateWeapon(index);
-            }
-            else
-            {
-                if (userData.shipEquiped != index && actualWeapon != null && actualWeapon.unlocked)
-                {
-                    Debug.Log("Equip " + index);
-                    userData.shipEquiped = index;
-                    UserDataManager.Instance.SaveData();
-                }
-                if (actualWeapon == null || !actualWeapon.unlocked)
-                    Debug.Log("Not unlocked " + index);
-            }
-        }
-        else
-        {
-            DisableWeapon(index);
-        }
+        //        ActivateWeapon(index);
+        //    }
+        //    else
+        //    {
+        //        if (userData.shipEquiped != index && actualWeapon != null && actualWeapon.unlocked)
+        //        {
+        //            Debug.Log("Equip " + index);
+        //            userData.shipEquiped = index;
+        //            UserDataManager.Instance.SaveData();
+        //        }
+        //        if (actualWeapon == null || !actualWeapon.unlocked)
+        //            Debug.Log("Not unlocked " + index);
+        //    }
+        //}
+        //else
+        //{
+        //    DisableWeapon(index);
+        //}
     }
 
     public void DisableWeapon(int id)

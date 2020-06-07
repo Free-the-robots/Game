@@ -115,6 +115,7 @@ namespace UserData
         public List<ClusterData> clusters = new List<ClusterData>();
         public List<ShipData> ships = new List<ShipData>();
         public List<WeaponData> weapons = new List<WeaponData>();
+        public List<EvoWeaponData> evoweapons = new List<EvoWeaponData>();
 
         public int shipEquiped = 0;
 
@@ -254,6 +255,18 @@ namespace UserData
             }
 
             size = BitConverter.ToInt32(data, j);
+            evoweapons = new List<EvoWeaponData>(size);
+            j += sizeof(int);
+            for (int i = 0; i < size; i++)
+            {
+                EvoWeaponData evoweapon = new EvoWeaponData(data.Skip(j).ToArray());
+                evoweapons.Add(evoweapon);
+                j += evoweapon.byteCount();
+                if (j > data.Length)
+                    throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
+            }
+
+            size = BitConverter.ToInt32(data, j);
             ships = new List<ShipData>(size);
             j += sizeof(int);
             for (int i = 0; i < size; i++)
@@ -291,6 +304,11 @@ namespace UserData
             {
                 byteArray = CommonData.addByteToArray(byteArray, weapons[i].Serialize());
             }
+            byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(evoweapons.Count));
+            for (int i = 0; i < evoweapons.Count; ++i)
+            {
+                byteArray = CommonData.addByteToArray(byteArray, evoweapons[i].Serialize());
+            }
             byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(ships.Count));
             for (int i = 0; i < ships.Count; ++i)
             {
@@ -306,10 +324,12 @@ namespace UserData
             int b = 0;
             for (int i = 0; i < clusters.Count; i++)
                 b += clusters[i].byteCount();
-            for (int i = 0; i < ships.Count; i++)
-                b += ships[i].byteCount();
             for (int i = 0; i < weapons.Count; i++)
                 b += weapons[i].byteCount();
+            for (int i = 0; i < evoweapons.Count; i++)
+                b += evoweapons[i].byteCount();
+            for (int i = 0; i < ships.Count; i++)
+                b += ships[i].byteCount();
             b += sizeof(int);
             b += sizeof(int);
             return b;

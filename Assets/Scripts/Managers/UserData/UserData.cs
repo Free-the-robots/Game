@@ -107,6 +107,36 @@ namespace UserData
         }
     }
 
+    public class Craft : SerializableData<Craft>
+    {
+        int amount;
+        public Craft()
+        {
+            amount = 0;
+        }
+        public Craft(byte[] data)
+        {
+            LoadSerialize(data);
+        }
+
+        public override int byteCount()
+        {
+            return sizeof(int);
+        }
+
+        public override Craft LoadSerialize(byte[] data)
+        {
+            amount = BitConverter.ToInt32(data, 0);
+            return this;
+        }
+
+        public override byte[] Serialize()
+        {
+            byte[] bytes = CommonData.addByteToArray(null, BitConverter.GetBytes(amount));
+            return bytes;
+        }
+    }
+
     public class Material : SerializableData<Material>
     {
         int energy;

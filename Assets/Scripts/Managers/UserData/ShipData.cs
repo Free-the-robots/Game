@@ -10,6 +10,7 @@ namespace UserData
     public class ShipData : CommonData
     {
         public List<WeaponData> turrets = new List<WeaponData>();
+        public Craft craft;
 
         public ShipData() : base()
         {
@@ -31,6 +32,7 @@ namespace UserData
             bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets.Count));
             for(int i = 0; i < turrets.Count; ++i)
                 bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets[i].id));
+            bytes = CommonData.addByteToArray(bytes, craft.Serialize());
             return bytes;
         }
 
@@ -48,12 +50,16 @@ namespace UserData
                 turrets.Add(weaponEquiped);
                 j += sizeof(ushort);
             }
+            craft = new Craft(data.Skip(j).ToArray());
             return this;
         }
 
         public override int byteCount()
         {
-            return base.byteCount() + sizeof(int) + turrets.Count*sizeof(ushort);
+            int turretByte = 0;
+            for (int i = 0; i < turrets.Count; ++i)
+                turretByte += turrets[i].byteCount();
+            return base.byteCount() + sizeof(int) + turretByte + craft.byteCount();
         }
     }
 }

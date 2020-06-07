@@ -9,6 +9,8 @@ namespace UserData
     [Serializable]
     public class WeaponData : CommonData
     {
+        int rare;
+        int damage;
         public WeaponData() : base()
         {
 
@@ -27,18 +29,26 @@ namespace UserData
         public override byte[] Serialize()
         {
             byte[] bytes = CommonData.addByteToArray(null, base.Serialize());
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(rare));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(damage));
             return bytes;
         }
 
         public override CommonData LoadSerialize(byte[] data)
         {
+            int j = 0;
             base.LoadSerialize(data);
+            j += base.byteCount();
+            rare = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            damage = BitConverter.ToInt32(data, j);
+
             return this;
         }
 
         public override int byteCount()
         {
-            return base.byteCount();
+            return base.byteCount() + sizeof(int) + sizeof(int);
         }
     }
 

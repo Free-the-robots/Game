@@ -181,6 +181,7 @@ public class AssetDataManager : MonoBehaviour
 
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
+            Debug.Log(shipURL + line + ".prefab");
             AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(shipURL + line + ".prefab");
             async.Completed += FinishedDownloading;
             downloadAsync = async;
@@ -189,6 +190,7 @@ public class AssetDataManager : MonoBehaviour
 
         foreach (string line in weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
+            Debug.Log(weaponURL + line + ".prefab");
             AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(weaponURL + line + ".prefab");
             async.Completed += FinishedDownloading;
             downloadAsync = async;

@@ -46,15 +46,15 @@ namespace UserData
                         //TODO : REMOVE FOR PRODUCTION
                         Debug.LogError(e.Message);
                         Debug.LogError("Recreating intial user data");
-                        //userData.CreateInitial();
-                        //SaveData();
+                        userData.CreateInitial();
+                        SaveData();
                     }
                 }
                 else
                 {
                     //TODO : REMOVE FOR PRODUCTION
-                    //userData.CreateInitial();
-                    //SaveData();
+                    userData.CreateInitial();
+                    SaveData();
                 }
 
                 userDataPath2 = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat";

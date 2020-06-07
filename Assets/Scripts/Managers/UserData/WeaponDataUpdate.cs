@@ -8,7 +8,9 @@ using UserData;
 public class WeaponDataUpdate : MonoBehaviour
 {
     private WeaponData actualWeapon;
+    private EvoWeaponData actualEvoWeapon;
     private Projectiles.ProjectileData actualWeaponData;
+    private Projectiles.ParticleEvolutive actualEvoWeaponData;
     private Transform actualWeaponObject;
 
     public Text weaponName;
@@ -27,7 +29,6 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public Transform ToCamera;
     public Transform ToCameraOrigin;
-    private float toOffset;
     public Camera secondCamera;
 
     public Transform weapon3D;
@@ -37,9 +38,7 @@ public class WeaponDataUpdate : MonoBehaviour
     {
         secondCamera.GetComponent<CameraOrthoPerspLerp>().enable();
         secondCamera.GetComponent<LerpToWhenEnabled>().lerpRotate = true;
-        toOffset = secondCamera.GetComponent<LerpToWhenEnabled>().toOffset.z;
         secondCamera.GetComponent<LerpToWhenEnabled>().setToTransform(ToCamera);
-        secondCamera.GetComponent<LerpToWhenEnabled>().setOffsetZTo(0f);
         secondCamera.GetComponent<LerpToWhenEnabled>().enable();
         weapon3D.gameObject.SetActive(true);
 
@@ -47,33 +46,22 @@ public class WeaponDataUpdate : MonoBehaviour
         UserData.UserData userData = UserDataManager.Instance.userData;
         AssetDataManager assetData = AssetDataManager.Instance;
         actualWeapon = userData.weapons.FirstOrDefault();
-        if(actualWeapon != null)
+        if (actualWeapon != null)
             actualWeaponData = assetData.weaponData[actualWeapon.id];
+
+        actualEvoWeapon = userData.evoweapons.FirstOrDefault();
+        if (actualEvoWeapon == null)
+            togglesGroup.GetComponentsInChildren<Toggle>()[1].interactable = false;
 
         //Update stats and info
         UpdateStats();
 
         //Active gameobjects
         weapon3D.gameObject.SetActive(true);
-        ActivateWeapon(userData.weapons.IndexOf(actualWeapon));
+        if (actualWeapon != null)
+            ActivateWeapon(actualWeapon.id);
 
         ToggleGroup toggleGroup = weaponContent.GetComponent<ToggleGroup>();
-
-        for (int i = 0; i < userData.weapons.Count; ++i)
-        {
-            GameObject button = GameObject.Instantiate(ScrollButton);
-            Toggle toggle = button.GetComponent<Toggle>();
-            button.transform.SetParent(weaponContent);
-            int tmpI = i;
-            toggle.onValueChanged.AddListener((bool val) => UpdateWeapon(val, tmpI));
-            toggle.group = toggleGroup;
-            button.GetComponentInChildren<Text>().text = " " + i;
-        }
-        if(actualWeapon != null)
-            weaponContent.GetComponentsInChildren<Toggle>()[actualWeapon.id].isOn = true;
-
-
-        ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
 
         for (int i = 0; i < userData.weapons.Count; ++i)
         {
@@ -85,56 +73,113 @@ public class WeaponDataUpdate : MonoBehaviour
             toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
         }
+        if(actualWeapon != null)
+            weaponContent.GetComponentsInChildren<Toggle>()[actualWeapon.id].isOn = true;
+
+
+        ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
+
+        for (int i = 0; i < userData.evoweapons.Count; ++i)
+        {
+            GameObject button = GameObject.Instantiate(ScrollButton);
+            Toggle toggle = button.GetComponent<Toggle>();
+            button.transform.SetParent(weaponContent);
+            int tmpI = i;
+            toggle.onValueChanged.AddListener((bool val) => UpdateEvoWeapon(val, tmpI));
+            toggle.group = toggleGroup;
+            button.GetComponentInChildren<Text>().text = " " + i;
+        }
     }
 
     public void UpdateWeapon(bool toggle, int index)
+    {
+        if (toggle)
+        {
+            UserData.UserData userData = UserDataManager.Instance.userData;
+            AssetDataManager assetData = AssetDataManager.Instance;
+
+            actualWeapon = userData.weapons[index];
+            if (actualWeapon != null)
+                actualWeaponData = assetData.weaponData[actualWeapon.id];
+
+            UpdateStats();
+
+            ActivateWeapon(index);
+        }
+        else
+        {
+            DisableWeapon();
+        }
+    }
+
+    public void UpdateEvoWeapon(bool toggle, int index)
     {
         //if (toggle)
         //{
         //    UserData.UserData userData = UserDataManager.Instance.userData;
         //    AssetDataManager assetData = AssetDataManager.Instance;
-        //    if (actualWeaponData.id != index)
-        //    {
-        //        actualWeapon = userData.weapons.Find(i => i.id == index);
-        //        actualWeaponData = assetData.weaponData.Find(obj => obj.id == index);
 
-        //        UpdateStats();
+        //    actualEvoWeapon = userData.evoweapons[index];
 
-        //        ActivateWeapon(index);
-        //    }
-        //    else
-        //    {
-        //        if (userData.shipEquiped != index && actualWeapon != null && actualWeapon.unlocked)
-        //        {
-        //            Debug.Log("Equip " + index);
-        //            userData.shipEquiped = index;
-        //            UserDataManager.Instance.SaveData();
-        //        }
-        //        if (actualWeapon == null || !actualWeapon.unlocked)
-        //            Debug.Log("Not unlocked " + index);
-        //    }
+        //    UpdateEvoStats();
+
+        //    ActivateWeapon(index);
         //}
         //else
         //{
-        //    DisableWeapon(index);
+        //    DisableWeapon();
         //}
     }
 
-    public void DisableWeapon(int id)
+    public void DisableWeapon()
     {
-        weapon3D.GetChild(id).gameObject.SetActive(false);
-        actualWeaponObject = null;
+        if(actualWeaponObject != null)
+        {
+            GameObject.Destroy(weapon3D.GetChild(0).GetChild(0).gameObject);
+            weapon3D.GetChild(0).gameObject.SetActive(false);
+            actualWeaponObject = null;
+        }
+    }
+
+    public void DisableEvoWeapon(int id)
+    {
+        //weapon3D.GetChild(id).gameObject.SetActive(false);
+        //actualWeaponObject = null;
     }
 
     public void ActivateWeapon(int id)
     {
-        actualWeaponObject = weapon3D.GetChild(id);
-        actualWeaponObject.gameObject.SetActive(true);
+        if(actualWeaponObject == null)
+        {
+            GameObject obj = GameObject.Instantiate(AssetDataManager.Instance.turretObject[id]);
+            obj.transform.SetParent(weapon3D.GetChild(0));
+            obj.transform.SetAsFirstSibling();
+            actualWeaponObject = obj.transform;
+
+            weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Clear();
+            weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Add(obj.GetComponent<Weapon.Turret>());
+            actualWeaponObject.localPosition = Vector3.zero;
+
+            actualWeaponObject.gameObject.SetActive(true);
+            weapon3D.GetChild(0).gameObject.SetActive(true);
+        }
+    }
+
+    public void ActivateEvoWeapon(int id)
+    {
+        //actualEvoWeaponObject = weapon3D.GetChild(id);
+        //actualEvoWeaponObject.gameObject.SetActive(true);
     }
 
     public void UpdateStats()
     {
-        weaponStats.UpdateStat(actualWeaponData.damage, actualWeaponData.frequency, actualWeaponData.lifeTime);
+        if(actualWeaponData != null)
+            weaponStats.UpdateStat(actualWeaponData.damage, actualWeaponData.frequency, actualWeaponData.lifeTime);
+    }
+
+    public void UpdateEvoStats()
+    {
+        weaponEvoStats.UpdateStat(actualWeaponData.damage, actualWeaponData.frequency, actualWeaponData.lifeTime);
     }
 
     public void Disable()
@@ -146,10 +191,9 @@ public class WeaponDataUpdate : MonoBehaviour
 
     private void OnDisable()
     {
-        secondCamera.GetComponent<LerpToWhenEnabled>().setOffsetZTo(toOffset);
         secondCamera.GetComponent<LerpToWhenEnabled>().setToTransform(ToCameraOrigin);
         secondCamera.GetComponent<LerpToWhenEnabled>().lerpRotate = false;
-        DisableWeapon(actualWeaponData.id);
+        DisableWeapon();
         foreach (Transform transform in weaponContent)
         {
             GameObject.Destroy(transform.gameObject);

@@ -39,8 +39,16 @@ public class EnnemyAISpaceship : Spaceship
                 shootingBehaviour = new ShootBehaviour.FollowBehaviour(target);
                 break;
             default:
+                shootingBehaviour = new ShootBehaviour.Standard();
                 break;
         }
+    }
+
+    float t = 0f;
+    protected override void Behaviour()
+    {
+        t += Time.deltaTime;
+        ShootingBehaviour(ref t);
     }
 
     public override void Death()

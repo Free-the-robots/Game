@@ -154,6 +154,9 @@ namespace UserData
             ShipData ship = new ShipData(0, 0, (ushort)0);
             ship.unlocked = true;
             ships.Add(ship);
+
+            WeaponData weapon = new WeaponData();
+            weapons.Add(weapon);
         }
 
         public void CreateInitialWithEverything()

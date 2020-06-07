@@ -7,7 +7,8 @@ namespace Projectiles
     [CreateAssetMenu(fileName = "Projectile", menuName = "Projectiles/Projectile", order = 0)]
     public class ProjectileData : ScriptableObject
     {
-        public enum PROJECTILETYPE { Standard, Billboard};
+        public enum PROJECTILETYPE { Standard, Billboard };
+        public enum PROJECTILEELEMENT { Standard, ICE, FIRE, ELEC };
 
         public int id = 0;
 
@@ -24,8 +25,12 @@ namespace Projectiles
 
         public float velocity = 1f;
         public float frequency = 1f;
+        public float freqWait = 0.5f;
+        public float waitTime = 0.5f;
         public float lifeTime = 1f;
         public int damage = 0;
+        public Vector2 damageRange = Vector2.zero;
+        public PROJECTILEELEMENT element = PROJECTILEELEMENT.Standard;
 
         public ProjectilesSpecials.SPECIAL special = ProjectilesSpecials.SPECIAL.NONE;
 

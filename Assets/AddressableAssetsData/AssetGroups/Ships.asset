@@ -18,15 +18,15 @@ MonoBehaviour:
   m_GUID: 666316a1ef4cf471e95528a873fcaa2b
   m_SerializeEntries:
   - m_GUID: 54e8a7a1e2ce0448c8b3a97197918493
-    m_Address: Assets/Prefabs/Spaceships/Ship01.prefab
+    m_Address: Assets/Prefabs/Spaceships/Ship00.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6cf64b1f3ebd44f74bc3dec19e9ee8bc
-    m_Address: Assets/Prefabs/Spaceships/Ship03.prefab
+    m_Address: Assets/Prefabs/Spaceships/Ship02.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 9d5890ef312bc4dca8acc6e0540615d7
-    m_Address: Assets/Prefabs/Spaceships/Ship02.prefab
+    m_Address: Assets/Prefabs/Spaceships/Ship01.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

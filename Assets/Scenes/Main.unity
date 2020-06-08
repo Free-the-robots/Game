@@ -1568,6 +1568,7 @@ MonoBehaviour:
   spaceshipScriptableData: []
   spaceshipObject: []
   spaceshipMaterial: []
+  evoWeaponData: []
   loadedAssets: 0
   version: 
 --- !u!4 &672263666

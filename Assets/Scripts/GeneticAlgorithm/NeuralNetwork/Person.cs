@@ -16,6 +16,11 @@ namespace NEAT
 
         public NN.Net network = null;
 
+        public Person(string data)
+        {
+            fromJson(data);
+        }
+
         public List<float> evaluate(List<float> inputs)
         {
             if (network == null)
@@ -97,6 +102,13 @@ namespace NEAT
 
         public void Save()
         {
+            File.WriteAllText(Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt", ToJson());
+            Debug.Log("Saved to : " + Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt");
+        }
+
+
+        public string ToJson()
+        {
             string json = "{\n\t\"node_gene\": [\n";
             foreach (GENES.Nodes node in node_gene)
             {
@@ -108,10 +120,8 @@ namespace NEAT
                 json += connection.GetInstanceID() + " " + JsonUtility.ToJson(connection, true) + ",\n";
             }
             json += "\n\t]\n}";
-            File.WriteAllText(Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt", json);
-            Debug.Log("Saved to : " + Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt");
+            return json;
         }
-
         public void fromJson(string data)
         {
             JSONNode N = JSON.Parse(data);

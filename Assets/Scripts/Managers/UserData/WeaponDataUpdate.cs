@@ -10,8 +10,9 @@ public class WeaponDataUpdate : MonoBehaviour
     private WeaponData actualWeapon;
     private EvoWeaponData actualEvoWeapon;
     private Projectiles.ProjectileData actualWeaponData;
-    private Projectiles.ParticleEvolutive actualEvoWeaponData;
+    private Projectiles.ProjectileData actualEvoWeaponData;
     private Transform actualWeaponObject;
+    private Transform actualEvoWeaponObject;
 
     public Text weaponName;
     public Text Level;
@@ -114,21 +115,21 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public void UpdateEvoWeapon(bool toggle, int index)
     {
-        //if (toggle)
-        //{
-        //    UserData.UserData userData = UserDataManager.Instance.userData;
-        //    AssetDataManager assetData = AssetDataManager.Instance;
+        if (toggle)
+        {
+            UserData.UserData userData = UserDataManager.Instance.userData;
+            AssetDataManager assetData = AssetDataManager.Instance;
 
-        //    actualEvoWeapon = userData.evoweapons[index];
+            actualEvoWeapon = userData.evoweapons[index];
 
-        //    UpdateEvoStats();
+            UpdateEvoStats();
 
-        //    ActivateWeapon(index);
-        //}
-        //else
-        //{
-        //    DisableWeapon();
-        //}
+            ActivateEvoWeapon(index);
+        }
+        else
+        {
+            DisableEvoWeapon();
+        }
     }
 
     public void DisableWeapon()
@@ -141,10 +142,14 @@ public class WeaponDataUpdate : MonoBehaviour
         }
     }
 
-    public void DisableEvoWeapon(int id)
+    public void DisableEvoWeapon()
     {
-        //weapon3D.GetChild(id).gameObject.SetActive(false);
-        //actualWeaponObject = null;
+        if (actualEvoWeaponObject != null)
+        {
+            GameObject.Destroy(weapon3D.GetChild(0).GetChild(0).gameObject);
+            weapon3D.GetChild(0).gameObject.SetActive(false);
+            actualWeaponObject = null;
+        }
     }
 
     public void ActivateWeapon(int id)
@@ -167,8 +172,28 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public void ActivateEvoWeapon(int id)
     {
-        //actualEvoWeaponObject = weapon3D.GetChild(id);
-        //actualEvoWeaponObject.gameObject.SetActive(true);
+        if (actualWeaponObject == null)
+        {
+            GameObject obj = GameObject.Instantiate(AssetDataManager.Instance.turretObject[100]);
+            UserData.UserData userData = UserDataManager.Instance.userData;
+
+            Projectiles.ProjectileEvolutiveData pData = ScriptableObject.CreateInstance<Projectiles.ProjectileEvolutiveData>();
+            pData.init(userData.evoweapons[id]);
+
+            actualEvoWeaponData = pData;
+
+            obj.GetComponent<Weapon.Turret>().projectileData = pData;
+            obj.transform.SetParent(weapon3D.GetChild(0));
+            obj.transform.SetAsFirstSibling();
+            actualWeaponObject = obj.transform;
+
+            weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Clear();
+            weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Add(obj.GetComponent<Weapon.Turret>());
+            actualEvoWeaponObject.localPosition = Vector3.zero;
+
+            actualEvoWeaponObject.gameObject.SetActive(true);
+            weapon3D.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void UpdateStats()
@@ -179,7 +204,8 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public void UpdateEvoStats()
     {
-        weaponEvoStats.UpdateStat(actualWeaponData.damage, actualWeaponData.frequency, actualWeaponData.lifeTime);
+        if (actualEvoWeaponData != null)
+            weaponEvoStats.UpdateStat(actualWeaponData.damage, actualWeaponData.frequency, actualWeaponData.lifeTime);
     }
 
     public void Disable()
@@ -194,33 +220,11 @@ public class WeaponDataUpdate : MonoBehaviour
         secondCamera.GetComponent<LerpToWhenEnabled>().setToTransform(ToCameraOrigin);
         secondCamera.GetComponent<LerpToWhenEnabled>().lerpRotate = false;
         DisableWeapon();
+        DisableEvoWeapon();
         foreach (Transform transform in weaponContent)
         {
             GameObject.Destroy(transform.gameObject);
         }
         weapon3D.gameObject.SetActive(false);
-    }
-
-    public void UpdateWeaponPage(bool toggle)
-    {
-        if (toggle)
-        {
-            weapon3D.GetComponent<RotateWhenEnabled>().enabled = false;
-
-            foreach (Toggle toggleWeapon in weaponToggleGroup.GetComponentsInChildren<Toggle>())
-            {
-                int i = toggleWeapon.transform.GetSiblingIndex();
-                //toggleWeapon.interactable = i < actualTurrets.Count && i >= (actualTurrets.Count - actualWeaponData.modifiableTurretCount);
-            }
-        }
-        else
-        {
-            weapon3D.GetComponent<RotateWhenEnabled>().enabled = true;
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

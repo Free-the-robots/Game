@@ -54,13 +54,12 @@ public class FillUIParent : MonoBehaviour
     void Update()
     {
         t += Time.deltaTime;
-        float tTime = t * t * (3 - 2 * t);
         float tw = 1f;
         float th = 1f;
         if (width)
-            tw = tTime / time * maxPercentile;
+            tw = Mathf.SmoothStep(0f,1f,t / time * maxPercentile);
         if (height)
-            th = tTime / time * maxPercentile;
+            th = Mathf.SmoothStep(0f, 1f, t / time * maxPercentile);
 
         if(ActivatePercentage.Count > 0)
         {

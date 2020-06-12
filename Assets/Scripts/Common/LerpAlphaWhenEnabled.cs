@@ -27,7 +27,7 @@ public class LerpAlphaWhenEnabled : MonoBehaviour
     void Update()
     {
         t += Time.deltaTime;
-        imageSprite.color = new Color(imageSprite.color.r, imageSprite.color.g, imageSprite.color.b, t / time*max);
+        imageSprite.color = new Color(imageSprite.color.r, imageSprite.color.g, imageSprite.color.b, Mathf.SmoothStep(0f, 1f, t / time * max));
         if(t > time)
         {
             Response.Invoke();

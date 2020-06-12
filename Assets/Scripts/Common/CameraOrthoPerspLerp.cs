@@ -56,7 +56,7 @@ public class CameraOrthoPerspLerp : MonoBehaviour
         if (animating)
         {
             t += Time.deltaTime;
-            GetComponent<Camera>().projectionMatrix = MatrixLerp(current, target, t / time);
+            GetComponent<Camera>().projectionMatrix = MatrixLerp(current, target, Mathf.SmoothStep(0f, 1f, t / time));
 
             if (t >= time)
             {

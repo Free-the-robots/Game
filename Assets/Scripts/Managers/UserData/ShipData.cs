@@ -9,7 +9,7 @@ namespace UserData
     [Serializable]
     public class ShipData : CommonData
     {
-        public List<WeaponData> turrets = new List<WeaponData>();
+        public List<int> turrets = new List<int>();
         public Craft craft;
 
         public ShipData() : base()
@@ -31,7 +31,7 @@ namespace UserData
             byte[] bytes = CommonData.addByteToArray(null, base.Serialize());
             bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets.Count));
             for(int i = 0; i < turrets.Count; ++i)
-                bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets[i].id));
+                bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(turrets[i]));
             bytes = CommonData.addByteToArray(bytes, craft.Serialize());
             return bytes;
         }
@@ -43,12 +43,11 @@ namespace UserData
             int size = BitConverter.ToInt32(data,base.byteCount());
             j += base.byteCount();
 
-            turrets = new List<WeaponData>(size);
+            turrets = new List<int>(size);
             for (int i = 0; i < size; ++i)
             {
-                WeaponData weaponEquiped = UserDataManager.Instance.userData.weapons.Find(obj => obj.id == BitConverter.ToUInt16(data, j));
-                turrets.Add(weaponEquiped);
-                j += sizeof(ushort);
+                turrets.Add(BitConverter.ToInt32(data, j));
+                j += sizeof(int);
             }
             craft = new Craft(data.Skip(j).ToArray());
             return this;
@@ -58,7 +57,7 @@ namespace UserData
         {
             int turretByte = 0;
             for (int i = 0; i < turrets.Count; ++i)
-                turretByte += turrets[i].byteCount();
+                turretByte += sizeof(int);
             return base.byteCount() + sizeof(int) + turretByte + craft.byteCount();
         }
     }

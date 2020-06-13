@@ -109,10 +109,12 @@ namespace UserData
 
     public class Craft : SerializableData<Craft>
     {
-        int amount;
+        public int amount;
+        public int unlockAmount = 1;
         public Craft()
         {
             amount = 0;
+            unlockAmount = 1;
         }
         public Craft(byte[] data)
         {

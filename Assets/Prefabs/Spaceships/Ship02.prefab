@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6155553340011683849}
   - component: {fileID: 5510761365037722449}
   m_Layer: 12
-  m_Name: Ship03
+  m_Name: Ship02
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,8 +33,8 @@ Transform:
   - {fileID: 2610791202581734420}
   - {fileID: 2349792123578342618}
   - {fileID: 7423859576066883143}
-  - {fileID: 3504034407850765216}
   - {fileID: 8391822394037467755}
+  - {fileID: 3504034407850765216}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,7 +116,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1542994776313728068}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1291658924951375084
 MeshFilter:
@@ -208,7 +208,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1542994776313728068}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4762205898598440217
 MeshFilter:

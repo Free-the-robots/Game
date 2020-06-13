@@ -10,7 +10,7 @@ namespace UserData
     public class ShipData : CommonData
     {
         public List<int> turrets = new List<int>();
-        public Craft craft;
+        public Craft craft = new Craft();
 
         public ShipData() : base()
         {

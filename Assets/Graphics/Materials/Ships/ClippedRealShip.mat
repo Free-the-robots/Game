@@ -75,5 +75,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _planeNorm: {r: -0, g: 0.00000011920929, b: -1.0000001, a: 0}
-    - _planePos: {r: 0, g: 0, b: 2, a: 0}
+    - _planeNorm: {r: -0.989609, g: 0.00000032782555, b: -0.14378706, a: 0}
+    - _planePos: {r: 0.5739731, g: 0, b: 0.083396375, a: 0}

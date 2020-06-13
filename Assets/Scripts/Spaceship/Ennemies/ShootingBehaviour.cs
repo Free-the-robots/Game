@@ -57,7 +57,7 @@ namespace ShootBehaviour
             Vector3 dir = target.position - transform.position;
             dir.y = 0f;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            if (t > 1F / attributes.freq)
+            if (t > 1F / attributes.freq && dir.magnitude < 8f)
             {
                 for (int i = 0; i < weapon.Count; ++i)
                 {

@@ -266,7 +266,7 @@ public class ParticlePooling : MonoBehaviour
                 break;
         }
         res.transform.parent = activesTransform;
-        res.transform.position = shipTransform.position;
+        res.transform.position = new Vector3(shipTransform.position.x, 1f, shipTransform.position.z);
         res.transform.rotation = shipTransform.rotation;
 
         res.GetComponent<Particle>().shooterTag = tagShip;

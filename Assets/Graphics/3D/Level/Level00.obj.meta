@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8cd71620cf8984d34b98cdfb4b5c59e4
+guid: 1cfe2f66874404086838ded398b84464
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,13 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: pCube1_polySurface1Mat
-    second: {fileID: 2100000, guid: 79a5ce3b4a54c416883326d0b68e824b, type: 2}
+      name: pCube1_polySurface2Mat
+    second: {fileID: 2100000, guid: 491ae37b2578047f690d636d57cbdaa7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: polySurface2_pCube1Mat
-    second: {fileID: 2100000, guid: 271d69d1cf68b46a6a86316aa0921bd8, type: 2}
+      name: polySurface1_pCube1Mat
+    second: {fileID: 2100000, guid: 6ce99019c07d84578aa3aff5c971df29, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

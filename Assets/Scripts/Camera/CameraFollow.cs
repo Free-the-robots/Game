@@ -13,8 +13,8 @@ public class CameraFollow : MonoBehaviour
     //[SerializeField]
     //private Vector3 offsetPosition;
 
-    const float ph = 0.7853981634f; // 45d
-    const float th = 0f; //-0.7853981634f; // 45d
+    public float ph = 60; // 45d
+    public float th = 0f; //-0.7853981634f; // 45d
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +26,9 @@ public class CameraFollow : MonoBehaviour
     {
         if(target != null)
         {
-            transform.position = target.position + r * new Vector3(Mathf.Sin(ph), Mathf.Cos(ph), 0f);//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
+            float phR = Mathf.Deg2Rad * ph;
+            float thR = Mathf.Deg2Rad * th;
+            transform.position = target.position + r * new Vector3(Mathf.Cos(thR)*Mathf.Sin(phR), Mathf.Cos(phR), Mathf.Sin(thR) * Mathf.Sin(phR));//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
 
             //transform.position = target.TransformPoint(offsetPosition);
             transform.LookAt(target);

@@ -176,5 +176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  r: 5
-  offsetPosition: {x: 0, y: 4, z: -2.5}
+  r: 15
+  ph: 30
+  th: 20

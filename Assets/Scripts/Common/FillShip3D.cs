@@ -53,7 +53,11 @@ public class FillShip3D : MonoBehaviour
     private void InstantiateLocked(int index)
     {
         AssetDataManager assetManager = AssetDataManager.Instance;
-        UserData.UserDataManager userData = UserData.UserDataManager.Instance;
+        UserData.UserData userData = UserData.UserDataManager.Instance.userData;
+        SpaceshipData shipData = null;
+        if (userData.ships.Count > index)
+            shipData = assetManager.spaceshipScriptableData[index];
+
         GameObject gb = GameObject.Instantiate(lockedShip);
 
         //Update mesh
@@ -64,10 +68,14 @@ public class FillShip3D : MonoBehaviour
 
         //Update plane
         float perc = 0f;
-        if (userData.userData.ships.Count > index)
-            perc = userData.userData.ships[index].craft.amount / (float)userData.userData.ships[index].craft.unlockAmount;
-        float shipSize = 3f;
-        float shipCenter = 1f;
+        float shipSize = 4f;
+        float shipCenter = 2f;
+        if (userData.ships.Count > index)
+        {
+            perc = userData.ships[index].craft.amount / (float)userData.ships[index].craft.unlockAmount;
+            shipSize = shipData.maxLength - shipData.minLength;
+            shipCenter = (shipData.maxLength + shipData.minLength) / 2f;
+        }
         Vector3 lP = gb.transform.GetChild(gb.transform.childCount - 1).localPosition;
         lP.z = (1f - perc) * shipSize - shipCenter;
         gb.transform.GetChild(gb.transform.childCount -1).localPosition = lP;

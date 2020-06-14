@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5791109824002839011}
   - component: {fileID: 5791109824002839012}
   - component: {fileID: 5791109824002839010}
+  - component: {fileID: 3489146366545128718}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -179,3 +180,30 @@ MonoBehaviour:
   r: 15
   ph: 30
   th: 20
+--- !u!114 &3489146366545128718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791109824002839016}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae19e8b86879c4e6888a0259e5fb4399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  from: {fileID: 0}
+  to: {fileID: 0}
+  fromOffset: {x: 0, y: 0, z: 0}
+  toOffset: {x: 0, y: 0, z: 0}
+  time: 1
+  flip: 0
+  flipWhenFinished: 1
+  ResponseWhenFinishedBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  ResponseWhenFinishedEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  lerpRotate: 1
+  lerpPosition: 1

@@ -7,8 +7,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     private Transform target = null;
 
-    [SerializeField]
-    private  float r = 5f;
+    public float r = 5f;
 
     //[SerializeField]
     //private Vector3 offsetPosition;
@@ -28,7 +27,10 @@ public class CameraFollow : MonoBehaviour
         {
             float phR = Mathf.Deg2Rad * ph;
             float thR = Mathf.Deg2Rad * th;
-            transform.position = target.position + r * new Vector3(Mathf.Cos(thR)*Mathf.Sin(phR), Mathf.Cos(phR), Mathf.Sin(thR) * Mathf.Sin(phR));//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
+            float x = Mathf.Cos(thR) * Mathf.Sin(phR);
+            float y = Mathf.Cos(phR);
+            float z = Mathf.Sin(thR) * Mathf.Sin(phR);
+            transform.position = target.position + r * new Vector3(x, y, z);//new Vector3(Mathf.Cos(th)*Mathf.Sin(ph), Mathf.Cos(ph), Mathf.Sin(th) * Mathf.Sin(ph));
 
             //transform.position = target.TransformPoint(offsetPosition);
             transform.LookAt(target);

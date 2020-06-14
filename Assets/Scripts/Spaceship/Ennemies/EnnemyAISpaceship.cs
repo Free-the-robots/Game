@@ -21,6 +21,10 @@ public class EnnemyAISpaceship : Spaceship
 
     protected ShootBehaviour.ShootingBehaviour shootingBehaviour = null;
 
+    public void Enable()
+    {
+        enabled = true;
+    }
     protected override void Setup()
     {
         base.Setup();

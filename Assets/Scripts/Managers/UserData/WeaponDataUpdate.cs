@@ -34,6 +34,8 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public Transform weapon3D;
 
+    public Transform EvoWeapons3D;
+
     // Start is called before the first frame update
     void OnEnable()
     {

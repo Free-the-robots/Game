@@ -80,6 +80,8 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: bf403a4f36b2d450d85af58e8f28dd74, type: 2}
   weapon:
   - {fileID: 5539860272794772107}
+  lifeEvent: {fileID: 11400000, guid: edfacb1fd597e41cfbfe40511283c870, type: 2}
+  armorEvent: {fileID: 11400000, guid: a6f3ec507a6a6428d924565fe4245fa6, type: 2}
   JoystickMoving: {fileID: 0}
   JoystickRotate: {fileID: 0}
   CharacterToMove: {fileID: 18763540619500068}

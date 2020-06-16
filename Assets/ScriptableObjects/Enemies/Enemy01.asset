@@ -18,7 +18,7 @@ MonoBehaviour:
   life: 100
   lifeMax: 100
   speed: 100
-  damage: 1
+  damage: 10
   shield: 1
   armor: 1
   rarity: 1

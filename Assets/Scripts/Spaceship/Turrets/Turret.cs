@@ -9,6 +9,8 @@ namespace Weapon
         public Projectiles.ProjectileData projectileData = null;
 
         protected float freqT = 0f;
+        protected float freqBrustT = 0f;
+        protected int bursts = 0;
 
         protected virtual void Update()
         {
@@ -17,15 +19,26 @@ namespace Weapon
 
         public virtual void Fire()
         {
-            if(freqT > 1/projectileData.frequency)
+            if(freqT > 1f/projectileData.frequency)
             {
-                string parentTag = this.GetComponentInParent<Spaceship>().tag;
-                int layer = 15;
-                if (parentTag.Equals("Player"))
-                    layer = 16;
-                ParticlePooling.Instance.instantiate(parentTag, transform, projectileData, layer);
+                freqBrustT += Time.deltaTime;
+                if (freqBrustT > 1f / projectileData.burstFrequency)
+                {
+                    bursts++;
+                    if (bursts >= projectileData.bursts)
+                    {
+                        bursts = 0;
+                        freqT = 0f;
+                    }
 
-                freqT = 0f;
+                    string parentTag = this.GetComponentInParent<Spaceship>().tag;
+                    int layer = 15;
+                    if (parentTag.Equals("Player"))
+                        layer = 16;
+                    ParticlePooling.Instance.instantiate(parentTag, transform, projectileData, layer);
+
+                    freqBrustT = 0f;
+                }
             }
         }
 

@@ -14,6 +14,8 @@ public class Spaceship : MonoBehaviour
 
     void Start()
     {
+        if (spaceshipData != null)
+            spaceshipData = spaceshipData.Clone();
         weapon.AddRange(GetComponentsInChildren<Weapon.Turret>().ToList());
         rbody = GetComponent<Rigidbody>();
         alive = true;
@@ -52,6 +54,7 @@ public class Spaceship : MonoBehaviour
     {
         if (alive)
         {
+            Debug.Log(damage);
             spaceshipData.life -= damage;
             if (spaceshipData.life <= 0)
             {

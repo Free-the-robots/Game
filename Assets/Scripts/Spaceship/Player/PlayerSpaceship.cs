@@ -8,6 +8,8 @@ public class PlayerSpaceship : Spaceship
     private Plane plane;
 
     public List<Weapon.Abilities> abilities = new List<Weapon.Abilities>();
+    public GameEventInt lifeEvent;
+    public GameEventInt armorEvent;
 
     /// <summary>
     /// Movement script from POC
@@ -130,7 +132,7 @@ public class PlayerSpaceship : Spaceship
         if (spaceshipData.life <= 0)
             spaceshipData.life = 0;
 
-        //playerHealthUpdate.Raise();
+        lifeEvent.Raise((int)spaceshipData.life);
     }
 
     public void addHealth(int health)
@@ -140,7 +142,7 @@ public class PlayerSpaceship : Spaceship
         if (spaceshipData.life > spaceshipData.lifeMax)
             spaceshipData.life = spaceshipData.lifeMax;
 
-        //playerHealthUpdate.Raise();
+        lifeEvent.Raise((int)spaceshipData.life);
     }
 
     public void newWeapon(NEAT.Person weaponC)

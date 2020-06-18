@@ -120,6 +120,45 @@ public class LerpToWhenEnabled : MonoBehaviour
         to = toTransform;
     }
 
+    public void setToFocus(GameObject obj)
+    {
+        GameObject cameraPosHere = new GameObject();
+        cameraPosHere.transform.position = transform.position;
+        cameraPosHere.transform.rotation = transform.rotation;
+
+        GameObject cameraPos = new GameObject();
+        CameraFollow cameraF = GetComponent<CameraFollow>();
+        if(cameraF != null)
+        {
+            float phR = Mathf.Deg2Rad * cameraF.ph;
+            float thR = Mathf.Deg2Rad * cameraF.th;
+            float x = Mathf.Cos(thR) * Mathf.Sin(phR);
+            float y = Mathf.Cos(phR);
+            float z = Mathf.Sin(thR) * Mathf.Sin(phR);
+            cameraPos.transform.position = obj.transform.position + cameraF.r * new Vector3(x, y, z);
+            cameraPos.transform.LookAt(obj.transform);
+            from = cameraPosHere.transform;
+            to = cameraPos.transform;
+            enable();
+        }
+    }
+
+    public void focusBack()
+    {
+        ResponseWhenFinishedEnd.AddListener(focusBackListeners);
+        enable();
+    }
+
+    private void focusBackListeners()
+    {
+        CameraFollow cameraF = GetComponent<CameraFollow>();
+        if (cameraF != null)
+        {
+            cameraF.enabled = true;
+            ResponseWhenFinishedEnd.RemoveAllListeners();
+        }
+    }
+
     public void setFromTransform(Transform fromTransform)
     {
         from = fromTransform;

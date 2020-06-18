@@ -12,7 +12,7 @@ public class EnnemyAISpaceship : Spaceship
     public enum ShooterBehaviour { NONE, ANIMATION, FOLLOWPLAYER };
     public ShooterBehaviour shooterBehaviour;
 
-    public GameEvent ennemyDead;
+    public GameEvent enemyDead;
 
     protected NavMeshAgent agent = null;
     protected Transform target;
@@ -21,6 +21,10 @@ public class EnnemyAISpaceship : Spaceship
 
     protected ShootBehaviour.ShootingBehaviour shootingBehaviour = null;
 
+    public void Enable()
+    {
+        enabled = true;
+    }
     protected override void Setup()
     {
         base.Setup();
@@ -45,7 +49,7 @@ public class EnnemyAISpaceship : Spaceship
 
     public override void Death()
     {
-        ennemyDead.Raise();
+        enemyDead.Raise();
         base.Death();
     }
 
@@ -75,22 +79,18 @@ public class EnnemyAISpaceship : Spaceship
             return (triggered);
     }
 
-    protected virtual void ShootingBehaviour(ref float t)
+    protected virtual void ShootingBehaviour()
     {
         if(shootingBehaviour == null)
         {
-            if (t > 1F / spaceshipData.freq)
+            for (int i = 0; i < weapon.Count; ++i)
             {
-                for (int i = 0; i < weapon.Count; ++i)
-                {
-                    weapon[i].Fire();
-                }
-                t = 0f;
+                weapon[i].Fire();
             }
         }
         else
         {
-            shootingBehaviour.ShootBehaviour(transform, spaceshipData, weapon, ref t);
+            shootingBehaviour.ShootBehaviour(transform, spaceshipData, weapon);
         }
     }
 }

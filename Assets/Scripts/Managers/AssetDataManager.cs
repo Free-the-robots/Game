@@ -62,18 +62,19 @@ public class AssetDataManager : MonoBehaviour
 
     private IEnumerator CheckVersion()
     {
-        Debug.Log("retrieving version");
-        UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/version.txt");
-        yield return www.SendWebRequest();
+        //Debug.Log("retrieving version");
+        //UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.s3.eu-central-1.amazonaws.com/version.txt");
+        //yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            version = www.downloadHandler.text;
-        }
+        //if (www.isNetworkError || www.isHttpError)
+        //{
+        //    Debug.Log(www.error);
+        //}
+        //else
+        //{
+        //    version = www.downloadHandler.text;
+        //}
+        version = "0.1";
         if (File.Exists(Application.persistentDataPath + Path.DirectorySeparatorChar + ".v.d"))
         {
             string localVersion = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".v.d");

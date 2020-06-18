@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9769b196d8d7348b4b189b0a8003a372
+guid: 8cd71620cf8984d34b98cdfb4b5c59e4
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: defaultMat
-    second: {fileID: 2100000, guid: 1dce2ab3cd5e3403eb90de68af3352de, type: 2}
+      name: pCube1_polySurface1Mat
+    second: {fileID: 2100000, guid: 79a5ce3b4a54c416883326d0b68e824b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polySurface2_pCube1Mat
+    second: {fileID: 2100000, guid: 271d69d1cf68b46a6a86316aa0921bd8, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -65,7 +70,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
+    normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4

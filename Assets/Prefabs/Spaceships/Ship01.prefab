@@ -264,6 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceshipData: {fileID: 11400000, guid: 1a9d3d61a60ad4e3abb3ba31de34a542, type: 2}
   weapon: []
+  lifeEvent: {fileID: 11400000, guid: edfacb1fd597e41cfbfe40511283c870, type: 2}
+  armorEvent: {fileID: 11400000, guid: a6f3ec507a6a6428d924565fe4245fa6, type: 2}
   JoystickMoving: {fileID: 0}
   JoystickRotate: {fileID: 0}
   CharacterToMove: {fileID: 5522293603516356527}

@@ -8,6 +8,8 @@ public class SpaceshipData : ScriptableObject
     public int id;
     public string shipName;
     public string description;
+    public float minLength;
+    public float maxLength;
     public float life;
     public float lifeMax;
 

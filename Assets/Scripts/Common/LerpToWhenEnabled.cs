@@ -77,11 +77,10 @@ public class LerpToWhenEnabled : MonoBehaviour
             if (t < time)
             {
                 t += Time.deltaTime;
-                float tLerp = t * t * (3 - 2 * t);
                 if (lerpPosition)
-                    transform.position = Vector3.Lerp(fromPosition, toPosition, tLerp / time);
+                    transform.position = Vector3.Lerp(fromPosition, toPosition, Mathf.SmoothStep(0f,1f,t / time));
                 if (lerpRotate)
-                    transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, tLerp / time);
+                    transform.rotation = Quaternion.Lerp(fromQuaternion, toQuaternion, Mathf.SmoothStep(0f, 1f, t / time));
             }
             else
             {

@@ -17,18 +17,6 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(CreatePlayer());
-
-        for (int i = 0; i < objectToActivate.Count; ++i)
-        {
-            objectToActivate[i].SetActive(true);
-            if (objectToActivate[i].GetComponentsInChildren<EnnemyAISpaceship>().Length > 0)
-            {
-                foreach(EnnemyAISpaceship aiSpaceship in objectToActivate[i].GetComponentsInChildren<EnnemyAISpaceship>())
-                {
-                    aiSpaceship.enemyDead = enemyDeath;
-                }
-            }
-        }
     }
 
     private IEnumerator CreatePlayer()
@@ -45,6 +33,19 @@ public class LevelManager : MonoBehaviour
         player.transform.rotation = startSpawn.rotation;
         player.GetComponent<PlayerSpaceship>().lifeEvent = lifeEvent;
         player.GetComponent<PlayerSpaceship>().armorEvent = armorEvent;
+
+
+        for (int i = 0; i < objectToActivate.Count; ++i)
+        {
+            objectToActivate[i].SetActive(true);
+            if (objectToActivate[i].GetComponentsInChildren<EnnemyAISpaceship>().Length > 0)
+            {
+                foreach (EnnemyAISpaceship aiSpaceship in objectToActivate[i].GetComponentsInChildren<EnnemyAISpaceship>())
+                {
+                    aiSpaceship.enemyDead = enemyDeath;
+                }
+            }
+        }
     }
 
     // Update is called once per frame

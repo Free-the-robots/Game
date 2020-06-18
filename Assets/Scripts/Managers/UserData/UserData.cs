@@ -107,6 +107,84 @@ namespace UserData
         }
     }
 
+    public class Craft : SerializableData<Craft>
+    {
+        public int amount;
+        public int unlockAmount = 1;
+        public Craft()
+        {
+            amount = 0;
+            unlockAmount = 1;
+        }
+        public Craft(byte[] data)
+        {
+            LoadSerialize(data);
+        }
+
+        public override int byteCount()
+        {
+            return sizeof(int);
+        }
+
+        public override Craft LoadSerialize(byte[] data)
+        {
+            amount = BitConverter.ToInt32(data, 0);
+            return this;
+        }
+
+        public override byte[] Serialize()
+        {
+            byte[] bytes = CommonData.addByteToArray(null, BitConverter.GetBytes(amount));
+            return bytes;
+        }
+    }
+
+    public class Material : SerializableData<Material>
+    {
+        int energy;
+        int energyMax;
+        int repairKit;
+        int coin;
+        public Material()
+        {
+            energy = 100;
+            energyMax = 100;
+            repairKit = 3;
+            coin = 0;
+        }
+        public Material(byte[] data)
+        {
+            LoadSerialize(data);
+        }
+        public override int byteCount()
+        {
+            return sizeof(int) * 4;
+        }
+
+        public override Material LoadSerialize(byte[] data)
+        {
+            int j = 0;
+            energy = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            energyMax = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            repairKit = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            coin = BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            return this;
+        }
+
+        public override byte[] Serialize()
+        {
+            byte[] bytes = CommonData.addByteToArray(null, BitConverter.GetBytes(energy));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(energyMax));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(repairKit));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(coin));
+            return bytes;
+        }
+    }
+
     [Serializable]
     public class UserData : SerializableData<UserData>
     {
@@ -115,6 +193,9 @@ namespace UserData
         public List<ClusterData> clusters = new List<ClusterData>();
         public List<ShipData> ships = new List<ShipData>();
         public List<WeaponData> weapons = new List<WeaponData>();
+        public List<EvoWeaponData> evoweapons = new List<EvoWeaponData>();
+
+        public Material material;
 
         public int shipEquiped = 0;
 
@@ -153,6 +234,11 @@ namespace UserData
             ShipData ship = new ShipData(0, 0, (ushort)0);
             ship.unlocked = true;
             ships.Add(ship);
+
+            WeaponData weapon = new WeaponData();
+            weapons.Add(weapon);
+
+            material = new Material();
         }
 
         public void CreateInitialWithEverything()
@@ -254,6 +340,18 @@ namespace UserData
             }
 
             size = BitConverter.ToInt32(data, j);
+            evoweapons = new List<EvoWeaponData>(size);
+            j += sizeof(int);
+            for (int i = 0; i < size; i++)
+            {
+                EvoWeaponData evoweapon = new EvoWeaponData(data.Skip(j).ToArray());
+                evoweapons.Add(evoweapon);
+                j += evoweapon.byteCount();
+                if (j > data.Length)
+                    throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
+            }
+
+            size = BitConverter.ToInt32(data, j);
             ships = new List<ShipData>(size);
             j += sizeof(int);
             for (int i = 0; i < size; i++)
@@ -267,6 +365,8 @@ namespace UserData
             shipEquiped = BitConverter.ToInt32(data, j);
             j += sizeof(int);
             userType = (USERTYPE)BitConverter.ToInt32(data, j);
+            j += sizeof(int);
+            material = new Material(data.Skip(j).ToArray());
 
             return this;
         }
@@ -291,6 +391,11 @@ namespace UserData
             {
                 byteArray = CommonData.addByteToArray(byteArray, weapons[i].Serialize());
             }
+            byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(evoweapons.Count));
+            for (int i = 0; i < evoweapons.Count; ++i)
+            {
+                byteArray = CommonData.addByteToArray(byteArray, evoweapons[i].Serialize());
+            }
             byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(ships.Count));
             for (int i = 0; i < ships.Count; ++i)
             {
@@ -298,6 +403,7 @@ namespace UserData
             }
             byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes(shipEquiped));
             byteArray = CommonData.addByteToArray(byteArray, BitConverter.GetBytes((int)userType));
+            byteArray = CommonData.addByteToArray(byteArray, material.Serialize());
             return byteArray;
         }
 
@@ -306,12 +412,15 @@ namespace UserData
             int b = 0;
             for (int i = 0; i < clusters.Count; i++)
                 b += clusters[i].byteCount();
-            for (int i = 0; i < ships.Count; i++)
-                b += ships[i].byteCount();
             for (int i = 0; i < weapons.Count; i++)
                 b += weapons[i].byteCount();
+            for (int i = 0; i < evoweapons.Count; i++)
+                b += evoweapons[i].byteCount();
+            for (int i = 0; i < ships.Count; i++)
+                b += ships[i].byteCount();
             b += sizeof(int);
             b += sizeof(int);
+            b += material.byteCount();
             return b;
         }
 

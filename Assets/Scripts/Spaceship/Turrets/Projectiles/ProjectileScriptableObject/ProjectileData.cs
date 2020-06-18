@@ -8,6 +8,7 @@ namespace Projectiles
     public class ProjectileData : ScriptableObject
     {
         public enum PROJECTILETYPE { Standard, Billboard};
+        public enum PROJECTILEELEMENT { NONE, ICE, FIRE, THUNDER };
 
         public int id = 0;
 
@@ -21,6 +22,7 @@ namespace Projectiles
         //public Texture2D skin = null;
 
         public ProjectileData explosion = null;
+        public PROJECTILEELEMENT element = PROJECTILEELEMENT.NONE;
 
         public float velocity = 1f;
         public float frequency = 1f;

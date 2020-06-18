@@ -13,6 +13,8 @@ public class GarageDataUpdate : MonoBehaviour
     private List<ShipData> lockedShips;
     private List<ShipData> unlockedShips;
 
+    private int actualWeapon;
+
     public Text shipName;
     public Text Level;
     public FillUIParent xP;
@@ -83,15 +85,14 @@ public class GarageDataUpdate : MonoBehaviour
         }
         shipContent.GetComponentsInChildren<Toggle>()[actualShip.id].isOn = true;
 
-
         ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
         
         for (int i = 0; i < userData.weapons.Count; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             Toggle toggle = button.GetComponent<Toggle>();
-            button.transform.SetParent(shipContent);
-            int tmpI = userData.weapons[i].id;
+            button.transform.SetParent(weaponContent);
+            int tmpI = i;
             toggle.onValueChanged.AddListener((bool val) => UpdateWeapon(val, tmpI));
             toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
@@ -135,9 +136,24 @@ public class GarageDataUpdate : MonoBehaviour
     {
         if (toggle)
         {
-            int i = weaponToggleGroup.ActiveToggles().FirstOrDefault().transform.GetSiblingIndex();
-            //TODO Update weapon on 3D, and userdata
+            if(index == actualWeapon)
+            {
+                if(index < actualTurrets.Count && index >= (actualTurrets.Count - actualShipData.modifiableTurretCount))
+                {
+                    actualShip.turrets[index - actualTurrets.Count] = index;
+                    if(actualShipObject.GetChild(index).childCount > 0)
+                        GameObject.Destroy(actualShipObject.GetChild(index).GetChild(0).gameObject);
 
+                    UserData.UserData userData = UserDataManager.Instance.userData;
+                    AssetDataManager assetData = AssetDataManager.Instance;
+                    GameObject turret = GameObject.Instantiate(assetData.turretObject[userData.weapons[index].id]);
+                    turret.transform.SetParent(actualShipObject.GetChild(index));
+                    //TODO update weapon 3D
+                    //actualShipObject.GetComponent<Spaceship>();
+                }
+                
+            }
+            actualWeapon = index;
         }
     }
 
@@ -230,8 +246,10 @@ public class GarageDataUpdate : MonoBehaviour
         //Project 3D object to screen
         RawImage rawImage = shipRawImage.GetComponent<RawImage>();
         Vector2 cornerPos = shipRawImage.rect.min + new Vector2(shipRawImage.position.x, shipRawImage.position.y);
-        foreach (Weapon.Turret turret in actualTurrets)
+        for(int i = 0; i < actualTurrets.Count + actualShipData.modifiableTurretCount; i++)
         {
+            Transform turret = actualShipObject.GetChild(i);
+
             Vector3 pos = secondCamera.WorldToScreenPoint(turret.transform.position);
             pos.Scale(new Vector3(shipRawImage.rect.width / rawImage.mainTexture.width, shipRawImage.rect.height / rawImage.mainTexture.height, 0f));
             pos += new Vector3(cornerPos.x, cornerPos.y, 0f);

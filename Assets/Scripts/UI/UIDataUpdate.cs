@@ -29,7 +29,6 @@ public class UIDataUpdate : MonoBehaviour
 
         lifeParent.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(lifeW, lifeParent.GetChild(0).GetComponent<RectTransform>().sizeDelta.y);
         lifeParent.GetChild(1).GetComponent<Text>().text = lifeMax.ToString();
-        Debug.Log(lifeMax);
         armorParent.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(armorW, armorParent.GetChild(0).GetComponent<RectTransform>().sizeDelta.y);
         armorParent.GetChild(1).GetComponent<Text>().text = armorMax.ToString();
     }

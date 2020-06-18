@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 [ExecuteInEditMode]
 public class ClippableObject : MonoBehaviour
 {
+    public List<Transform> planes = new List<Transform>();
     public Color color = Color.white;
+    public bool flipped = false;
+
+    private int flip = 1;
     public void OnEnable()
     {
         //let's just create a new material instance.
-        GetComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("CustomDeferred/DeferredClipping"))
+        /*
+        GetComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Custom/DeferredClipping"))
         {
             hideFlags = HideFlags.HideAndDontSave
-        };
+        };*/
     }
 
     public void Start() { }
@@ -60,15 +66,24 @@ public class ClippableObject : MonoBehaviour
     {
         if (clipPlanes >= 1)
         {
-            DrawPlane(plane1Position, plane1Rotation);
+            if (planes[0] != null)
+                DrawPlane(planes[0].position, planes[0].rotation.eulerAngles);
+            else
+                DrawPlane(transform.TransformPoint(plane1Position), transform.rotation * plane1Rotation);
         }
         if (clipPlanes >= 2)
         {
-            DrawPlane(plane2Position, plane2Rotation);
+            if (planes[1] != null)
+                DrawPlane(planes[1].position, planes[1].rotation.eulerAngles);
+            else
+                DrawPlane(transform.TransformPoint(plane2Position), transform.rotation * plane2Rotation);
         }
         if (clipPlanes >= 3)
         {
-            DrawPlane(plane3Position, plane3Rotation);
+            if (planes[2] != null)
+                DrawPlane(planes[2].position, planes[2].rotation.eulerAngles);
+            else
+                DrawPlane(transform.TransformPoint(plane3Position), transform.rotation * plane3Rotation);
         }
     }
 
@@ -76,6 +91,11 @@ public class ClippableObject : MonoBehaviour
     public void Update()
     {
         var sharedMaterial = GetComponent<MeshRenderer>().sharedMaterial;
+
+        if (flipped)
+            flip = -1;
+        else
+            flip = 1;
 
         //Only should enable one keyword. If you want to enable any one of them, you actually need to disable the others. 
         //This may be a bug...
@@ -104,26 +124,51 @@ public class ClippableObject : MonoBehaviour
         }
 
         //pass the planes to the shader if necessary.
+        sharedMaterial.SetColor("_Color", color);
         if (clipPlanes >= 1)
         {
-            sharedMaterial.SetColor("_Color", color);
-            sharedMaterial.SetVector("_planePos", plane1Position);
-            //plane normal vector is the rotated 'up' vector.
-            sharedMaterial.SetVector("_planeNorm", Quaternion.Euler(plane1Rotation) * Vector3.up);
+            if(planes[0] != null)
+            {
+                sharedMaterial.SetVector("_planePos", planes[0].position);
+                //plane normal vector is the rotated 'up' vector.
+                sharedMaterial.SetVector("_planeNorm", flip*(planes[0].rotation * Vector3.up));
+            }
+            else
+            {
+                sharedMaterial.SetVector("_planePos", transform.TransformPoint(plane1Position));
+                //plane normal vector is the rotated 'up' vector.
+                sharedMaterial.SetVector("_planeNorm", transform.rotation * Quaternion.Euler(plane1Rotation) * Vector3.up);
+            }
         }
 
         if (clipPlanes >= 2)
         {
-            sharedMaterial.SetColor("_Color", color);
-            sharedMaterial.SetVector("_planePos2", plane2Position);
-            sharedMaterial.SetVector("_planeNorm2", Quaternion.Euler(plane2Rotation) * Vector3.up);
+            if (planes[1] != null)
+            {
+                sharedMaterial.SetVector("_planePos2", planes[1].position);
+                //plane normal vector is the rotated 'up' vector.
+                sharedMaterial.SetVector("_planeNorm2", flip * (planes[1].rotation * Vector3.up));
+            }
+            else
+            {
+                sharedMaterial.SetVector("_planePos2", transform.TransformPoint(plane2Position));
+                sharedMaterial.SetVector("_planeNorm2", transform.rotation * Quaternion.Euler(plane2Rotation) * Vector3.up);
+            }
         }
 
         if (clipPlanes >= 3)
         {
-            sharedMaterial.SetColor("_Color", color);
-            sharedMaterial.SetVector("_planePos3", plane3Position);
-            sharedMaterial.SetVector("_planeNorm3", Quaternion.Euler(plane3Rotation) * Vector3.up);
+            if (planes[2] != null)
+            {
+                sharedMaterial.SetVector("_planePos3", planes[2].position);
+                //plane normal vector is the rotated 'up' vector.
+                sharedMaterial.SetVector("_planeNorm3", flip * (planes[2].rotation * Vector3.up));
+            }
+            else
+            {
+                sharedMaterial.SetVector("_planePos3", transform.TransformPoint(plane3Position));
+                sharedMaterial.SetVector("_planeNorm3", transform.rotation * Quaternion.Euler(plane3Rotation) * Vector3.up);
+            }
         }
     }
 }

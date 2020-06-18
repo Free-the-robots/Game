@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.IO;
+using SimpleJSON;
 
 namespace NEAT
 {
@@ -14,6 +15,11 @@ namespace NEAT
         public int usage = 0;
 
         public NN.Net network = null;
+
+        public Person(string data)
+        {
+            fromJson(data);
+        }
 
         public List<float> evaluate(List<float> inputs)
         {
@@ -96,19 +102,55 @@ namespace NEAT
 
         public void Save()
         {
+            File.WriteAllText(Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt", ToJson());
+            Debug.Log("Saved to : " + Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt");
+        }
+
+
+        public string ToJson()
+        {
             string json = "{\n\t\"node_gene\": [\n";
-            foreach(GENES.Nodes node in node_gene)
+            foreach (GENES.Nodes node in node_gene)
             {
-                json += node.GetInstanceID() + " " + JsonUtility.ToJson(node,true) + ",\n";
+                json += node.GetInstanceID() + " " + JsonUtility.ToJson(node, true) + ",\n";
             }
             json += "\n\t],\n\t\"node_connect\": [\n";
             foreach (GENES.Connection connection in node_connect)
             {
-                json += connection.GetInstanceID() + " " + JsonUtility.ToJson(connection,true) + ",\n";
+                json += connection.GetInstanceID() + " " + JsonUtility.ToJson(connection, true) + ",\n";
             }
             json += "\n\t]\n}";
-            File.WriteAllText(Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt", json);
-            Debug.Log("Saved to : " + Application.dataPath + Path.DirectorySeparatorChar + "AvatarData.txt");
+            return json;
+        }
+        public void fromJson(string data)
+        {
+            JSONNode N = JSON.Parse(data);
+            node_gene = new List<GENES.Nodes>(N["node_gene"].Count);
+            for(int i = 0; i < N["node_gene"].Count; ++i)
+            {
+                JSONNode Nsub = N["node_gene"][i];
+                GENES.Nodes obj = ScriptableObject.CreateInstance<GENES.Nodes>();
+                //JsonUtility.FromJsonOverwrite(N["node_gene"][i], obj);
+                obj.activation = (GENES.ACTIVATION)Nsub["activation"].AsInt;
+                obj.property = (GENES.NODE)Nsub["property"].AsInt;
+                obj.nb = Nsub["nb"].AsInt;
+                node_gene.Add(obj);
+                //Debug.Log(N["node_gene"][i]);
+            }
+            node_connect = new List<GENES.Connection>(N["node_connect"].Count);
+            for (int i = 0; i < N["node_connect"].Count; ++i)
+            {
+                JSONNode Nsub = N["node_connect"][i];
+                GENES.Connection obj = ScriptableObject.CreateInstance<GENES.Connection>();
+                //JsonUtility.FromJsonOverwrite(N["node_connect"][i], obj);
+                obj.inNode = Nsub["inNode"].AsInt;
+                obj.outNode = Nsub["outNode"].AsInt;
+                obj.w = Nsub["w"].AsFloat;
+                obj.enabled = Nsub["enabled"].AsBool;
+                obj.innov = Nsub["innov"].AsInt;
+                node_connect.Add(obj);
+                //Debug.Log(N["node_connect"][i]);
+            }
         }
     }
 }

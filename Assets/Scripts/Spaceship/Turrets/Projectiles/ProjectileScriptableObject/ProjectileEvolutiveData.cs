@@ -8,5 +8,11 @@ namespace Projectiles
     public class ProjectileEvolutiveData : ProjectileData
     {
         public NEAT.Person behaviour;
+
+        public void init(UserData.EvoWeaponData data)
+        {
+            damage = data.damage;
+            behaviour = data.evoData;
+        }
     }
 }

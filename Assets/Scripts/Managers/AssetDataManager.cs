@@ -14,6 +14,8 @@ public class AssetDataManager : MonoBehaviour
     public List<GameObject> spaceshipObject = new List<GameObject>();
     public List<Material> spaceshipMaterial = new List<Material>();
 
+    public Dictionary<int, Projectiles.ProjectileData> weaponData = new Dictionary<int, Projectiles.ProjectileData>();
+    public List<NEAT.Person> evoWeaponData = new List<NEAT.Person>();
     public Dictionary<int,GameObject> turretObject = new Dictionary<int, GameObject>();
 
     public static AssetDataManager Instance { get { return instance; } }

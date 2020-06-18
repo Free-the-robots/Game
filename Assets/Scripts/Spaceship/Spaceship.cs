@@ -54,6 +54,7 @@ public class Spaceship : MonoBehaviour
     {
         if (alive)
         {
+            Debug.Log(damage);
             spaceshipData.life -= damage;
             if (spaceshipData.life <= 0)
             {

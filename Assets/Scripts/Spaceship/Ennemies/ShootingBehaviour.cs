@@ -7,19 +7,15 @@ namespace ShootBehaviour
 {
     public abstract class ShootingBehaviour
     {
-        public abstract void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon, ref float t);
+        public abstract void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon);
     }
     public class Standard : ShootingBehaviour
     {
-        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon, ref float t)
+        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon)
         {
-            if (t > 1F / attributes.freq)
+            for (int i = 0; i < weapon.Count; ++i)
             {
-                for (int i = 0; i < weapon.Count; ++i)
-                {
-                    weapon[i].Fire();
-                }
-                t = 0f;
+                weapon[i].Fire();
             }
         }
     }
@@ -31,16 +27,12 @@ namespace ShootBehaviour
             this.animator = animator;
         }
 
-        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon, ref float t)
+        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon)
         {
             animator.SetBool("play",true);
-            if (t > 1F / attributes.freq)
+            for (int i = 0; i < weapon.Count; ++i)
             {
-                for (int i = 0; i < weapon.Count; ++i)
-                {
-                    weapon[i].Fire();
-                }
-                t = 0f;
+                weapon[i].Fire();
             }
         }
     }
@@ -52,18 +44,17 @@ namespace ShootBehaviour
             this.target = target;
         }
 
-        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon, ref float t)
+        public override void ShootBehaviour(Transform transform, SpaceshipData attributes, List<Weapon.Turret> weapon)
         {
             Vector3 dir = target.position - transform.position;
             dir.y = 0f;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            if (t > 1F / attributes.freq && dir.magnitude < 8f)
+            if (dir.magnitude < 8f)
             {
                 for (int i = 0; i < weapon.Count; ++i)
                 {
                     weapon[i].Fire();
                 }
-                t = 0f;
             }
         }
     }

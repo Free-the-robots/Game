@@ -24,6 +24,8 @@ namespace Projectiles
 
         public float velocity = 1f;
         public float frequency = 1f;
+        public int bursts = 1;
+        public float burstFrequency = 5f;
         public float lifeTime = 1f;
         public int damage = 0;
 

@@ -18,8 +18,6 @@ public class SpaceshipData : ScriptableObject
     public float armor;
     public int rarity;
 
-    public float freq;
-
     public int modifiableTurretCount = 0;
 
     public SpaceshipData Clone()
@@ -33,7 +31,6 @@ public class SpaceshipData : ScriptableObject
         res.shield = shield;
         res.armor = armor;
         res.rarity = rarity;
-        res.freq = freq;
         res.description = description;
         res.modifiableTurretCount = modifiableTurretCount;
         return res;

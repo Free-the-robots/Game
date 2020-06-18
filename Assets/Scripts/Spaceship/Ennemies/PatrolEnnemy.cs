@@ -24,7 +24,6 @@ public class PatrolEnnemy : EnnemyAISpaceship
     }
 
     float t = 0f;
-    float shootingT = 0f;
     protected override void Behaviour()
     {
         base.Behaviour();
@@ -57,8 +56,7 @@ public class PatrolEnnemy : EnnemyAISpaceship
                 agent.SetDestination(target.position);
                 t = 0f;
             }
-            shootingT += Time.deltaTime;
-            ShootingBehaviour(ref shootingT);
+            ShootingBehaviour();
         }
     }
 

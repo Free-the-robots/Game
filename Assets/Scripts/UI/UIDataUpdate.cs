@@ -36,7 +36,6 @@ public class UIDataUpdate : MonoBehaviour
 
     public void updateLife(int value)
     {
-        Debug.Log(value);
         lifeParent.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(value/(float)lifeMax*lifeW, lifeParent.GetChild(0).GetComponent<RectTransform>().sizeDelta.y);
         lifeParent.GetChild(1).GetComponent<Text>().text = value.ToString();
     }

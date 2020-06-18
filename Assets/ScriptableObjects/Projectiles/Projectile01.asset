@@ -22,6 +22,8 @@ MonoBehaviour:
   explosion: {fileID: 0}
   velocity: 15
   frequency: 2
+  bursts: 1
+  burstFrequency: 5
   lifeTime: 2
-  damage: 0
+  damage: 50
   special: 0

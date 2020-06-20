@@ -25,6 +25,7 @@ public class LerpToWhenEnabled : MonoBehaviour
 
     public bool lerpRotate = true;
     public bool lerpPosition = true;
+    public bool loop = false;
 
     private bool animating = false;
 
@@ -89,19 +90,26 @@ public class LerpToWhenEnabled : MonoBehaviour
                 else
                     ResponseWhenFinishedBegin.Invoke();
                 finishedAnimation();
-                enabled = false;
             }
         }
     }
 
     private void finishedAnimation()
     {
-        if (flipWhenFinished)
+        if (flipWhenFinished && !loop)
             flip = !flip;
         if (lerpPosition)
             transform.position = toPosition;
         if (lerpRotate)
             transform.rotation = toQuaternion;
+        if(!loop)
+            enabled = false;
+        else
+        {
+            t = 0f;
+            transform.position = toPosition;
+            transform.rotation = toQuaternion;
+        }
     }
 
     public void setOffsetZTo(float z)

@@ -32,6 +32,8 @@ namespace NN
                     if (nodes_NN[connection.inNode].outNodes == null)
                         nodes_NN[connection.inNode].outNodes = new List<Node>();
                     nodes_NN[connection.inNode].outNodes.Add(nodes_NN[connection.outNode]);
+
+                    nodes_NN[connection.inNode].outW.Add(connection.w);
                     nodes_NN[connection.outNode].w.Add(connection.w);
                 }
             }

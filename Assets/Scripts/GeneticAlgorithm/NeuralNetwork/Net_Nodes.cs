@@ -9,6 +9,7 @@ namespace NN
         public List<Node> inNodes = null;
         public List<Node> outNodes = null;
         public List<float> w = new List<float>();
+        public List<float> outW = new List<float>();
         public int nb = 0;
 
         public virtual float activation(float x)

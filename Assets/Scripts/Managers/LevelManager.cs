@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public Transform startSpawn;
+    public LerpAlphaWhenEnabled fader;
     public List<GameObject> objectToActivate;
 
     [Header("Player Event")]
@@ -46,6 +47,8 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+
+        fader.enabled = true;
     }
 
     // Update is called once per frame

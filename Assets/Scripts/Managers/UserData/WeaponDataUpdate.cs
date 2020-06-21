@@ -190,14 +190,13 @@ public class WeaponDataUpdate : MonoBehaviour
     {
         if (actualEvoWeaponObject == null)
         {
-            Debug.Log(AssetDataManager.Instance.turretObject.Count);
             GameObject obj = GameObject.Instantiate(AssetDataManager.Instance.turretObject[100]);
             UserData.UserData userData = UserDataManager.Instance.userData;
 
             Projectiles.ProjectileEvolutiveData pData = ScriptableObject.CreateInstance<Projectiles.ProjectileEvolutiveData>();
             pData.init(userData.evoweapons[id]);
-            pData.velocity = 30;
-            pData.lifeTime = 10;
+            pData.velocity = 10;
+            pData.lifeTime = 2;
 
             actualEvoWeaponData = pData;
 

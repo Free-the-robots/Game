@@ -49,10 +49,10 @@ public class DrawEvoWeapons : MonoBehaviour
         }
         for (int i = 0; i < net.inNodes.Count; i++)
         {
-            float y = 0f;
+            float x = 0f;
             if (net.outNodes.Count > 1)
-                y = ((float)i) / (net.inNodes.Count - 1) - 0.5f;
-            Vector3 pos = new Vector3(0f, y * 4f, 0f);
+                x = ((float)i) / (net.inNodes.Count - 1) - 0.5f;
+            Vector3 pos = new Vector3(x * 4f, 0f, 0f);
 
             DrawNodeChildren(net.inNodes[i], pos, this.transform, 1, null);
         }
@@ -100,10 +100,10 @@ public class DrawEvoWeapons : MonoBehaviour
         {
             for (int i = 0; i < node.outNodes.Count; i++)
             {
-                float y = 0f;
+                float x = 0f;
                 if(node.outNodes.Count > 1)
-                    y = ((float)i) / (node.outNodes.Count-1) - 0.5f;
-                Vector3 pos = new Vector3(position.x + 2f, y * countLvl[lvl], 0f);
+                    x = ((float)i) / (node.outNodes.Count-1) - 0.5f;
+                Vector3 pos = new Vector3(x * countLvl[lvl], position.y + 2f , 0f);
 
                 if (nodePair.ContainsKey(node.outNodes[i].nb))
                 {

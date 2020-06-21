@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UserData
 {
@@ -34,17 +35,14 @@ namespace UserData
 
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
                 UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath);
-#endif
-                StartCoroutine(LoadOrCreate());
 
                 userDataPath2 = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat";
 #if UNITY_IPHONE
                 UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath2);
 #endif
-                if (File.Exists(userDataPath2))
-                {
-                    StartCoroutine(checkUser());
-                }
+
+#endif
+                StartCoroutine(LoadOrCreate());
             }
 
             DontDestroyOnLoad(this);
@@ -69,13 +67,13 @@ namespace UserData
                 }
                 catch (System.Exception e)
                 {
-                    //TODO : REMOVE FOR PRODUCTION
                     Debug.LogError(e.Message);
                     Debug.LogError("Recreating intial user data");
                     failure = true;
                 }
                 if (failure)
                 {
+                    //TODO : REMOVE FOR PRODUCTION
                     userData.Reset();
                     yield return CreateInitial();
                     SaveData();
@@ -84,8 +82,14 @@ namespace UserData
             else
             {
                 //TODO : REMOVE FOR PRODUCTION
-                yield return CreateInitial();
-                SaveData();
+                //yield return CreateInitial();
+                //SaveData();
+            }
+
+            if (File.Exists(userDataPath2))
+            {
+                Debug.Log("checking user");
+                yield return StartCoroutine(checkUser());
             }
             yield return null;
         }
@@ -154,6 +158,8 @@ namespace UserData
             LoadingManager.Instance.enableLoading("Checking...");
             string udata = Encoding.Default.GetString(EncryptDecrypt.LoadDecryptFile(userDataPath2));
             string[] data = udata.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+            Debug.Log(userData.userType);
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
             if (userData.userType == UserData.USERTYPE.APPLE)
             {
@@ -167,7 +173,13 @@ namespace UserData
                 GetComponent<GooglePlayService>().SignInSilent();
             }
 #endif
-            yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
+            if(userData.userType == UserData.USERTYPE.OFFLINE)
+            {
+                if (SceneManager.GetActiveScene().name.Equals("Login"))
+                    SceneManager.LoadScene("Main");
+            }
+            else
+                yield return StartCoroutine(GetComponent<ConnectionScript>().authenticateLog(data[1], data[2]));
             LoadingManager.Instance.disableLoading();
         }
 

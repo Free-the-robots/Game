@@ -864,6 +864,7 @@ MonoBehaviour:
   spaceshipScriptableData: []
   spaceshipObject: []
   spaceshipMaterial: []
+  evoWeaponData: []
   loadedAssets: 0
   version: 
 --- !u!4 &858891552
@@ -902,6 +903,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d16f8c1cbb65549738eb820425e9ad8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1138710132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1719483375796862048, guid: 780ea1ed3d1d64ecaad4190402b5357f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1876574031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378a01e2782c34c3aabeb22598f30cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1373190209 stripped
@@ -1015,6 +1028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSpawn: {fileID: 1373190209}
+  fader: {fileID: 1138710132}
   objectToActivate:
   - {fileID: 1865788789}
   - {fileID: 1876574032}

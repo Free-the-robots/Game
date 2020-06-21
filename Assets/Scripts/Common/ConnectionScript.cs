@@ -33,7 +33,7 @@ public class ConnectionScript : MonoBehaviour
     public void SingIn()
     {
         if (username.Length > 3 && password.Length > 3)
-            StartCoroutine(createLog(username, password, username));
+            StartCoroutine(createLog(username, password, UserData.UserData.USERTYPE.STANDARD, username));
         else
         {
             Debug.LogError("username and password not long enough");
@@ -42,30 +42,40 @@ public class ConnectionScript : MonoBehaviour
         }
     }
 
-    public void SingIn(string name)
+    public void SkipSingIn()
     {
-        StartCoroutine(createLog(username, password, name));
+        username = "UserOffline";
+        password = "UserOffline";
+        StartCoroutine(createLogSkip(username, password, username));
+    }
+
+    public void SingIn(string name, UserData.UserData.USERTYPE type)
+    {
+        StartCoroutine(createLog(username, password, type, name));
     }
 
     public IEnumerator CheckSignIn()
     {
         yield return StartCoroutine(authenticateLog(username, password));
         if (!loggedin)
-            yield return StartCoroutine(createLog(username, password));
+            yield return StartCoroutine(createLog(username, password, UserData.UserDataManager.Instance.userData.userType));
     }
 
-    public IEnumerator CheckSignIn(string name)
+    public IEnumerator CheckSignIn(string name, UserData.UserData.USERTYPE type)
     {
         yield return StartCoroutine(authenticateLog(username, password));
         if (!loggedin)
         {
-            yield return StartCoroutine(createLog(username, password, name));
+            yield return StartCoroutine(createLog(username, password, type, name));
         }
     }
 
     public IEnumerator authenticateLog(string user, string pass)
     {
-        debugMessage.text = "Authenticating...";
+        if(debugMessage != null)
+            debugMessage.text = "Authenticating...";
+        else
+            Debug.Log("No Text given to ConnectionScript : Authenticating...");
 
         WWWForm form = new WWWForm();
         form.AddField("username", user);
@@ -80,6 +90,8 @@ public class ConnectionScript : MonoBehaviour
                 Debug.Log(www.error);
                 if (debugMessage != null)
                     debugMessage.text = www.error;
+                else
+                    Debug.Log("No Text given to ConnectionScript : " + www.error);
             }
             else
             {
@@ -108,15 +120,20 @@ public class ConnectionScript : MonoBehaviour
                     Debug.LogError("Error authenticating");
                     if (debugMessage != null)
                         debugMessage.text = "Error authenticating";
+                    else
+                        Debug.Log("No Text given to ConnectionScript : Error authenticating");
                 }
             }
         }
         yield return null;
     }
 
-    public IEnumerator createLog(string user, string pass, string name = null)
+    public IEnumerator createLog(string user, string pass, UserData.UserData.USERTYPE type, string name = null)
     {
-        debugMessage.text = "Creating account...";
+        if (debugMessage != null)
+            debugMessage.text = "Creating account...";
+                    else
+            Debug.Log("No Text given to ConnectionScript : Creating account...");
 
         WWWForm form = new WWWForm();
         form.AddField("username", user);
@@ -131,6 +148,8 @@ public class ConnectionScript : MonoBehaviour
                 Debug.Log(www.error);
                 if (debugMessage != null)
                     debugMessage.text = www.error;
+                else
+                    Debug.Log("No Text given to ConnectionScript : " + www.error);
             }
             else
             {
@@ -146,7 +165,9 @@ public class ConnectionScript : MonoBehaviour
                         Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
                         userDataMan.userAuth.id + "\n" + userDataMan.userAuth.username + "\n" + pass + "\n" + name));
 
-                    userDataMan.userData.CreateInitial();
+                    userDataMan.userData.CreateInitial(type);
+                    while (!userDataMan.userData.createdInitial)
+                        yield return null; 
                     yield return StartCoroutine(userDataMan.SaveDataAsync());
 
                     if (SceneManager.GetActiveScene().name.Equals("Login"))
@@ -157,15 +178,38 @@ public class ConnectionScript : MonoBehaviour
                     Debug.LogError("Error creating User");
                     if (debugMessage != null)
                         debugMessage.text = "Error creating User";
+                    else
+                        Debug.Log("No Text given to ConnectionScript : Error creating User");
                 }
             }
         }
         yield return null;
     }
 
+    public IEnumerator createLogSkip(string user, string pass, string name = null)
+    {
+        loggedin = false;
+        UserData.UserDataManager userDataMan = UserData.UserDataManager.Instance;
+
+        yield return StartCoroutine(EncryptDecrypt.StoreEncryptFile(
+                        Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat",
+                        0 + "\n" + user + "\n" + pass + "\n" + name));
+
+        userDataMan.userData.CreateInitial(UserData.UserData.USERTYPE.OFFLINE);
+        while (!userDataMan.userData.createdInitial)
+            yield return null;
+
+        yield return StartCoroutine(userDataMan.SaveDataAsync());
+        if (SceneManager.GetActiveScene().name.Equals("Login"))
+            SceneManager.LoadScene(level);
+    }
+
     public IEnumerator getLog(string user)
     {
-        debugMessage.text = "Getting account...";
+        if (debugMessage != null)
+            debugMessage.text = "Getting account...";
+                else
+            Debug.Log("No Text given to ConnectionScript : Getting account...");
 
         using (UnityWebRequest www = UnityWebRequest.Get("https://free-the-robots.com/api/users/"+username))
         {
@@ -176,6 +220,8 @@ public class ConnectionScript : MonoBehaviour
                 Debug.Log(www.error);
                 if (debugMessage != null)
                     debugMessage.text = www.error;
+                else
+                    Debug.Log("No Text given to ConnectionScript : " + www.error);
             }
             else
             {
@@ -192,6 +238,8 @@ public class ConnectionScript : MonoBehaviour
                     Debug.LogError("Error getting User");
                     if (debugMessage != null)
                         debugMessage.text = "Error getting User";
+                    else
+                        Debug.Log("No Text given to ConnectionScript : Error getting User");
                 }
             }
         }
@@ -200,7 +248,10 @@ public class ConnectionScript : MonoBehaviour
 
     public IEnumerator updateLog(int id, byte[] data)
     {
-        debugMessage.text = "Updating account...";
+        if (debugMessage != null)
+            debugMessage.text = "Updating account...";
+        else
+            Debug.Log("No Text given to ConnectionScript : Updating account...");
         WWWForm form = new WWWForm();
         form.AddField("username", UserData.UserDataManager.Instance.userAuth.username);
         form.AddField("password", UserData.UserDataManager.Instance.userAuth.password);
@@ -215,6 +266,8 @@ public class ConnectionScript : MonoBehaviour
                 Debug.Log(www.error);
                 if (debugMessage != null)
                     debugMessage.text = www.error;
+                else
+                    Debug.Log("No Text given to ConnectionScript : " + www.error);
             }
             else
             {
@@ -227,6 +280,8 @@ public class ConnectionScript : MonoBehaviour
                     Debug.LogError("Error updating User");
                     if (debugMessage != null)
                         debugMessage.text = "Error updating User";
+                    else
+                        Debug.Log("No Text given to ConnectionScript : Error updating User");
                 }
             }
         }

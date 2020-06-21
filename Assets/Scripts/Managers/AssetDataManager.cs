@@ -30,6 +30,8 @@ public class AssetDataManager : MonoBehaviour
 
     private float actualPercent = 0f;
     private float maxDownload = 0f;
+    private List<float> downloadSize = new List<float>();
+    private int downloadIndex = 0;
 
     private const string shipURL = "Assets/Prefabs/Spaceships/";
     private const string weaponURL = "Assets/Prefabs/Turrets/";
@@ -131,6 +133,7 @@ public class AssetDataManager : MonoBehaviour
         spaceshipMaterial.Add(model3D.GetComponent<MeshRenderer>().sharedMaterial);
         //spaceshipMesh.Add(model3D.GetComponent<MeshFilter>().sharedMesh);
         spaceshipObject.Add(obj.Result);
+        actualPercent += 1f;
     }
 
     private void OnLoadDonePrefabWeapon(AsyncOperationHandle<GameObject> obj)
@@ -139,16 +142,16 @@ public class AssetDataManager : MonoBehaviour
         turretObject[System.Convert.ToInt32(obj.Result.name.Remove(0,6))] = obj.Result;
         if(obj.Result.GetComponent<Weapon.Turret>().projectileData != null)
             weaponData[obj.Result.GetComponent<Weapon.Turret>().projectileData.id] = obj.Result.GetComponent<Weapon.Turret>().projectileData;
+        actualPercent += 1f;
     }
 
     IEnumerator LoadAssets()
     {
-        LoadingManager.Instance.resetLoading();
-        LoadingManager.Instance.enableLoading("Loading Assets...");
-
         downloading = true;
 
-        LoadingManager.Instance.maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries).Length;
+        actualPercent = 0f;
+        LoadingManager.Instance.resetLoading(ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length);
+        LoadingManager.Instance.enableLoading("Loading Ships...");
 
         //Load Spaceships
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
@@ -159,6 +162,9 @@ public class AssetDataManager : MonoBehaviour
             yield return async;
         }
 
+        actualPercent = 0f;
+        LoadingManager.Instance.resetLoading(weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length);
+        LoadingManager.Instance.enableLoading("Loading Turrets...");
         //Load Turrets
         foreach (string line in weapons.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
@@ -175,13 +181,12 @@ public class AssetDataManager : MonoBehaviour
 
     IEnumerator DownloadAssets()
     {
-        LoadingManager.Instance.resetLoading();
+        actualPercent = 0f;
+        LoadingManager.Instance.resetLoading(1f);
         LoadingManager.Instance.enableLoading("Downloading Assets...");
-
         downloading = true;
-        LoadingManager.Instance.maxPercent = ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.None).Length;
 
-
+        downloadIndex = 0;
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
             AsyncOperationHandle async = Addressables.DownloadDependenciesAsync(shipURL + line + ".prefab");
@@ -204,19 +209,25 @@ public class AssetDataManager : MonoBehaviour
 
     private void FinishedDownloading(AsyncOperationHandle obj)
     {
-        actualPercent += 1f;
+        actualPercent += downloadSize[downloadIndex]/maxDownload;
+        downloadIndex++;
     }
 
     private void Update()
     {
         if (downloading)
         {
-            LoadingManager.Instance.setPercent(actualPercent + downloadAsync.PercentComplete);
+            if(downloadAsync.PercentComplete != 1)
+                LoadingManager.Instance.setPercent(actualPercent + downloadAsync.PercentComplete);
+            else
+                LoadingManager.Instance.setPercent(actualPercent);
         }
     }
 
     IEnumerator updateSetup()
     {
+        downloadSize = new List<float>();
+        maxDownload = 0f;
         foreach (string line in ships.Split(new[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries))
         {
             AsyncOperationHandle<long> async = Addressables.GetDownloadSizeAsync(shipURL + line + ".prefab");
@@ -235,6 +246,6 @@ public class AssetDataManager : MonoBehaviour
     private void MeasureDownloading(AsyncOperationHandle<long> obj)
     {
         maxDownload += obj.Result;
-        LoadingManager.Instance.maxValue = maxDownload;
+        downloadSize.Add(obj.Result);
     }
 }

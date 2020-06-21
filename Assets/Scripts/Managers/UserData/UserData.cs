@@ -192,7 +192,7 @@ namespace UserData
     [Serializable]
     public class UserData : SerializableData<UserData>
     {
-        public enum USERTYPE : int { STANDARD = 0, FACEBOOK = 1, APPLE = 2, GOOGLE = 3}
+        public enum USERTYPE : int { STANDARD = 0, FACEBOOK = 1, APPLE = 2, GOOGLE = 3, OFFLINE = 4}
 
         public List<ClusterData> clusters = new List<ClusterData>();
         public List<ShipData> ships = new List<ShipData>();
@@ -228,9 +228,9 @@ namespace UserData
             userType = USERTYPE.STANDARD;
         }
 
-        public void CreateInitial()
+        public void CreateInitial(USERTYPE type = USERTYPE.STANDARD)
         {
-
+            Reset();
             ClusterData cluster = new ClusterData();
             PlanetData planetData = new PlanetData(true);
             for (int i = 0; i < 3; i++)
@@ -265,6 +265,8 @@ namespace UserData
             evoweapons.Add(evoweapon);
             Addressables.LoadAssetAsync<NEAT.Person>("Assets/ScriptableObjects/NEAT/Sinus.asset").Completed += OnLoadDoneEvoWeapon;
             //createdInitial = true;
+
+            userType = type;
         }
 
         private void OnLoadDoneEvoWeapon(AsyncOperationHandle<NEAT.Person> obj)

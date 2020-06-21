@@ -14,6 +14,23 @@ public class FacebookLogin : MonoBehaviour
 
     void Awake()
     {
+        if(UserData.UserDataManager.Instance.userData.userType == UserData.UserData.USERTYPE.FACEBOOK)
+        {
+            if (!FB.IsInitialized)
+            {
+                // Initialize the Facebook SDK
+                FB.Init(InitCallback, OnHideUnity);
+            }
+            else
+            {
+                // Already initialized, signal an app activation App Event
+                FB.ActivateApp();
+            }
+        }
+    }
+
+    public void FBSignIn()
+    {
         if (!FB.IsInitialized)
         {
             // Initialize the Facebook SDK
@@ -24,10 +41,6 @@ public class FacebookLogin : MonoBehaviour
             // Already initialized, signal an app activation App Event
             FB.ActivateApp();
         }
-    }
-
-    public void FBSignIn()
-    {
         FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends", "user_birthday" }, this.AuthCallback);
     }
 
@@ -211,6 +224,6 @@ public class FacebookLogin : MonoBehaviour
         GetComponent<ConnectionScript>().password = "Facebook!"+id+fullname;
         UserData.UserDataManager.Instance.userData.userType = UserData.UserData.USERTYPE.FACEBOOK;
 
-        StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(fullname));
+        StartCoroutine(GetComponent<ConnectionScript>().CheckSignIn(fullname, UserData.UserData.USERTYPE.FACEBOOK));
     }
 }

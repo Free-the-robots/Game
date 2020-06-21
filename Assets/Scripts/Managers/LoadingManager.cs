@@ -12,8 +12,7 @@ public class LoadingManager : MonoBehaviour
     public RectTransform rectLoading;
     public Text message;
 
-    public float maxPercent = 0f;
-    public float maxValue = 0f;
+    private float maxPercent = 0f;
 
     private void Awake()
     {
@@ -50,6 +49,18 @@ public class LoadingManager : MonoBehaviour
     {
         rectLoading.sizeDelta = new Vector2(0f, rectLoading.sizeDelta.y);
 
-        maxValue = 0f;
+        maxPercent = 0f;
+    }
+
+    public void resetLoading(float max)
+    {
+        rectLoading.sizeDelta = new Vector2(0f, rectLoading.sizeDelta.y);
+
+        maxPercent = max;
+    }
+
+    public void setMaxPercent(float max)
+    {
+        maxPercent = max;
     }
 }

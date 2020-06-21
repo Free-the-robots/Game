@@ -391,6 +391,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168372113}
   m_CullTransparentMesh: 0
+--- !u!1 &1244360619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1244360621}
+  - component: {fileID: 1244360620}
+  m_Layer: 0
+  m_Name: Asset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1244360620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244360619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f5bd5b278c04e08bd5537f6749dfb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceshipScriptableData: []
+  spaceshipObject: []
+  spaceshipMaterial: []
+  evoWeaponData: []
+  loadedAssets: 0
+  version: 
+--- !u!4 &1244360621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244360619}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1352012679
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +940,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3103566294611102772, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1472313632}
+    - target: {fileID: 3103566294611102772, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkipSingIn
+      objectReference: {fileID: 0}
     - target: {fileID: 3182663574685495018, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -915,11 +974,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4607468782863167018}
+      objectReference: {fileID: 1472313632}
     - target: {fileID: 4971774169939984702, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SignIn
+      value: SingIn
       objectReference: {fileID: 0}
     - target: {fileID: 4971774169939984702, guid: ca2cb939b2c8c4d0a81c110bca3597bb,
         type: 3}

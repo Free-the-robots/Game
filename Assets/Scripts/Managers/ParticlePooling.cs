@@ -39,6 +39,8 @@ public class ParticlePooling : MonoBehaviour
 
     public int nb = 1000;
 
+    public Texture2D defaultParticleTexture;
+
     private static ParticlePooling instance;
 
     public static ParticlePooling Instance { get { return instance; } }
@@ -70,6 +72,11 @@ public class ParticlePooling : MonoBehaviour
         typeKillMap[typeof(ProjectileConeData)] = destroyCommon;
         typeKillMap[typeof(LaserData)] = destroyCommon;
         typeKillMap[typeof(LaserEvolutiveData)] = destroyCommon;
+
+        listParticles.Add(defaultParticleTexture);
+        textureArray = new Texture2DArray(defaultParticleTexture.width, defaultParticleTexture.height, listParticles.Count, defaultParticleTexture.format, false);
+
+        Graphics.CopyTexture(listParticles[0], 0, 0, textureArray, 0, 0);
     }
 
     // Start is called before the first frame update
@@ -227,22 +234,29 @@ public class ParticlePooling : MonoBehaviour
     {
         classObj.data = part;
         chooser.active = classObj;
-
-        if (!listParticles.Contains(part.skin[0]))
+        if(part.skin.Count > 0)
         {
-            chooser.active.texIdStart = listParticles.Count;
-            listParticles.AddRange(part.skin);
-            textureArray = new Texture2DArray(part.skin[0].width, part.skin[0].height, listParticles.Count, part.skin[0].format, false);
+            if (!listParticles.Contains(part.skin[0]))
+            {
+                chooser.active.texIdStart = listParticles.Count;
+                listParticles.AddRange(part.skin);
+                textureArray = new Texture2DArray(part.skin[0].width, part.skin[0].height, listParticles.Count, part.skin[0].format, false);
 
-            for (int i = 0; i < listParticles.Count; i++)
-                Graphics.CopyTexture(listParticles[i], 0, 0, textureArray, i, 0);
+                for (int i = 0; i < listParticles.Count; i++)
+                    Graphics.CopyTexture(listParticles[i], 0, 0, textureArray, i, 0);
 
-            chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
-            //part.textureArray = textureArray;
+                chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
+                //part.textureArray = textureArray;
+            }
+            else
+            {
+                chooser.active.texIdStart = listParticles.IndexOf(part.skin[0]);
+            }
         }
         else
         {
-            chooser.active.texIdStart = listParticles.IndexOf(part.skin[0]);
+            chooser.active.texIdStart = 0;
+            chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
         }
         chooser.active.enabled = true;
     }

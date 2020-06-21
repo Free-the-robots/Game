@@ -35,27 +35,7 @@ namespace UserData
 #if UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_IPHONE
                 UnityEngine.iOS.Device.SetNoBackupFlag(userDataPath);
 #endif
-                if (File.Exists(userDataPath))
-                {
-                    try
-                    {
-                        userData.LoadSerialize(userDataPath);
-                    }
-                    catch (System.Exception e)
-                    {
-                        //TODO : REMOVE FOR PRODUCTION
-                        Debug.LogError(e.Message);
-                        Debug.LogError("Recreating intial user data");
-                        userData.CreateInitial();
-                        SaveData();
-                    }
-                }
-                else
-                {
-                    //TODO : REMOVE FOR PRODUCTION
-                    userData.CreateInitial();
-                    SaveData();
-                }
+                StartCoroutine(LoadOrCreate());
 
                 userDataPath2 = Application.persistentDataPath + Path.DirectorySeparatorChar + ".udata2.dat";
 #if UNITY_IPHONE
@@ -78,6 +58,46 @@ namespace UserData
             }
         }
 
+        IEnumerator LoadOrCreate()
+        {
+            if (File.Exists(userDataPath))
+            {
+                bool failure = false;
+                try
+                {
+                    userData.LoadSerialize(userDataPath);
+                }
+                catch (System.Exception e)
+                {
+                    //TODO : REMOVE FOR PRODUCTION
+                    Debug.LogError(e.Message);
+                    Debug.LogError("Recreating intial user data");
+                    failure = true;
+                }
+                if (failure)
+                {
+                    userData.Reset();
+                    yield return CreateInitial();
+                    SaveData();
+                }
+            }
+            else
+            {
+                //TODO : REMOVE FOR PRODUCTION
+                yield return CreateInitial();
+                SaveData();
+            }
+            yield return null;
+        }
+
+        IEnumerator CreateInitial()
+        {
+            userData.CreateInitial();
+            while (!userData.createdInitial)
+                yield return null;
+            yield return null;
+        }
+
         public void AddWeapon(Projectiles.ProjectileData projectile)
         {
             WeaponData weapon = new WeaponData();
@@ -87,9 +107,10 @@ namespace UserData
 
         public void AddEvoWeapon(Projectiles.ProjectileEvolutiveData projectile)
         {
-            WeaponData weapon = new WeaponData();
+            EvoWeaponData weapon = new EvoWeaponData();
             weapon.id = (ushort)projectile.id;
-            userData.weapons.Add(weapon);
+            weapon.evoData = projectile.behaviour;
+            userData.evoweapons.Add(weapon);
         }
 
         public void AddShip(SpaceshipData shipData)

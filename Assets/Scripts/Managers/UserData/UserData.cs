@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using System.Runtime.Serialization.Json;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace UserData
 {
@@ -123,18 +125,20 @@ namespace UserData
 
         public override int byteCount()
         {
-            return sizeof(int);
+            return sizeof(int)*2;
         }
 
         public override Craft LoadSerialize(byte[] data)
         {
             amount = BitConverter.ToInt32(data, 0);
+            unlockAmount = BitConverter.ToInt32(data, sizeof(int));
             return this;
         }
 
         public override byte[] Serialize()
         {
             byte[] bytes = CommonData.addByteToArray(null, BitConverter.GetBytes(amount));
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(unlockAmount));
             return bytes;
         }
     }
@@ -195,9 +199,11 @@ namespace UserData
         public List<WeaponData> weapons = new List<WeaponData>();
         public List<EvoWeaponData> evoweapons = new List<EvoWeaponData>();
 
-        public Material material;
+        public Material material = new Material();
 
         public int shipEquiped = 0;
+
+        public bool createdInitial = false;
 
         public USERTYPE userType = USERTYPE.STANDARD;
 
@@ -210,8 +216,21 @@ namespace UserData
             LoadSerialize(filename);
         }
 
+        public void Reset()
+        {
+            clusters = new List<ClusterData>();
+            ships = new List<ShipData>();
+            weapons = new List<WeaponData>();
+            evoweapons = new List<EvoWeaponData>();
+            material = new Material();
+            shipEquiped = 0;
+            createdInitial = false;
+            userType = USERTYPE.STANDARD;
+        }
+
         public void CreateInitial()
         {
+
             ClusterData cluster = new ClusterData();
             PlanetData planetData = new PlanetData(true);
             for (int i = 0; i < 3; i++)
@@ -235,10 +254,23 @@ namespace UserData
             ship.unlocked = true;
             ships.Add(ship);
 
+            material = new Material();
+
+            weapons = new List<WeaponData>();
             WeaponData weapon = new WeaponData();
             weapons.Add(weapon);
 
-            material = new Material();
+            evoweapons = new List<EvoWeaponData>();
+            EvoWeaponData evoweapon = new EvoWeaponData();
+            evoweapons.Add(evoweapon);
+            Addressables.LoadAssetAsync<NEAT.Person>("Assets/ScriptableObjects/NEAT/Sinus.asset").Completed += OnLoadDoneEvoWeapon;
+            //createdInitial = true;
+        }
+
+        private void OnLoadDoneEvoWeapon(AsyncOperationHandle<NEAT.Person> obj)
+        {
+            evoweapons[0].evoData = obj.Result;
+            createdInitial = true;
         }
 
         public void CreateInitialWithEverything()
@@ -308,6 +340,9 @@ namespace UserData
         public void LoadSerialize(string filename)
         {
             LoadSerialize(EncryptDecrypt.LoadDecryptFile(filename));
+
+
+            Debug.Log("load : " + EncryptDecrypt.LoadDecryptFile(filename).Length);
         }
 
         public override UserData LoadSerialize(byte[] data)
@@ -362,19 +397,18 @@ namespace UserData
                 if (j > data.Length)
                     throw new ArgumentOutOfRangeException("j", "Data not serialized properly");
             }
+
             shipEquiped = BitConverter.ToInt32(data, j);
             j += sizeof(int);
             userType = (USERTYPE)BitConverter.ToInt32(data, j);
             j += sizeof(int);
             material = new Material(data.Skip(j).ToArray());
-
             return this;
         }
 
         public IEnumerator SaveSerialize(string filename)
         {
             byte[] byteArray = Serialize();
-
             yield return EncryptDecrypt.StoreEncryptFile(filename,byteArray);
             Debug.Log("writing to : " + filename);
         }

@@ -60,6 +60,11 @@ namespace UserData
     public class EvoWeaponData : WeaponData
     {
         public NEAT.Person evoData;
+
+        public EvoWeaponData() : base()
+        {
+
+        }
         public EvoWeaponData(byte[] data) : base()
         {
             LoadSerialize(data);
@@ -73,6 +78,8 @@ namespace UserData
         public override byte[] Serialize()
         {
             byte[] bytes = CommonData.addByteToArray(null, base.Serialize());
+            int count = System.Text.Encoding.Default.GetBytes(evoData.ToJson()).Length;
+            bytes = CommonData.addByteToArray(bytes, BitConverter.GetBytes(count));
             bytes = CommonData.addByteToArray(bytes, System.Text.Encoding.Default.GetBytes(evoData.ToJson()));
             return bytes;
         }
@@ -80,14 +87,18 @@ namespace UserData
         public override CommonData LoadSerialize(byte[] data)
         {
             base.LoadSerialize(data);
-            string evo = System.Text.Encoding.Default.GetString(data.Skip(base.byteCount()).ToArray());
-            evoData = new NEAT.Person(evo);
+            int size = BitConverter.ToInt32(data, base.byteCount());
+            byte[] dataSub = new byte[size];
+            Array.Copy(data, base.byteCount() + sizeof(int), dataSub, 0, size);
+            string evo = System.Text.Encoding.Default.GetString(dataSub);
+            evoData = ScriptableObject.CreateInstance<NEAT.Person>();
+            evoData.fromJson(evo);
             return this;
         }
 
         public override int byteCount()
         {
-            return base.byteCount() + evoData.ToJson().Length;
+            return base.byteCount() + sizeof(int) + System.Text.Encoding.Default.GetBytes(evoData.ToJson()).Length;
         }
     }
 }

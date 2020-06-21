@@ -195,6 +195,7 @@ public class DrawEvoWeapons : MonoBehaviour
             for(int i = 0; i < pairs.Value.Count; i++)
             {
                 GameObject obj = GameObject.Instantiate(nodeTransitionObj);
+                obj.transform.SetParent(transform);
                 obj.GetComponent<LerpToWhenEnabled>().from = pairs.Key;
                 obj.GetComponent<LerpToWhenEnabled>().to = pairs.Value[i];
                 obj.GetComponent<LerpToWhenEnabled>().enabled = true;

@@ -16,7 +16,11 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 6edb23f933e9c47f089484a7f1e3399d
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: b7ab3a16063624e80aac8615c87ba5af
+    m_Address: Assets/ScriptableObjects/NEAT/Sinus.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 246ecaa72c3a4425ea27df4471eb068e, type: 2}
   m_SchemaSet:

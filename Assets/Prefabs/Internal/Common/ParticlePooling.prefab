@@ -114,6 +114,8 @@ MonoBehaviour:
   poolParticleBillboardTransform: {fileID: 3089421212067163680}
   activesTransform: {fileID: 303740701}
   nb: 1000
+  defaultParticleTexture: {fileID: 2800000, guid: 80f6d78c9dcce4e2eb4d79e8612db5b5,
+    type: 3}
 --- !u!1 &1002771175312725574
 GameObject:
   m_ObjectHideFlags: 0

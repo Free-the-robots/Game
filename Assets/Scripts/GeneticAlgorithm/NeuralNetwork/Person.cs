@@ -112,12 +112,12 @@ namespace NEAT
             string json = "{\n\t\"node_gene\": [\n";
             foreach (GENES.Nodes node in node_gene)
             {
-                json += node.GetInstanceID() + " " + JsonUtility.ToJson(node, true) + ",\n";
+                json += /*node.GetInstanceID() + " " + */JsonUtility.ToJson(node, true) + ",\n";
             }
             json += "\n\t],\n\t\"node_connect\": [\n";
             foreach (GENES.Connection connection in node_connect)
             {
-                json += connection.GetInstanceID() + " " + JsonUtility.ToJson(connection, true) + ",\n";
+                json += /*connection.GetInstanceID() + " " + */JsonUtility.ToJson(connection, true) + ",\n";
             }
             json += "\n\t]\n}";
             return json;

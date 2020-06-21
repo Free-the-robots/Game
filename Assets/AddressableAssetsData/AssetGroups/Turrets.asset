@@ -17,6 +17,10 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 0fa06466df7874d90a88ffd7712b71da
   m_SerializeEntries:
+  - m_GUID: 2e908706e4cc94bae991a863fd9dc1ac
+    m_Address: Assets/Prefabs/Turrets/Turret100.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   - m_GUID: 30c4d290c88174a8898ea9c513d1decf
     m_Address: Assets/Prefabs/Turrets/Turret00.prefab
     m_ReadOnly: 0

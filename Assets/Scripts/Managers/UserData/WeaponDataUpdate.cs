@@ -19,10 +19,10 @@ public class WeaponDataUpdate : MonoBehaviour
     public FillUIParent xP;
 
     public Transform weaponContent;
+    public Transform evoweaponContent;
     public GameObject ScrollButton;
 
     public ToggleGroup togglesGroup;
-    public ToggleGroup weaponToggleGroup;
     public RectTransform weaponRawImage;
 
     public WeaponStatsUpdate weaponStats;
@@ -50,7 +50,9 @@ public class WeaponDataUpdate : MonoBehaviour
         AssetDataManager assetData = AssetDataManager.Instance;
         actualWeapon = userData.weapons.FirstOrDefault();
         if (actualWeapon != null)
+        {
             actualWeaponData = assetData.weaponData[actualWeapon.id];
+        }
 
         actualEvoWeapon = userData.evoweapons.FirstOrDefault();
         if (actualEvoWeapon == null)
@@ -80,18 +82,28 @@ public class WeaponDataUpdate : MonoBehaviour
             weaponContent.GetComponentsInChildren<Toggle>()[actualWeapon.id].isOn = true;
 
 
-        ToggleGroup toggleGroupWeapon = weaponContent.GetComponent<ToggleGroup>();
+        ToggleGroup toggleGroupWeapon = evoweaponContent.GetComponent<ToggleGroup>();
 
         for (int i = 0; i < userData.evoweapons.Count; ++i)
         {
             GameObject button = GameObject.Instantiate(ScrollButton);
             Toggle toggle = button.GetComponent<Toggle>();
-            button.transform.SetParent(weaponContent);
+            button.transform.SetParent(evoweaponContent);
             int tmpI = i;
             toggle.onValueChanged.AddListener((bool val) => UpdateEvoWeapon(val, tmpI));
             toggle.group = toggleGroup;
             button.GetComponentInChildren<Text>().text = " " + i;
         }
+    }
+
+    public void UpdateWeaponPage(bool toggle)
+    {
+        UpdateWeapon(toggle, actualWeapon.id);
+    }
+
+    public void UpdateEvoWeaponPage(bool toggle)
+    {
+        UpdateEvoWeapon(toggle, actualEvoWeapon.id);
     }
 
     public void UpdateWeapon(bool toggle, int index)
@@ -151,6 +163,8 @@ public class WeaponDataUpdate : MonoBehaviour
             GameObject.Destroy(weapon3D.GetChild(0).GetChild(0).gameObject);
             weapon3D.GetChild(0).gameObject.SetActive(false);
             actualWeaponObject = null;
+
+            EvoWeapons3D.GetComponent<DrawEvoWeapons>().enabled = false;
         }
     }
 
@@ -174,20 +188,23 @@ public class WeaponDataUpdate : MonoBehaviour
 
     public void ActivateEvoWeapon(int id)
     {
-        if (actualWeaponObject == null)
+        if (actualEvoWeaponObject == null)
         {
+            Debug.Log(AssetDataManager.Instance.turretObject.Count);
             GameObject obj = GameObject.Instantiate(AssetDataManager.Instance.turretObject[100]);
             UserData.UserData userData = UserDataManager.Instance.userData;
 
             Projectiles.ProjectileEvolutiveData pData = ScriptableObject.CreateInstance<Projectiles.ProjectileEvolutiveData>();
             pData.init(userData.evoweapons[id]);
+            pData.velocity = 30;
+            pData.lifeTime = 10;
 
             actualEvoWeaponData = pData;
 
             obj.GetComponent<Weapon.Turret>().projectileData = pData;
             obj.transform.SetParent(weapon3D.GetChild(0));
             obj.transform.SetAsFirstSibling();
-            actualWeaponObject = obj.transform;
+            actualEvoWeaponObject = obj.transform;
 
             weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Clear();
             weapon3D.GetChild(0).GetComponent<Spaceship>().weapon.Add(obj.GetComponent<Weapon.Turret>());
@@ -195,6 +212,9 @@ public class WeaponDataUpdate : MonoBehaviour
 
             actualEvoWeaponObject.gameObject.SetActive(true);
             weapon3D.GetChild(0).gameObject.SetActive(true);
+
+            EvoWeapons3D.GetComponent<DrawEvoWeapons>().behaviour = pData.behaviour;
+            EvoWeapons3D.GetComponent<DrawEvoWeapons>().enabled = true;
         }
     }
 

@@ -84,6 +84,7 @@ public class AssetDataManager : MonoBehaviour
             {
                 ships = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".ships.d");
                 weapons = EncryptDecrypt.LoadDecryptFileString(Application.persistentDataPath + Path.DirectorySeparatorChar + ".weapons.d");
+                weapons += "\nTurret100";
             }
             else
             {
@@ -136,6 +137,8 @@ public class AssetDataManager : MonoBehaviour
     {
         // In a production environment, you should add exception handling to catch scenarios such as a null result.
         turretObject[System.Convert.ToInt32(obj.Result.name.Remove(0,6))] = obj.Result;
+        if(obj.Result.GetComponent<Weapon.Turret>().projectileData != null)
+            weaponData[obj.Result.GetComponent<Weapon.Turret>().projectileData.id] = obj.Result.GetComponent<Weapon.Turret>().projectileData;
     }
 
     IEnumerator LoadAssets()

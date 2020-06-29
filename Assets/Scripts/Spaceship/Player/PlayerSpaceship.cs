@@ -125,13 +125,29 @@ public class PlayerSpaceship : Spaceship
         //rbody.velocity = dir*spaceshipData.speed;
     }
 
-    public override void loseHealth(int health)
+    //protected override void setColor(Color color)
+    //{
+    //    Material mat = transform.GetChild(transform.childCount - 1).GetComponent<Renderer>().sharedMaterial;
+    //    mat.SetColor("_EmissionColor", color);
+    //}
+
+    public override void loseHealth(int damage)
     {
-        spaceshipData.life -= health;
+        if (alive)
+        {
+            spaceshipData.life -= damage;
+            StartCoroutine(loseHealthAnimation());
+            lifeEvent.Raise((int)spaceshipData.life);
+            if (spaceshipData.life <= 0)
+            {
+                Death();
+            }
+        }
+    }
 
-        if (spaceshipData.life <= 0)
-            spaceshipData.life = 0;
-
+    public override void Death()
+    {
+        alive = false;
         lifeEvent.Raise((int)spaceshipData.life);
     }
 

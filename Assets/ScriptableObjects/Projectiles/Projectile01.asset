@@ -20,10 +20,11 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 80f6d78c9dcce4e2eb4d79e8612db5b5, type: 3}
   frequencyImage: 2
   explosion: {fileID: 0}
+  element: 0
   velocity: 15
   frequency: 2
   bursts: 1
   burstFrequency: 5
   lifeTime: 2
-  damage: 50
+  damage: 20
   special: 0

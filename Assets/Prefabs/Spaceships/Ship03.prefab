@@ -33,8 +33,8 @@ Transform:
   - {fileID: 2610791202581734420}
   - {fileID: 2349792123578342618}
   - {fileID: 7423859576066883143}
-  - {fileID: 3504034407850765216}
   - {fileID: 8391822394037467755}
+  - {fileID: 3504034407850765216}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -82,6 +82,7 @@ MonoBehaviour:
   spaceshipData: {fileID: 11400000, guid: 6ece71683b8ae400b9ff94e88e450523, type: 2}
   weapon:
   - {fileID: 0}
+  invincible: 0
   lifeEvent: {fileID: 11400000, guid: edfacb1fd597e41cfbfe40511283c870, type: 2}
   armorEvent: {fileID: 11400000, guid: a6f3ec507a6a6428d924565fe4245fa6, type: 2}
   JoystickMoving: {fileID: 0}
@@ -118,7 +119,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1542994776313728068}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1291658924951375084
 MeshFilter:
@@ -210,7 +211,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1542994776313728068}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4762205898598440217
 MeshFilter:

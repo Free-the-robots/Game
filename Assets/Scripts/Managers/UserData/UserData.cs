@@ -344,7 +344,7 @@ namespace UserData
             LoadSerialize(EncryptDecrypt.LoadDecryptFile(filename));
 
 
-            Debug.Log("load : " + EncryptDecrypt.LoadDecryptFile(filename).Length);
+            Debug.Log("load : " + EncryptDecrypt.LoadDecryptFile(filename).Length + "bytes");
         }
 
         public override UserData LoadSerialize(byte[] data)

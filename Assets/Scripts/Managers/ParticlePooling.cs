@@ -73,6 +73,7 @@ public class ParticlePooling : MonoBehaviour
         typeKillMap[typeof(LaserData)] = destroyCommon;
         typeKillMap[typeof(LaserEvolutiveData)] = destroyCommon;
 
+        listParticles = new List<Texture2D>();
         listParticles.Add(defaultParticleTexture);
         textureArray = new Texture2DArray(defaultParticleTexture.width, defaultParticleTexture.height, listParticles.Count, defaultParticleTexture.format, false);
 
@@ -234,7 +235,8 @@ public class ParticlePooling : MonoBehaviour
     {
         classObj.data = part;
         chooser.active = classObj;
-        if(part.skin.Count > 0)
+        chooser.active.texIdStart = 0;
+        if (part.skin.Count > 0)
         {
             if (!listParticles.Contains(part.skin[0]))
             {
@@ -253,11 +255,7 @@ public class ParticlePooling : MonoBehaviour
                 chooser.active.texIdStart = listParticles.IndexOf(part.skin[0]);
             }
         }
-        else
-        {
-            chooser.active.texIdStart = 0;
-            chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
-        }
+        chooser.GetComponent<Renderer>().transform.GetChild(0).GetComponent<Renderer>().sharedMaterial.SetTexture("_Textures", textureArray);
         chooser.active.enabled = true;
     }
 

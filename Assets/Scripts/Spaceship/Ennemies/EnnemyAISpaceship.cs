@@ -21,6 +21,8 @@ public class EnnemyAISpaceship : Spaceship
 
     protected ShootBehaviour.ShootingBehaviour shootingBehaviour = null;
 
+    protected MaterialPropertyBlock materialBlock;
+
     public void Enable()
     {
         enabled = true;
@@ -33,6 +35,8 @@ public class EnnemyAISpaceship : Spaceship
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+
+        materialBlock = new MaterialPropertyBlock();
 
         switch (shooterBehaviour)
         {
@@ -98,5 +102,14 @@ public class EnnemyAISpaceship : Spaceship
         {
             shootingBehaviour.ShootBehaviour(transform, spaceshipData, weapon);
         }
+    }
+
+    protected override void setColor(Color color)
+    {
+        rendererComp.GetPropertyBlock(materialBlock, 0);
+        // Assign our new value.
+        materialBlock.SetColor("_Color", color);
+        // Apply the edited values to the renderer.
+        rendererComp.SetPropertyBlock(materialBlock, 0);
     }
 }

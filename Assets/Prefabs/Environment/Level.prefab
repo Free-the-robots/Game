@@ -509,7 +509,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7dff6445fea8740b39c52f5163f5f10b, type: 2}
+  - {fileID: 2100000, guid: 6bd503d2d2be24e6cac0d93964cca08a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1095,7 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6335285188662057715}
   - component: {fileID: 6335285188662057712}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1111,7 +1111,7 @@ Transform:
   m_GameObject: {fileID: 6335285188662057714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 12.25, y: 0, z: 2.65}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 6335285189028447324}
   m_RootOrder: 0
@@ -1169,7 +1169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6335285188687723434}
   - component: {fileID: 6335285188687723435}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boxes (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1185,7 +1185,7 @@ Transform:
   m_GameObject: {fileID: 6335285188687723429}
   m_LocalRotation: {x: 0, y: -0.4399391, z: 0, w: 0.89802766}
   m_LocalPosition: {x: -15.626, y: 0, z: -12.166}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 6335285189028447324}
   m_RootOrder: 2
@@ -1564,7 +1564,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6335285189056146117}
   - component: {fileID: 6335285189056146122}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boxes (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1580,7 +1580,7 @@ Transform:
   m_GameObject: {fileID: 6335285189056146116}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 3.63, y: 0, z: 13.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 6335285189028447324}
   m_RootOrder: 1
@@ -2029,7 +2029,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7dff6445fea8740b39c52f5163f5f10b, type: 2}
+  - {fileID: 2100000, guid: 6bd503d2d2be24e6cac0d93964cca08a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2325,6 +2325,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4099632167734954643, guid: cafe35a40d511438cbd27d34f08d0790,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099632167734954643, guid: cafe35a40d511438cbd27d34f08d0790,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4099632167734954643, guid: cafe35a40d511438cbd27d34f08d0790,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5775084084605935307, guid: cafe35a40d511438cbd27d34f08d0790,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2533,7 +2548,7 @@ PrefabInstance:
     - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.626
+      value: -14.56
       objectReference: {fileID: 0}
     - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
         type: 3}
@@ -2543,7 +2558,7 @@ PrefabInstance:
     - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.166
+      value: -10.84
       objectReference: {fileID: 0}
     - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
         type: 3}
@@ -2584,6 +2599,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 47074833023216579, guid: 2dad463e2051f4e3da253809c70ec598,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1174060318080220864, guid: 2dad463e2051f4e3da253809c70ec598,
         type: 3}
